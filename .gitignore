@@ -4,6 +4,7 @@
 [Bb]uild/
 [Bb]uilds/
 [Dd]eploy/
+[Ll]ogs/
 Assets/AssetStoreTools*
 
 .DS_Store
