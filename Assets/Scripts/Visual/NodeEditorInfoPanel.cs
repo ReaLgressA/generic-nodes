@@ -4,10 +4,12 @@ using UnityEngine.UI;
 using Utility;
 
 public class NodeEditorInfoPanel : MonoBehaviour {
-
     [SerializeField] private RectTransform rtrPanelRoot;
     [SerializeField] private Button buttonToggleHide;
     [SerializeField] private TextMeshProUGUI textToggleHide;
+    [SerializeField] private TextMeshProUGUI textHeader;
+    [SerializeField] private RectTransform contentRoot;
+    
     
     private bool isHidden = false;
     

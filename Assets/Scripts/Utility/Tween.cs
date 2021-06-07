@@ -17,7 +17,6 @@ public static class Tween
             float t = easing(Mathf.Clamp01(sec / durationSec));
             position.x = (to.x - from.x) * t + from.x;
             position.y = (to.y - from.y) * t + from.y;
-            Debug.Log($"sec: {sec}  t={t} POS: {position}");
             rTransform.anchoredPosition = position;
             await Task.Yield();
         } while (sec < durationSec);
