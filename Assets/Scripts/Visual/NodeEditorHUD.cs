@@ -1,18 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
+using Mech.Data;
 using UnityEngine;
 
-public class NodeEditorHUD : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+public class NodeEditorHUD : MonoBehaviour {
+    [SerializeField] private NodeEditorInfoPanel infoPanel;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public NodeEditorInfoPanel InfoPanel => infoPanel;
+
+
+    public void OpenGraph(GraphData data) {
+        InfoPanel.SetupData(data.Info);
     }
 }
