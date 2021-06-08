@@ -12,7 +12,9 @@ public class NodeEditorConroller : MonoBehaviour {
             new StringDataField("Graph Name", "New Graph"),
             new StringDataField("String#1", "I am 1"),
             new StringDataField("Empty By Default"),
-            new StringDataField("String#3", "I am 3")
+            new StringDataField("String#3", "I am 3"),
+            new IntDataField("Integer", 123),
+            new FloatDataField("Float", 4.20f)
         }));
     }
 

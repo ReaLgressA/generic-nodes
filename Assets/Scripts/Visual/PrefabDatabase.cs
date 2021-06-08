@@ -6,11 +6,15 @@ using Visual.GenericFields;
 namespace Visual {
     public class PrefabDatabase : SingletonMonoBehaviour<PrefabDatabase> {
         [SerializeField] private StringGenericField stringFieldPrefab;
+        [SerializeField] private IntGenericField intFieldPrefab;
+        [SerializeField] private FloatGenericField floatFieldPrefab;
 
         private Dictionary<DataType, GameObject> fieldPrefabs = new Dictionary<DataType, GameObject>();
 
         private void Awake() {
             fieldPrefabs.Add(DataType.String, stringFieldPrefab.gameObject);
+            fieldPrefabs.Add(DataType.Int, intFieldPrefab.gameObject);
+            fieldPrefabs.Add(DataType.Float, floatFieldPrefab.gameObject);
         }
 
         public static GameObject GetFieldPrefab(DataType type) {
