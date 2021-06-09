@@ -1,0 +1,21 @@
+{
+    "Type": "GameEvent",
+    "Fields": [
+        {
+            "Name": "Id",
+            "Type": "String",
+            "Default": "ge-id"
+        },
+        {
+            "Name": "IsPersistent",
+            "Type": "Bool"
+        },
+        {
+            "Name": "Trigger",
+            "Type": "String",
+            "Default": "OnBuildingEnter"
+        }
+    ],
+    "NodeArray": "Acts",
+    
+}

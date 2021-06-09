@@ -745,7 +745,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1928883621}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999999
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -915,6 +915,7 @@ MonoBehaviour:
   stringFieldPrefab: {fileID: 2778161968267533520, guid: 31c02a56be64d4aec9694e852c50f11b, type: 3}
   intFieldPrefab: {fileID: 7924902680468345254, guid: f496c1c064ce240e78ee726b562a2bdd, type: 3}
   floatFieldPrefab: {fileID: 8891296037153989329, guid: 3fac2dc837b534e1db037ed9e7f70d20, type: 3}
+  boolFieldPrefab: {fileID: 3659610056616161760, guid: 45769a7cd3e41494f819b3bf8265e898, type: 3}
 --- !u!4 &1701409515
 Transform:
   m_ObjectHideFlags: 0
@@ -964,7 +965,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000015983931}
+  m_AnchoredPosition: {x: 0, y: 0.00042122527}
   m_SizeDelta: {x: 0, y: 1080}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1801161288

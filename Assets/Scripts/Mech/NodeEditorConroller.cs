@@ -14,7 +14,8 @@ public class NodeEditorConroller : MonoBehaviour {
             new StringDataField("Empty By Default"),
             new StringDataField("String#3", "I am 3"),
             new IntDataField("Integer", 123),
-            new FloatDataField("Float", 4.20f)
+            new FloatDataField("Float", 4.20f),
+            new BoolDataField("Bool", true)
         }));
     }
 
