@@ -2,20 +2,63 @@
     "Type": "GameEvent",
     "Fields": [
         {
+            "Type": "String",
             "Name": "Id",
-            "Type": "String",
-            "Default": "ge-id"
+            "Value": "ge-id"
         },
         {
-            "Name": "IsPersistent",
-            "Type": "Bool"
+            "Type": "Bool",
+            "Name": "IsPersistent"
         },
         {
+            "Type": "Enum",
             "Name": "Trigger",
-            "Type": "String",
-            "Default": "OnBuildingEnter"
+            "EnumType": "GameEventTriggerType", 
+            "Value": "OnBuildingEnter"
+        }
+    ],
+    "Enums": [
+        {
+            "Type": "GameEventTriggerType",
+            "Enumeration": [ "Default", "OnTileEnter", "OnBuildingEnter", "OnInteract"]
         }
     ],
     "NodeArray": "Acts",
-    
+    "Nodes": [
+        {
+            "Type": "Default",
+            "Fields": [
+                {
+                    "Type": "String",
+                    "Name": "Title"
+                },
+                {
+                    "Type": "String",
+                    "Name": "Description"
+                }
+            ]
+        },
+        {
+            "Type": "Exit",
+            "Fields": [
+                {
+                    "Type": "Int",
+                    "Name": "ExitCode",
+                    "Value": 0
+                }
+            ]
+        },
+        {
+            "Type": "CaptureEntity",
+            "Fields": []
+        },
+        {
+            "Type": "OpenHireUnit",
+            "Fields": []
+        },
+        {
+            "Type": "OpenMarket",
+            "Fields": []
+        }
+    ]
 }

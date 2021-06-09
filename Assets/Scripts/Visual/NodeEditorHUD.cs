@@ -8,6 +8,6 @@ public class NodeEditorHUD : MonoBehaviour {
 
 
     public void OpenGraph(GraphData data) {
-        InfoPanel.SetupData(data.Info);
+        InfoPanel.SetupData(data.Type, data.Info);
     }
 }

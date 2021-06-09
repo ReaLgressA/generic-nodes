@@ -9,7 +9,8 @@ namespace Visual {
         [SerializeField] private IntGenericField intFieldPrefab;
         [SerializeField] private FloatGenericField floatFieldPrefab;
         [SerializeField] private BoolGenericField boolFieldPrefab;
-
+        [SerializeField] private TextGenericField textFieldPrefab;
+        
         private Dictionary<DataType, GameObject> fieldPrefabs = new Dictionary<DataType, GameObject>();
 
         private void Awake() {
@@ -17,6 +18,7 @@ namespace Visual {
             fieldPrefabs.Add(DataType.Int, intFieldPrefab.gameObject);
             fieldPrefabs.Add(DataType.Float, floatFieldPrefab.gameObject);
             fieldPrefabs.Add(DataType.Bool, boolFieldPrefab.gameObject);
+            fieldPrefabs.Add(DataType.Text, textFieldPrefab.gameObject);
         }
 
         public static GameObject GetFieldPrefab(DataType type) {

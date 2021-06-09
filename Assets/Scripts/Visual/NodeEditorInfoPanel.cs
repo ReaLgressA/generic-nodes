@@ -21,7 +21,6 @@ public class NodeEditorInfoPanel : MonoBehaviour {
     
     private void Awake() {
         buttonToggleHide.onClick.AddListener(ToggleHideWindow);
-        textHeader.text = "Graph Info";
     }
     
     private void OnDestroy() {
@@ -35,7 +34,8 @@ public class NodeEditorInfoPanel : MonoBehaviour {
                                             0.5f, Easings.EaseInOutQuad);
     }
 
-    public void SetupData(NodeData data) {
+    public void SetupData(string graphType, NodeData data) {
+        textHeader.text = graphType;
         ClearFields();
         for (int i = 0; i < data.Fields.Count; ++i) {
             GameObject goField = Instantiate(PrefabDatabase.GetFieldPrefab(data.Fields[i].Type));
