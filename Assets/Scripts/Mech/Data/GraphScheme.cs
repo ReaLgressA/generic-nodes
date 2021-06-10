@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Mech.Fields;
@@ -16,6 +15,7 @@ namespace Mech.Data {
         public string Type { get; private set; } = string.Empty;
         public List<DataField> Fields { get; private set; } = new List<DataField>();
         public EnumDescription[] Enums { get; private set; } = new EnumDescription[0];
+        public NodeDescription[] Nodes { get; private set; } = new NodeDescription[0];
         public string NodeArrayName { get; private set; } = null;
 
         public GraphData CreateGraph() {
@@ -37,6 +37,7 @@ namespace Mech.Data {
             DataFieldFactory.CurrentGraphScheme = this;
             Fields = ht.ReadAsGenericList(Keys.FIELDS, DataFieldFactory.CreateFromHashtable);
             NodeArrayName = ht.GetStringSafe(Keys.NODE_ARRAY, NodeArrayName);
+            Nodes = ht.GetArray(Keys.NODES, Nodes);
         }
     }
 }
