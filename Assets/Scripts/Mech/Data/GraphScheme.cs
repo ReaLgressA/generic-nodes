@@ -27,22 +27,13 @@ namespace Mech.Data {
             return new GraphData(Type, graphInfo);
         }
 
-        public string[] GetEnumSet(string enumType) {
-            for (int i = 0; i < Enums.Length; ++i) {
-                if (string.Compare(Enums[i].Type, enumType, StringComparison.Ordinal) == 0) {
-                    return Enums[i].Enumeration;
-                }
-            }
-            return null;
-        }
-        
         public void ToJsonObject(Hashtable ht) {
             throw new System.NotImplementedException();
         }
 
         public void FromJson(Hashtable ht, bool isAddition = false) {
             Type = ht.GetStringSafe(Keys.TYPE, Type);
-            Enums = ht.AsArray(Keys.ENUMS, Enums);
+            Enums = ht.GetArray(Keys.ENUMS, Enums);
             DataFieldFactory.CurrentGraphScheme = this;
             Fields = ht.ReadAsGenericList(Keys.FIELDS, DataFieldFactory.CreateFromHashtable);
             NodeArrayName = ht.GetStringSafe(Keys.NODE_ARRAY, NodeArrayName);

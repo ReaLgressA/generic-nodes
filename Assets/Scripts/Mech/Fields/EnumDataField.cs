@@ -1,14 +1,20 @@
 using System;
 using System.Collections;
+using System.Linq;
 using Mech.Data;
 
 namespace Mech.Fields {
     public class EnumDataField : DataField {
         public override DataType Type => DataType.Enum;
 
-        public string[] EnumSet { get; private set; }
-        public int SelectedIndex { get; private set; } = 0;
-        public string Value => EnumSet[SelectedIndex];
+        public string EnumSet { get; private set; }
+        public EnumDescription EnumDescription => 
+            Scheme.Enums.First(enumDescription => string.Compare(enumDescription.Type, 
+                                                                 EnumSet, StringComparison.Ordinal) == 0);
+        
+        public int SelectedIndex => EnumDescription.GetIndex(Value);
+        
+        public string Value { get; private set; }
         
         private GraphScheme Scheme { get; set; }
 
@@ -19,27 +25,24 @@ namespace Mech.Fields {
         public EnumDataField(GraphScheme scheme, string name, string defaultValue = null) : base(name) {
             Scheme = scheme;
             if (defaultValue != null) {
-                for (int i = 0; i < EnumSet.Length; ++i) {
-                    if (string.Compare(EnumSet[i], defaultValue, StringComparison.Ordinal) == 0) {
-                        SelectedIndex = i;
-                        break;
-                    }
-                }
+                Value = defaultValue;
             }
         }
 
         public void SetValue(int selectedIndex) {
-            SelectedIndex = selectedIndex;
+            Value = EnumDescription.Enumeration[selectedIndex];
         }
         
         public override DataField InitializeFromHashtable(Hashtable ht) {
-            ht.GetStringSafe("Value");
+            EnumSet = ht.GetStringSafe("EnumType", EnumSet);
+            Value = ht.GetStringSafe("Value", Value);
             return base.InitializeFromHashtable(ht);
         }
         
         public override DataField Clone() {
-            var field = new FloatDataField();
-            //field.Value = Value;
+            EnumDataField field = new EnumDataField(Scheme);
+            field.EnumSet = EnumSet;
+            field.Value = Value;
             return CloneBaseData(field);
         }
     }

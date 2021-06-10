@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 
 namespace Mech.Data {
@@ -17,6 +18,15 @@ namespace Mech.Data {
         public void FromJson(Hashtable ht, bool isAddition = false) {
             Type = ht.GetStringSafe(Keys.TYPE, Type);
             Enumeration = ht.GetArray(Keys.ENUMERATION, Enumeration);
+        }
+
+        public int GetIndex(string enumKey) {
+            for (int i = 0; i < Enumeration.Length; ++i) {
+                if (string.Compare(Enumeration[i], enumKey, StringComparison.Ordinal) == 0) {
+                    return i;
+                }   
+            }
+            return 0;
         }
     }
 }

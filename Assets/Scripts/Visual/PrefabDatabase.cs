@@ -10,6 +10,7 @@ namespace Visual {
         [SerializeField] private FloatGenericField floatFieldPrefab;
         [SerializeField] private BoolGenericField boolFieldPrefab;
         [SerializeField] private TextGenericField textFieldPrefab;
+        [SerializeField] private EnumGenericField enumFieldPrefab;
         
         private Dictionary<DataType, GameObject> fieldPrefabs = new Dictionary<DataType, GameObject>();
 
@@ -19,6 +20,7 @@ namespace Visual {
             fieldPrefabs.Add(DataType.Float, floatFieldPrefab.gameObject);
             fieldPrefabs.Add(DataType.Bool, boolFieldPrefab.gameObject);
             fieldPrefabs.Add(DataType.Text, textFieldPrefab.gameObject);
+            fieldPrefabs.Add(DataType.Enum, enumFieldPrefab.gameObject);
         }
 
         public static GameObject GetFieldPrefab(DataType type) {

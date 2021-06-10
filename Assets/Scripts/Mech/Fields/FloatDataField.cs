@@ -2,7 +2,7 @@ using System.Collections;
 
 namespace Mech.Fields {
     public class FloatDataField : DataField {
-        public float Value { get; private set; }
+        public float Value { get; protected set; }
 
         public FloatDataField() {}
         public FloatDataField(string name, float defaultValue = 0f) : base(name) {
