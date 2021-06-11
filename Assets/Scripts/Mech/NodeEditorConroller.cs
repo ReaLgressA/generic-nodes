@@ -1,5 +1,4 @@
 using Mech.Data;
-using Mech.Fields;
 using UnityEngine;
 
 public class NodeEditorConroller : MonoBehaviour {

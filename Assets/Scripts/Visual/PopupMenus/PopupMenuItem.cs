@@ -8,10 +8,12 @@ namespace Visual.PopupMenus {
         [SerializeField] private Button button;
         [SerializeField] private TextMeshProUGUI textName;
 
-        private Action itemAction = null;
+        private string actionName;
+        private Action<string> itemAction = null;
 
-        public virtual void Initilize(string name, Action action) {
-            textName.text = name;
+        public virtual void Initilize(string actionName, Action<string> action) {
+            this.actionName = actionName;
+            textName.text = this.actionName;
             itemAction = action;
         }
         
@@ -24,7 +26,7 @@ namespace Visual.PopupMenus {
         }
         
         private void ProcessClick() {
-            itemAction?.Invoke();   
+            itemAction?.Invoke(actionName);   
         }
     }
 }

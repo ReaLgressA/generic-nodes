@@ -24,7 +24,7 @@ namespace Mech.Data {
                 fields[i] = Fields[i].Clone();
             }
             NodeData graphInfo = new NodeData(fields);
-            return new GraphData(Type, graphInfo);
+            return new GraphData(Type, graphInfo, this);
         }
 
         public void ToJsonObject(Hashtable ht) {

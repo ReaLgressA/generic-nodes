@@ -7,7 +7,7 @@ namespace Mech.Fields {
     public static class DataFieldFactory {
 
         private static readonly Dictionary<DataType, Func<Hashtable, DataField>> creatorMethods =
-            new Dictionary<DataType, Func<Hashtable, DataField>> {
+            new Dictionary<DataType, Func<Hashtable, DataField>>(DataTypeComparer.Instance) {
                 {DataType.Bool, ht => new BoolDataField().InitializeFromHashtable(ht) },
                 {DataType.Int, ht => new IntDataField().InitializeFromHashtable(ht) },
                 {DataType.Float, ht => new FloatDataField().InitializeFromHashtable(ht) },
