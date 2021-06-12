@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using GenericNodes.Mech.Extensions;
 using Mech.Fields;
 
 namespace Mech.Data {
@@ -19,11 +21,7 @@ namespace Mech.Data {
         public string NodeArrayName { get; private set; } = null;
 
         public GraphData CreateGraph() {
-            DataField[] fields = new DataField[Fields.Count];
-            for (int i = 0; i < fields.Length; ++i) {
-                fields[i] = Fields[i].Clone();
-            }
-            NodeData graphInfo = new NodeData(fields);
+            NodeData graphInfo = new NodeData(Fields.CloneFields());
             return new GraphData(Type, graphInfo, this);
         }
 
@@ -39,5 +37,15 @@ namespace Mech.Data {
             NodeArrayName = ht.GetStringSafe(Keys.NODE_ARRAY, NodeArrayName);
             Nodes = ht.GetArray(Keys.NODES, Nodes);
         }
+
+        public NodeData CreateNodeData(string nodeType) {
+            for (int i = 0; i < Nodes.Length; ++i) {
+                if (string.Compare(Nodes[i].Type, nodeType, StringComparison.Ordinal) == 0) {
+                    return new NodeData(Nodes[i].Fields.CloneFields());
+                }
+            }
+            return null;
+        }
+        
     }
 }

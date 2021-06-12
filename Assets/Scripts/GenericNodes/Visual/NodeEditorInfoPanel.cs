@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Mech.Data;
 using TMPro;
@@ -22,7 +21,13 @@ public class NodeEditorInfoPanel : MonoBehaviour {
     private void Awake() {
         buttonToggleHide.onClick.AddListener(ToggleHideWindow);
     }
-    
+
+    private void Update() {
+        if (Input.GetKeyDown(KeyCode.I) && !KeyboardInputManager.IsAnyGameObjectSelected) {
+            ToggleHideWindow();
+        }
+    }
+
     private void OnDestroy() {
         buttonToggleHide.onClick.RemoveAllListeners();
     }

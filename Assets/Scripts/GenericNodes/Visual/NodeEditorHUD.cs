@@ -8,14 +8,14 @@ public class NodeEditorHUD : MonoBehaviour {
     [SerializeField] private NodeEditorInfoPanel infoPanel;
     [SerializeField] private PopupMenu popupMenu;
     
-
     public void OpenGraph(GraphData data) {
-        workspaceArea.OnAreaRightClicked += OpenNodeCreatePopupMenu;
+        workspaceArea.OnAreaRmbClick += OpenNodeCreatePopupMenu;
+        workspaceArea.OnInterruptRmbClick += popupMenu.Hide;
         infoPanel.SetupData(data.Type, data.Info);
         popupMenu.SetupScheme(data.Scheme);
     }
 
     private void OpenNodeCreatePopupMenu(Vector2 position) {
-        popupMenu.Show(position);
+        popupMenu.Show("Create Node", position);
     }
 }

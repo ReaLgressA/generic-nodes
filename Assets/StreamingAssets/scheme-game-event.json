@@ -15,6 +15,10 @@
             "Name": "Trigger",
             "EnumType": "GameEventTriggerType", 
             "Value": "OnBuildingEnter"
+        },
+        {
+            "Type": "Text",
+            "Name": "Test Text"
         }
     ],
     "Enums": [
