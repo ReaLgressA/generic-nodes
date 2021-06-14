@@ -1,6 +1,6 @@
-using Mech.Fields;
+using GenericNodes.Mech.Fields;
 
-namespace Visual {
+namespace GenericNodes.Visual.Interfaces {
     public interface IGenericField {
 
         void SetData(DataField data);

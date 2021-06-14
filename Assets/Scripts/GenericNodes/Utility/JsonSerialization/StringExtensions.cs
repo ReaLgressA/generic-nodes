@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections;
 
-public static partial class StringExtensions {
+namespace GenericNodes.Utility.JsonSerialization
+{
+    public static partial class StringExtensions {
     
-    public static Hashtable ReadJson(string pathJson) {
-        try {
-            string json = StreamingAssetReader.ReadAsString(pathJson);
-            return json.HashtableFromJson();
-        } catch (Exception ex) {
-            UnityEngine.Debug.LogError("Failed to readJson: " + pathJson);
+        public static Hashtable ReadJson(string pathJson) {
+            try {
+                string json = StreamingAssetReader.ReadAsString(pathJson);
+                return json.HashtableFromJson();
+            } catch (Exception ex) {
+                UnityEngine.Debug.LogError("Failed to readJson: " + pathJson);
+            }
+            return null;
         }
-        return null;
     }
 }

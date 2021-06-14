@@ -1,9 +1,10 @@
 using System.Collections.Generic;
-using Mech.Data;
+using GenericNodes.Mech.Data;
+using GenericNodes.Visual.Nodes;
 using TMPro;
 using UnityEngine;
 
-namespace Visual.PopupMenus {
+namespace GenericNodes.Visual.PopupMenus {
     public class PopupMenu : MonoBehaviour {
         [SerializeField] private WorkspaceArea workspaceArea;
         [SerializeField] private TextMeshProUGUI textTitle;

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Utility {
+namespace GenericNodes.Utility {
     public static class Easings {
 
         public static float EaseLinear(float x) {

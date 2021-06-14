@@ -1,28 +1,31 @@
 using System;
+using GenericNodes.Utility;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using Utility;
-using Image = UnityEngine.UI.Image;
 
-namespace Visual {
-    public class WorkspaceArea : MonoBehaviour, 
-                                 IPointerClickHandler,
-                                 IPointerDownHandler,
-                                 IPointerUpHandler {
-        [SerializeField] private Image imageBackground;
-        [SerializeField] private RectTransform rTrNodesRoot;
-        [SerializeField] private CanvasScaler canvasScaler;
+namespace GenericNodes.Visual {
+    public class WorkspaceArea : MonoBehaviour,
+        IPointerClickHandler,
+        IPointerDownHandler,
+        IPointerUpHandler {
+        [SerializeField]
+        private RectTransform rTrNodesRoot;
 
-        [SerializeField] private float zoomSpeed = 0.5f;
-        [SerializeField] private Vector2 zoomBounds = new Vector2(0.1f, 2f);
-        
+        [SerializeField]
+        private CanvasScaler canvasScaler;
+
+        [SerializeField]
+        private float zoomSpeed = 0.5f;
+
+        [SerializeField]
+        private Vector2 zoomBounds = new Vector2(0.1f, 2f);
+
         private RectTransform rTransform;
-        private RectTransform rTrBackground;
         private bool isMmbHeld = false;
         private Vector2 fixedNodesRootPosition;
         private Vector2 mmbStartHoldPosition;
-        
+
         public event Action<Vector2> OnAreaRmbClick;
         public event Action OnInterruptRmbClick;
 
@@ -31,17 +34,22 @@ namespace Visual {
 
         private void Awake() {
             rTransform = GetComponent<RectTransform>();
-            rTrBackground = imageBackground.GetComponent<RectTransform>();
         }
 
         private void LateUpdate() {
             if (isMmbHeld) {
                 ProcessMmbHold(Input.mousePosition);
             }
+
             if (Mathf.Abs(Input.mouseScrollDelta.y) > 0 && !KeyboardInputManager.IsAnyGameObjectSelected) {
                 float zoomDelta = Input.mouseScrollDelta.y * zoomSpeed * Time.deltaTime;
-                canvasScaler.scaleFactor = Mathf.Clamp(canvasScaler.scaleFactor + zoomDelta, zoomBounds.x, zoomBounds.y);
+                canvasScaler.scaleFactor =
+                    Mathf.Clamp(canvasScaler.scaleFactor + zoomDelta, zoomBounds.x, zoomBounds.y);
             }
+        }
+
+        public Vector2 GetWorldPosition(Vector2 screenPosition) {
+            return fixedNodesRootPosition - (mmbStartHoldPosition - screenPosition) / canvasScaler.scaleFactor;
         }
 
         public void OnPointerClick (PointerEventData eventData) {
@@ -70,12 +78,12 @@ namespace Visual {
         }
 
         private void ProcessMmbHold(Vector2 pointerPosition) {
-            rTrNodesRoot.anchoredPosition = fixedNodesRootPosition - (mmbStartHoldPosition - pointerPosition) / canvasScaler.scaleFactor;
+            rTrNodesRoot.anchoredPosition = GetWorldPosition(pointerPosition);
             OnInterruptRmbClick?.Invoke();
         }
         
         private void ProcessMmbRelease(Vector2 pointerPosition) {
-            rTrNodesRoot.anchoredPosition = fixedNodesRootPosition - (mmbStartHoldPosition - pointerPosition) / canvasScaler.scaleFactor;
+            rTrNodesRoot.anchoredPosition = GetWorldPosition(pointerPosition);
             OnInterruptRmbClick?.Invoke();
         }
     }

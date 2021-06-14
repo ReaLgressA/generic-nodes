@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 
-namespace Mech.Data {
+namespace GenericNodes.Mech.Data {
     public class EnumDescription : IJsonInterface {
         private class Keys {
             public const string TYPE = "Type";

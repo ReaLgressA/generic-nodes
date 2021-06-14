@@ -1,8 +1,9 @@
-using Mech.Fields;
+using GenericNodes.Mech.Fields;
+using GenericNodes.Visual.Interfaces;
 using TMPro;
 using UnityEngine;
 
-namespace Visual.GenericFields {
+namespace GenericNodes.Visual.GenericFields {
     public class FloatGenericField : MonoBehaviour, IGenericField {
         [SerializeField] private TextMeshProUGUI textLabel;
         [SerializeField] private TMP_InputField inputFieldContent;

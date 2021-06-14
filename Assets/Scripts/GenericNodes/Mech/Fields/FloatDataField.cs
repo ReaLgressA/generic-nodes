@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace Mech.Fields {
+namespace GenericNodes.Mech.Fields {
     public class FloatDataField : DataField {
         public float Value { get; protected set; }
 

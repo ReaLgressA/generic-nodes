@@ -1,9 +1,10 @@
 using System.Collections.Generic;
-using Mech.Fields;
+using GenericNodes.Mech.Fields;
+using GenericNodes.Utility;
+using GenericNodes.Visual.GenericFields;
 using UnityEngine;
-using Visual.GenericFields;
 
-namespace Visual {
+namespace GenericNodes.Visual {
     public class PrefabDatabase : SingletonMonoBehaviour<PrefabDatabase> {
         [SerializeField] private StringGenericField stringFieldPrefab;
         [SerializeField] private IntGenericField intFieldPrefab;

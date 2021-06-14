@@ -1,9 +1,10 @@
-using Mech.Fields;
+using GenericNodes.Mech.Fields;
+using GenericNodes.Visual.Interfaces;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Visual.GenericFields {
+namespace GenericNodes.Visual.GenericFields {
     public class BoolGenericField : MonoBehaviour, IGenericField {
         [SerializeField] private TextMeshProUGUI textLabel;
         [SerializeField] private Toggle toggleCheckmark;

@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace Mech.Fields {
+namespace GenericNodes.Mech.Fields {
     public class IntDataField : DataField {
 
         public int Value { get; private set; }

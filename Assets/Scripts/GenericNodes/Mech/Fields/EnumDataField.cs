@@ -1,9 +1,9 @@
 using System;
 using System.Collections;
 using System.Linq;
-using Mech.Data;
+using GenericNodes.Mech.Data;
 
-namespace Mech.Fields {
+namespace GenericNodes.Mech.Fields {
     public class EnumDataField : DataField {
         public override DataType Type => DataType.Enum;
 

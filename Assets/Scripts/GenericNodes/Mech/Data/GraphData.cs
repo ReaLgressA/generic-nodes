@@ -1,4 +1,4 @@
-namespace Mech.Data {
+namespace GenericNodes.Mech.Data {
     public class GraphData {
         public string Type { get; private set; }
         public NodeData Info { get; private set; }
@@ -10,6 +10,5 @@ namespace Mech.Data {
             Info = info;
             Scheme = scheme;
         }
-        
     }
 }

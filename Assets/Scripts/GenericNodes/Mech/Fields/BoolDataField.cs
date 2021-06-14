@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace Mech.Fields {
+namespace GenericNodes.Mech.Fields {
     public class BoolDataField : DataField {
         public bool Value { get; private set; }
         

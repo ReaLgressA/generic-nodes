@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Mech.Fields;
+using GenericNodes.Mech.Fields;
 
-namespace Mech.Data {
+namespace GenericNodes.Mech.Data {
     public class NodeDescription : IJsonInterface {
         private class Keys {
             public const string TYPE = "Type";

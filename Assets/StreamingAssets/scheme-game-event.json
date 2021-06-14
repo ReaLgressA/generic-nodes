@@ -39,6 +39,10 @@
                 {
                     "Type": "String",
                     "Name": "Description"
+                },
+                {
+                    "Type": "NodeId",
+                    "Name": "Next Node"
                 }
             ]
         },

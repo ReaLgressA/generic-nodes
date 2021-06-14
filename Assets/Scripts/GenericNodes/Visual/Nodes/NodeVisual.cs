@@ -1,44 +1,25 @@
 using System.Collections.Generic;
 using GenericNodes.Mech.Data;
-using GenericNodes.Utility;
 using GenericNodes.Visual.Interfaces;
+using GenericNodes.Visual.Links;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GenericNodes.Visual
+namespace GenericNodes.Visual.Nodes
 {
-    public class NodeEditorInfoPanel : MonoBehaviour {
-        [SerializeField] private RectTransform rtrPanelRoot;
-        [SerializeField] private Button buttonToggleHide;
-        [SerializeField] private TextMeshProUGUI textToggleHide;
+    [RequireComponent(typeof(RectTransform))]
+    public class NodeVisual : MonoBehaviour {
+        [SerializeField] private Image imageBackground;
         [SerializeField] private TextMeshProUGUI textHeader;
         [SerializeField] private RectTransform rtrContentRoot;
 
-
+        private RectTransform rTransform;
+        private readonly List<NodeSocketVisual> inputSockets = new List<NodeSocketVisual>();
         private readonly List<IGenericField> fields = new List<IGenericField>();
-    
-        private bool isHidden = false;
-    
+        
         private void Awake() {
-            buttonToggleHide.onClick.AddListener(ToggleHideWindow);
-        }
-
-        private void Update() {
-            if (Input.GetKeyDown(KeyCode.I) && !KeyboardInputManager.IsAnyGameObjectSelected) {
-                ToggleHideWindow();
-            }
-        }
-
-        private void OnDestroy() {
-            buttonToggleHide.onClick.RemoveAllListeners();
-        }
-    
-        private async void ToggleHideWindow() {
-            isHidden = !isHidden;
-            textToggleHide.text = isHidden ? ">" : "<";
-            await rtrPanelRoot.TweenAnchoredPos(isHidden ? new Vector2(-rtrPanelRoot.sizeDelta.x, 0f) : Vector2.zero,
-                                                0.5f, Easings.EaseInOutQuad);
+            rTransform = GetComponent<RectTransform>();
         }
 
         public void SetupData(string graphType, NodeData data) {
@@ -46,7 +27,7 @@ namespace GenericNodes.Visual
             ClearFields();
             for (int i = 0; i < data.Fields.Count; ++i) {
                 GameObject goField = Instantiate(PrefabDatabase.GetFieldPrefab(data.Fields[i].Type));
-                var rtr = goField.GetComponent<RectTransform>();
+                RectTransform rtr = goField.GetComponent<RectTransform>();
                 rtr.SetParent(rtrContentRoot);
                 rtr.localScale = Vector3.one;
                 rtr.SetAsLastSibling();

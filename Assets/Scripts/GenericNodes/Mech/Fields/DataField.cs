@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace Mech.Fields {
+namespace GenericNodes.Mech.Fields {
     public abstract class DataField {
         public string Name { get; private set; }
 

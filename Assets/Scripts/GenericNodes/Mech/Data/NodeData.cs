@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Mech.Fields;
+using GenericNodes.Mech.Fields;
 
-namespace Mech.Data {
+namespace GenericNodes.Mech.Data {
     public class NodeData {
         public List<DataField> Fields { get; private set; } = new List<DataField>();
         

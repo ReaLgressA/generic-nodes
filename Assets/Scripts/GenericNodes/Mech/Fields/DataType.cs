@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Mech.Fields {
+namespace GenericNodes.Mech.Fields {
     public enum DataType {
         Undefined = 0,
         String,
@@ -8,7 +8,8 @@ namespace Mech.Fields {
         Float,
         Bool,
         Text,
-        Enum
+        Enum,
+        NodeId
     }
     
     public class DataTypeComparer : IEqualityComparer<DataType> {

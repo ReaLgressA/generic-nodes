@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Visual.PopupMenus {
+namespace GenericNodes.Visual.PopupMenus {
     public class PopupMenuItem : MonoBehaviour {
         [SerializeField] private Button button;
         [SerializeField] private TextMeshProUGUI textName;

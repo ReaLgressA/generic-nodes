@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using GenericNodes.Mech.Extensions;
-using Mech.Fields;
+using GenericNodes.Mech.Fields;
 
-namespace Mech.Data {
+namespace GenericNodes.Mech.Data {
     public class GraphScheme : IJsonInterface {
         private class Keys {
             public const string TYPE = "Type";
