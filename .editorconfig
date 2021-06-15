@@ -1,5 +1,5 @@
-# Remove the line below if you want to inherit .editorconfig settings from higher directories
 root = true
+# Remove the line below if you want to inherit .editorconfig settings from higher directories
 
 # C# files
 [*.cs]
@@ -71,14 +71,14 @@ csharp_style_var_for_built_in_types = false:warning
 csharp_style_var_when_type_is_apparent = false:warning
 
 # Expression-bodied members
-csharp_style_expression_bodied_accessors = false:warning
+csharp_style_expression_bodied_accessors = true:hint
 csharp_style_expression_bodied_constructors = false:warning
 csharp_style_expression_bodied_indexers = false:warning
 csharp_style_expression_bodied_lambdas = true:silent
 csharp_style_expression_bodied_local_functions = false:silent
 csharp_style_expression_bodied_methods = false:warning
 csharp_style_expression_bodied_operators = false:warning
-csharp_style_expression_bodied_properties = false:warning
+csharp_style_expression_bodied_properties = true:hint
 
 # Pattern matching preferences
 csharp_style_pattern_matching_over_as_with_null_check = false:silent
@@ -208,3 +208,24 @@ dotnet_naming_style.upper_case.required_prefix =
 dotnet_naming_style.upper_case.required_suffix = 
 dotnet_naming_style.upper_case.word_separator = _
 dotnet_naming_style.upper_case.capitalization = all_upper
+
+# Alignment
+
+align_first_arg_by_paren = true
+
+# ReSharper properties
+resharper_align_multiline_calls_chain = true
+resharper_align_multiline_extends_list = true
+resharper_align_multiline_for_stmt = true
+resharper_align_multline_type_parameter_constrains = true
+resharper_align_multline_type_parameter_list = true
+resharper_align_tuple_components = true
+resharper_indent_nested_foreach_stmt = true
+resharper_indent_nested_for_stmt = true
+resharper_indent_nested_while_stmt = true
+resharper_indent_preprocessor_region = no_indent
+resharper_keep_existing_declaration_block_arrangement = false
+resharper_keep_existing_declaration_parens_arrangement = false
+resharper_keep_existing_expr_member_arrangement = false
+resharper_place_expr_method_on_single_line = true
+resharper_place_field_attribute_on_same_line = if_owner_is_single_line

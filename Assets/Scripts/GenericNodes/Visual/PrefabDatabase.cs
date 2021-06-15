@@ -12,8 +12,9 @@ namespace GenericNodes.Visual {
         [SerializeField] private BoolGenericField boolFieldPrefab;
         [SerializeField] private TextGenericField textFieldPrefab;
         [SerializeField] private EnumGenericField enumFieldPrefab;
+        [SerializeField] private NodeIdGenericField nodeIdGenericField;
         
-        private Dictionary<DataType, GameObject> fieldPrefabs = new Dictionary<DataType, GameObject>();
+        private readonly Dictionary<DataType, GameObject> fieldPrefabs = new Dictionary<DataType, GameObject>();
 
         private void Awake() {
             fieldPrefabs.Add(DataType.String, stringFieldPrefab.gameObject);
@@ -22,6 +23,7 @@ namespace GenericNodes.Visual {
             fieldPrefabs.Add(DataType.Bool, boolFieldPrefab.gameObject);
             fieldPrefabs.Add(DataType.Text, textFieldPrefab.gameObject);
             fieldPrefabs.Add(DataType.Enum, enumFieldPrefab.gameObject);
+            fieldPrefabs.Add(DataType.NodeId, nodeIdGenericField.gameObject);
         }
 
         public static GameObject GetFieldPrefab(DataType type) {

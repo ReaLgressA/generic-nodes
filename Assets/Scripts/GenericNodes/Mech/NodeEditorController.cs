@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GenericNodes.Mech
 {
-    public class NodeEditorConroller : MonoBehaviour {
+    public class NodeEditorController : MonoBehaviour {
         [SerializeField] private NodeEditorHUD hud; 
     
         public GraphData Data { get; private set; }

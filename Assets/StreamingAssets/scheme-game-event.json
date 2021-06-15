@@ -25,6 +25,14 @@
         {
             "Type": "GameEventTriggerType",
             "Enumeration": [ "Default", "OnTileEnter", "OnBuildingEnter", "OnInteract"]
+        },
+        {
+            "Type": "CurrencyType",
+            "Enumeration": ["Gold", "Authority"]
+        },
+        {
+            "Type": "ActOptionRequirementType",
+            "Enumeration": ["SpendCurrency", "EntityAttributeCheck"]
         }
     ],
     "NodeArray": "Acts",
@@ -42,7 +50,7 @@
                 },
                 {
                     "Type": "NodeId",
-                    "Name": "Next Node"
+                    "Name": "ActIndex"
                 }
             ]
         },
@@ -67,6 +75,43 @@
         {
             "Type": "OpenMarket",
             "Fields": []
+        }
+    ],
+    "CustomDataTypes": [
+        {
+            "Type": "ActOptionRequirement",
+            "Fields": [
+                {
+                    "Type": "Enum",
+                    "EnumType": "ActOptionRequirementType",
+                    "Name": "Type",
+                    "Value": "SpendCurrency"
+                },
+                {
+                    "Type": "Enum",
+                    "EnumType": "CurrencyType",
+                    "Name": "Currency Type",
+                    "Value": "Gold"
+                },
+                {
+                    "Type": "Int",
+                    "Name": "Value",
+                    "Value": 1
+                }
+            ]
+        },
+        {
+            "Type": "ActOption",
+            "Fields": [
+                {
+                    "Type": "Text",
+                    "Name": "Text"
+                },
+                {
+                    "Type": "NodeId",
+                    "Name": "ActIndex"
+                }
+            ]
         }
     ]
 }
