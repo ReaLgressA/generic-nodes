@@ -18,15 +18,18 @@ namespace GenericNodes.Mech {
 
         public void SetHoldableItem(IHoldable holdable) {
             Holdable = holdable;
+            SetupHoldableNode(Holdable as NodeVisual);
         }
 
         public void Reset() {
-            if (nodeVisual != null) {
-                nodeVisual.OnActionDrag -= ProcessNodeDrag;
-            }
             Holdable = null;
             nodeVisual = null;
-            SetupHoldableNode(Holdable as NodeVisual);
+        }
+
+        public void Update(float dTime) {
+            if (Holdable != null) {
+                ProcessNodeDrag(Holdable);
+            }
         }
 
         private void SetupHoldableNode(NodeVisual node) {
@@ -34,13 +37,10 @@ namespace GenericNodes.Mech {
                 return;
             }
             nodeVisual = node;
-            
-            nodeShiftFromHand = nodeVisual.Transform.anchoredPosition - workspaceArea.GetWorldPosition(Input.mousePosition); 
-            nodeVisual.OnActionDrag += ProcessNodeDrag;
+            nodeShiftFromHand = nodeVisual.Transform.anchoredPosition - workspaceArea.GetWorldPosition(Input.mousePosition);
         }
 
         private void ProcessNodeDrag(IHoldable holdable) {
-            
             nodeVisual.SetPosition(workspaceArea.GetWorldPosition(Input.mousePosition) + nodeShiftFromHand);
         }
     }

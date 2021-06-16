@@ -57,7 +57,7 @@ namespace GenericNodes.Visual.PopupMenus {
                                    / workspaceArea.CanvasScale;
             rtr.SetParent(workspaceArea.NodesRoot);
             rtr.SetAsLastSibling();
-            node.SetupData(nodeType, scheme.CreateNodeData(nodeType));
+            node.SetupData(scheme.CreateNodeData(nodeType));
             workspaceArea.RegisterNode(node);
             Hide();
         }

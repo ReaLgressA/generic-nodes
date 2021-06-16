@@ -25,13 +25,14 @@ namespace GenericNodes.Visual.Nodes
         public RectTransform Transform => rTransform;
         public NodeData Data { get; private set; } = null; 
         
-        private void Awake() {
+        protected override void Awake() {
+            base.Awake();
             rTransform = GetComponent<RectTransform>();
         }
 
-        public void SetupData(string graphType, NodeData data) {
+        public void SetupData(NodeData data) {
             Data = data;
-            textHeader.text = graphType;
+            textHeader.text = data.NodeType;
             ClearFields();
             for (int i = 0; i < data.Fields.Count; ++i) {
                 GameObject goField = Instantiate(PrefabDatabase.GetFieldPrefab(data.Fields[i].Type));

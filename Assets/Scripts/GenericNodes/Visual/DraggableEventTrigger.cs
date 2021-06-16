@@ -53,8 +53,11 @@ namespace GenericNodes.Visual
         }
 
         public void OnDrag(PointerEventData eventData) {
-            OnActionDrag?.Invoke(holdable);
+            if (eventData.button == PointerEventData.InputButton.Left) {
+                OnActionDrag?.Invoke(holdable);
+            }
         }
+        
         public void OnPointerEnter(PointerEventData eventData) {
             OnActionHoverAcquired?.Invoke(holdable);
         }

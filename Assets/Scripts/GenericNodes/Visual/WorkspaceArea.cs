@@ -20,12 +20,13 @@ namespace GenericNodes.Visual {
         [SerializeField] private Vector2 zoomBounds = new Vector2(0.1f, 2f);
 
         private RectTransform rTransform;
-        private bool isMmbHeld = false;
+        private bool isLmbHeld = false;
         private Vector2 fixedNodesRootPosition;
         private Vector2 mmbStartHoldPosition;
         
         private readonly List<NodeVisual> nodes = new List<NodeVisual>();
         
+        public event Action<Vector2> OnAreaLmbClick;
         public event Action<Vector2> OnAreaRmbClick;
         public event Action OnInterruptRmbClick;
 
@@ -39,8 +40,9 @@ namespace GenericNodes.Visual {
         }
 
         private void LateUpdate() {
-            if (isMmbHeld) {
-                ProcessMmbHold(Input.mousePosition);
+            Hand.Update(Time.deltaTime);
+            if (isLmbHeld) {
+                ProcessLmbHold(Input.mousePosition);
             }
             if (Mathf.Abs(Input.mouseScrollDelta.y) > 0 && !KeyboardInputManager.IsAnyGameObjectSelected) {
                 float zoomDelta = Input.mouseScrollDelta.y * zoomSpeed * Time.deltaTime;
@@ -54,31 +56,36 @@ namespace GenericNodes.Visual {
         }
 
         public void OnPointerClick (PointerEventData eventData) {
+            if (eventData.button == PointerEventData.InputButton.Left) {
+                OnInterruptRmbClick?.Invoke();
+                OnAreaLmbClick?.Invoke(eventData.position + rTransform.anchoredPosition);
+            }
             if (eventData.button == PointerEventData.InputButton.Right) {
-                Debug.Log ($"Right Mouse Button Clicked position: {eventData.position}");
                 OnAreaRmbClick?.Invoke(eventData.position + rTransform.anchoredPosition);
             }
         }
 
         public void OnPointerDown(PointerEventData eventData) {
-            if (eventData.button == PointerEventData.InputButton.Middle) {
-                if (!isMmbHeld) {
-                    isMmbHeld = true;
+            if (eventData.button == PointerEventData.InputButton.Left) {
+                OnInterruptRmbClick?.Invoke();
+                if (!isLmbHeld) {
+                    isLmbHeld = true;
                     fixedNodesRootPosition = rTrNodesRoot.anchoredPosition;
                     mmbStartHoldPosition = eventData.position;    
                 }
-                ProcessMmbHold(eventData.position);
+                ProcessLmbHold(eventData.position);
             }
         }
 
         public void OnPointerUp(PointerEventData eventData) {
-            if (isMmbHeld && eventData.button == PointerEventData.InputButton.Middle) {
-                isMmbHeld = false;
+            if (isLmbHeld && eventData.button == PointerEventData.InputButton.Left) {
+                OnInterruptRmbClick?.Invoke();
+                isLmbHeld = false;
                 ProcessMmbRelease(eventData.position);
             }
         }
 
-        private void ProcessMmbHold(Vector2 pointerPosition) {
+        private void ProcessLmbHold(Vector2 pointerPosition) {
             rTrNodesRoot.anchoredPosition = GetWorldPosition(pointerPosition);
             OnInterruptRmbClick?.Invoke();
         }
