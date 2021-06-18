@@ -24,12 +24,12 @@ namespace GenericNodes.Mech.Data {
         public string NodeArrayName { get; private set; } = null;
 
         public GraphData CreateGraph() {
-            NodeData graphInfo = new NodeData(Type, Fields.CloneFields());
+            NodeData graphInfo = new NodeData(this, Type, Fields.CloneFields());
             return new GraphData(Type, graphInfo, this);
         }
 
         public void ToJsonObject(Hashtable ht) {
-            throw new System.NotImplementedException();
+            
         }
 
         public void FromJson(Hashtable ht, bool isAddition = false) {
@@ -44,8 +44,8 @@ namespace GenericNodes.Mech.Data {
 
         public NodeData CreateNodeData(string nodeType) {
             for (int i = 0; i < Nodes.Length; ++i) {
-                if (string.Compare(Nodes[i].Type, nodeType, StringComparison.Ordinal) == 0) {
-                    return new NodeData(Nodes[i].Type, Nodes[i].Fields.CloneFields());
+                if (string.Equals(Nodes[i].Type, nodeType, StringComparison.Ordinal)) {
+                    return new NodeData(this, Nodes[i].Type, Nodes[i].Fields.CloneFields());
                 }
             }
             return null;

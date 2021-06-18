@@ -2,7 +2,7 @@ using System.Collections;
 
 namespace GenericNodes.Mech.Fields {
     public class FloatDataField : DataField {
-        public float Value { get; protected set; }
+        public float Value { get; private set; }
 
         public FloatDataField() {}
         public FloatDataField(string name, float defaultValue = 0f) : base(name) {
@@ -20,8 +20,16 @@ namespace GenericNodes.Mech.Fields {
             return base.InitializeFromHashtable(ht);
         }
         
+        public override void FromJson(Hashtable ht, bool isAddition = false) {
+            Value = ht.GetFloat(Name);
+        }
+        
+        public override void ToJsonObject(Hashtable ht) {
+            ht[Name] = Value;
+        }
+        
         public override DataField Clone() {
-            var field = new FloatDataField();
+            FloatDataField field = new FloatDataField();
             field.Value = Value;
             return CloneBaseData(field);
         }

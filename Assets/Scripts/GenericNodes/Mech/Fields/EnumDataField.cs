@@ -39,6 +39,14 @@ namespace GenericNodes.Mech.Fields {
             return base.InitializeFromHashtable(ht);
         }
         
+        public override void FromJson(Hashtable ht, bool isAddition = false) {
+            Value = ht.GetString(Name);
+        }
+        
+        public override void ToJsonObject(Hashtable ht) {
+            ht[Name] = Value;
+        }
+        
         public override DataField Clone() {
             EnumDataField field = new EnumDataField(Scheme);
             field.EnumSet = EnumSet;

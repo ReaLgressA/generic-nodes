@@ -56,6 +56,15 @@ namespace GenericNodes.Mech.Fields {
             return base.InitializeFromHashtable(ht);
         }
         
+        public override void FromJson(Hashtable ht, bool isAddition = false) {
+            //TODO: Generic array deserealization
+        }
+        
+        public override void ToJsonObject(Hashtable ht) {
+            //TODO: Generic array serialization
+            //ht[Name] = ;
+        }
+        
         public override DataField Clone() {
             GenericArrayDataField field = new GenericArrayDataField(Scheme, Name, ArrayType);
             field.Elements = field.Elements.CloneElements(field);
