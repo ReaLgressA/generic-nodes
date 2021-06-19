@@ -2,10 +2,13 @@ using System.Collections.Generic;
 using GenericNodes.Mech.Fields;
 using GenericNodes.Utility;
 using GenericNodes.Visual.GenericFields;
+using GenericNodes.Visual.Nodes;
+using GenericNodes.Visual.PopupMenus;
 using UnityEngine;
 
 namespace GenericNodes.Visual {
     public class PrefabDatabase : SingletonMonoBehaviour<PrefabDatabase> {
+        [Header("Node Fields")]
         [SerializeField] private StringGenericField stringFieldPrefab;
         [SerializeField] private IntGenericField intFieldPrefab;
         [SerializeField] private FloatGenericField floatFieldPrefab;
@@ -13,9 +16,18 @@ namespace GenericNodes.Visual {
         [SerializeField] private TextGenericField textFieldPrefab;
         [SerializeField] private EnumGenericField enumFieldPrefab;
         [SerializeField] private NodeIdGenericField nodeIdGenericField;
+        [Header("Popups")]
+        [SerializeField] private PopupMenuItem prefabPopupMenuItem;
+        [SerializeField] private PopupMenuCategory prefabPopupMenuCategory;
+        [Header("Nodes")]
+        [SerializeField] private NodeVisual prefabGenericNode;
         
         private readonly Dictionary<DataType, GameObject> fieldPrefabs = new Dictionary<DataType, GameObject>();
 
+        public PopupMenuItem PrefabPopupMenuItem => prefabPopupMenuItem;
+        public PopupMenuCategory PrefabPopupMenuCategory => prefabPopupMenuCategory;
+        public NodeVisual PrefabGenericNode => prefabGenericNode;
+        
         private void Awake() {
             fieldPrefabs.Add(DataType.String, stringFieldPrefab.gameObject);
             fieldPrefabs.Add(DataType.Int, intFieldPrefab.gameObject);

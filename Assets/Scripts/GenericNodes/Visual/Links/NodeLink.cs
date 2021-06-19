@@ -1,5 +1,4 @@
-using GenericNodes.Mech.Data;
-using GenericNodes.Visual.GenericFields;
+using System;
 using UnityEngine;
 using UnityEngine.UI.Extensions;
 
@@ -10,10 +9,36 @@ namespace GenericNodes.Visual.Links {
         [SerializeField] private UILineRenderer lineRenderer = null;
         
         public UILineRenderer LineRenderer => lineRenderer ??= GetComponent <UILineRenderer>();
-        public NodeId SourceNodeId { get; private set; } = NodeId.None;
-        public NodeIdGenericField SourceField { get; private set; } = null;
+        public INodeLinkSocket SourceSocket { get; private set; } = null;
         public INodeLinkSocket TargetSocket { get; private set; } = null;
 
-        
+        public void SetupLink(INodeLinkSocket source, INodeLinkSocket target) {
+            SourceSocket = source;
+            TargetSocket = target;
+            RefreshLink();
+        }
+
+        public void Reset() {
+            SourceSocket = null;
+            TargetSocket = null;
+            gameObject.SetActive(false);
+        }
+
+        private void Update() {
+            if (SourceSocket != null && TargetSocket != null) {
+                RefreshLink();
+            }
+        }
+
+        public void RefreshLink() {
+            lineRenderer.Points = new[] {
+                SourceSocket.Position,
+                TargetSocket.Position
+            };
+        }
+
+        public void ConnectSockets() {
+            
+        }
     }
 }

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using GenericNodes.Mech.Data;
 using GenericNodes.Visual.Interfaces;
+using GenericNodes.Visual.Links;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,29 +9,32 @@ using UnityEngine.UI;
 namespace GenericNodes.Visual.Nodes
 {
     [RequireComponent(typeof(RectTransform))]
-    public class NodeVisual : DraggableEventTrigger, 
+    public class NodeVisual : DraggableEventTrigger,
+                              INodeLinkSocketProvider,
                               IHoldable {
         
         [SerializeField] private Image imageBackground;
         [SerializeField] private TextMeshProUGUI textHeader;
         [SerializeField] private RectTransform rtrContentRoot;
-
-        private RectTransform rTransform;
-        private readonly List<NodeSocketVisual> inputSockets = new List<NodeSocketVisual>();
+        [SerializeField] private NodeSocketArray socketArray;
         
         private readonly List<IGenericField> fields = new List<IGenericField>();
+        private RectTransform rTransform;
 
         public DraggableEventTrigger EventTrigger => this;
         public HoldableType HoldableType => HoldableType.Node;
-        public RectTransform Transform => rTransform;
-        public NodeData Data { get; private set; } = null; 
+        public RectTransform Transform => rTransform ??= GetComponent<RectTransform>();
+        public NodeData Data { get; private set; } = null;
+        public NodeId NodeId => Data.NodeId;
+        public WorkspaceArea Workspace { get; private set; }
         
         protected override void Awake() {
             base.Awake();
-            rTransform = GetComponent<RectTransform>();
+            socketArray.Initialize(this);
         }
 
-        public void SetupData(NodeData data) {
+        public void SetupData(WorkspaceArea workspaceArea, NodeData data) {
+            Workspace = workspaceArea;
             Data = data;
             textHeader.text = data.NodeType;
             ClearFields();
@@ -41,9 +45,17 @@ namespace GenericNodes.Visual.Nodes
                 rtr.localScale = Vector3.one;
                 rtr.SetAsLastSibling();
                 IGenericField field = goField.GetComponent<IGenericField>();
-                field.SetData(data.Fields[i]);
+                field.SetData(this, data.Fields[i]);
                 fields.Add(field);
             }
+        }
+        
+        public void SetPosition(Vector2 position) {
+            Transform.anchoredPosition = position;
+        }
+
+        public INodeLinkSocket GetLinkSocket() {
+            return socketArray.GetFreeSocket();
         }
 
         private void ClearFields() {
@@ -53,8 +65,8 @@ namespace GenericNodes.Visual.Nodes
             fields.Clear();
         }
 
-        public void SetPosition(Vector2 position) {
-            Transform.anchoredPosition = position;
+        public void ReleaseSocket(INodeLinkSocket linkSocket) {
+            socketArray.ReleaseSocket(linkSocket);
         }
     }
 }

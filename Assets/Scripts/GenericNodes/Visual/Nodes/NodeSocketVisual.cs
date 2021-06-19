@@ -1,7 +1,49 @@
+using GenericNodes.Mech.Data;
+using GenericNodes.Visual.GenericFields;
+using GenericNodes.Visual.Links;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GenericNodes.Visual.Nodes {
-    public class NodeSocketVisual : MonoBehaviour {
+
+    public enum NodeSocketMode {
+        Input,
+        Output
+    }
+    
+    [RequireComponent(typeof(Image))]
+    [RequireComponent(typeof(RectTransform))]
+    public class NodeSocketVisual : MonoBehaviour,
+                                    INodeLinkSocket {
+        private static readonly Color socketColor = new Color(0.5f, 0, 1f);
         
+        [SerializeField] private NodeSocketMode mode = NodeSocketMode.Input;
+
+        private Image iconSocket;
+        private RectTransform rectTransform = null;
+
+        public Image IconSocket => iconSocket ??= GetComponent<Image>();
+        public RectTransform Transform => rectTransform ??= GetComponent<RectTransform>();
+
+        public NodeSocketMode Mode => mode;
+        public NodeVisual NodeVisual { get; private set; }
+        public NodeIdGenericField NodeIdField { get; set; }
+        public NodeId Id => NodeVisual.NodeId;
+
+        public Vector2 Position =>
+            NodeVisual.Transform.anchoredPosition + Transform.anchoredPosition +
+            (NodeIdField == null ? Vector2.zero : NodeIdField.Transform.anchoredPosition);
+
+        public Color LinkColor => socketColor;
+
+        public void Initialize(NodeVisual nodeVisual) {
+            NodeVisual = nodeVisual;
+            NodeIdField = null;
+        }
+
+        public void Initialize(NodeIdGenericField nodeIdField) {
+            NodeIdField = nodeIdField;
+            NodeVisual = NodeIdField.MasterNode;
+        }
     }
 }

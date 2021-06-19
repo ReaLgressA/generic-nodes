@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using GenericNodes.Mech.Extensions;
 using GenericNodes.Mech.Fields;
+using GenericNodes.Visual;
 
 namespace GenericNodes.Mech.Data {
     public class GraphScheme : IJsonInterface {
@@ -21,7 +22,7 @@ namespace GenericNodes.Mech.Data {
         public string NodeArrayName { get; private set; } = null;
 
         public GraphData CreateGraph() {
-            NodeData graphInfo = new NodeData(Type, Fields.CloneFields());
+            NodeData graphInfo = new NodeData(Type, NodeId.None, Fields.CloneFields());
             return new GraphData(Type, graphInfo, this);
         }
 
@@ -38,10 +39,10 @@ namespace GenericNodes.Mech.Data {
             Nodes = ht.GetArray(Keys.NODES, Nodes);
         }
 
-        public NodeData CreateNodeData(string nodeType) {
+        public NodeData CreateNodeData(string nodeType, NodeId nodeId) {
             for (int i = 0; i < Nodes.Length; ++i) {
-                if (string.Compare(Nodes[i].Type, nodeType, StringComparison.Ordinal) == 0) {
-                    return new NodeData(Nodes[i].Type, Nodes[i].Fields.CloneFields());
+                if (string.Equals(Nodes[i].Type, nodeType, StringComparison.Ordinal)) {
+                    return new NodeData(Nodes[i].Type, nodeId, Nodes[i].Fields.CloneFields());
                 }
             }
             return null;

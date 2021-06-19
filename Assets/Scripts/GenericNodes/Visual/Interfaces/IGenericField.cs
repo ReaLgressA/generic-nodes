@@ -1,9 +1,10 @@
 using GenericNodes.Mech.Fields;
+using GenericNodes.Visual.Nodes;
 
 namespace GenericNodes.Visual.Interfaces {
     public interface IGenericField {
 
-        void SetData(DataField data);
+        void SetData(NodeVisual nodeVisual, DataField data);
         
         void Destroy();
     }

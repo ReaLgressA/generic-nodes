@@ -10,9 +10,7 @@ namespace GenericNodes.Visual.PopupMenus {
         [SerializeField] private TextMeshProUGUI textTitle;
         [SerializeField] private RectTransform rtrPopupRoot;
         [SerializeField] private RectTransform rtrItemsRoot;
-        [SerializeField] private PopupMenuItem prefabMenuItem;
-        [SerializeField] private PopupMenuCategory prefabMenuCategory;
-        [SerializeField] private NodeVisual prefabGenericNode;
+        
 
         public List<PopupMenuItem> Items { get; private set; } = new List<PopupMenuItem>();
         
@@ -50,20 +48,21 @@ namespace GenericNodes.Visual.PopupMenus {
 
         private void CreateNodeOfType(string nodeType) {
             Debug.Log($"Create node of type: {nodeType}");
-            NodeVisual node = Instantiate(prefabGenericNode, workspaceArea.NodesRoot.parent);
+            NodeVisual node = Instantiate(PrefabDatabase.Instance.PrefabGenericNode, workspaceArea.NodesRoot.parent);
             RectTransform rtr = node.GetComponent<RectTransform>();
             rtr.localScale = Vector3.one;
             rtr.anchoredPosition = (rtrPopupRoot.anchoredPosition - workspaceArea.NodesRoot.sizeDelta / 2)
                                    / workspaceArea.CanvasScale;
             rtr.SetParent(workspaceArea.NodesRoot);
             rtr.SetAsLastSibling();
-            node.SetupData(scheme.CreateNodeData(nodeType));
+            
+            node.SetupData(workspaceArea, scheme.CreateNodeData(nodeType, workspaceArea.GetNextNodeId()));
             workspaceArea.RegisterNode(node);
             Hide();
         }
 
         private PopupMenuItem InstantiateItem() {
-            PopupMenuItem item = Instantiate(prefabMenuItem, rtrItemsRoot);
+            PopupMenuItem item = Instantiate(PrefabDatabase.Instance.PrefabPopupMenuItem, rtrItemsRoot);
             RectTransform rtr = item.GetComponent<RectTransform>();
             rtr.localScale = Vector3.one;
             rtr.SetAsLastSibling();

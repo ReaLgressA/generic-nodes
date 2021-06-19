@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using GenericNodes.Mech.Fields;
 using GenericNodes.Visual.Interfaces;
+using GenericNodes.Visual.Nodes;
 using TMPro;
 using UnityEngine;
 
@@ -23,7 +24,7 @@ namespace GenericNodes.Visual.GenericFields {
             dropdown.SetValueWithoutNotify(field.SelectedIndex);
         }
 
-        public void SetData(DataField data) {
+        public void SetData(NodeVisual nodeVisual, DataField data) {
             SetData(data as EnumDataField);
         }
 

@@ -6,6 +6,12 @@ namespace GenericNodes.Mech.Data {
 
         private int Id { get; set; } = -1;
         
+        public NodeId() {}
+
+        public NodeId(int id) {
+            Id = id;
+        }
+        
         public void ToJsonObject(Hashtable ht) {
             ht["Id"] = Id;
         }
