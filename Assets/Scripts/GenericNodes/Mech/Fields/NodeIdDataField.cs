@@ -31,7 +31,7 @@ namespace GenericNodes.Mech.Fields {
         
         public override DataField Clone() {
             NodeIdDataField node = new NodeIdDataField {Value = Value};
-            return node;
+            return CloneBaseData(node);
         }
     }
 }

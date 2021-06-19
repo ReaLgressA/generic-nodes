@@ -33,6 +33,8 @@ namespace GenericNodes.Visual.GenericFields {
             MasterNode = nodeVisual;
             SetData(data as NodeIdDataField);
         }
+        
+        
 
         public void Destroy() {
             Field = null;

@@ -41,11 +41,11 @@
             "Type": "Default",
             "Fields": [
                 {
-                    "Type": "String",
+                    "Type": "Text",
                     "Name": "Title"
                 },
                 {
-                    "Type": "String",
+                    "Type": "Text",
                     "Name": "Description"
                 },
                 {

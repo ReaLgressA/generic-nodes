@@ -187,12 +187,12 @@ MonoBehaviour:
   m_useNativeSize: 0
   m_points:
   - {x: 800, y: 800}
-  - {x: 1500, y: 150}
+  - {x: 800, y: 323.9}
   lineThickness: 4
   relativeSize: 1
   lineList: 0
   lineCaps: 0
-  bezierSegmentsPerCurve: 10
+  bezierSegmentsPerCurve: 64
   LineJoins: 0
   BezierMode: 0
   drivenExternally: 0
@@ -300,7 +300,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 970237238}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9991597
+  m_Size: 0.99995714
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -544,6 +544,7 @@ MonoBehaviour:
   links:
   - {fileID: 12750999}
   workspace: {fileID: 813066888}
+  nodeLinks: []
 --- !u!1 &730376361
 GameObject:
   m_ObjectHideFlags: 0
@@ -1017,7 +1018,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000029239247}
+  m_AnchoredPosition: {x: 0, y: 0.000008924968}
   m_SizeDelta: {x: 0, y: 128}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &947607672
@@ -1944,7 +1945,8 @@ MonoBehaviour:
   boolFieldPrefab: {fileID: 3659610056616161760, guid: 45769a7cd3e41494f819b3bf8265e898, type: 3}
   textFieldPrefab: {fileID: 2025354928668935799, guid: 7fce5b1ccfdba41b88d0432cd8d6d7e5, type: 3}
   enumFieldPrefab: {fileID: 8939667942760612541, guid: 8a555bca580cc44fb9131e760e69085e, type: 3}
-  nodeIdGenericField: {fileID: 246270418227586197, guid: 2e29891bd175449ec98567e9c8d2ae53, type: 3}
+  nodeIdGenericFieldPrefab: {fileID: 246270418227586197, guid: 2e29891bd175449ec98567e9c8d2ae53, type: 3}
+  customArrayFieldPrefab: {fileID: 0}
   prefabPopupMenuItem: {fileID: 1762330004199953547, guid: 6faf25271275d4245a23c87265e3f55c, type: 3}
   prefabPopupMenuCategory: {fileID: 0}
   prefabGenericNode: {fileID: 9122244761563238949, guid: 5b72efad617f40e4185e84b3476fc936, type: 3}
