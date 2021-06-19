@@ -9,7 +9,8 @@ namespace GenericNodes.Mech.Fields {
         Bool,
         Text,
         Enum,
-        NodeId
+        NodeId,
+        GenericArray
     }
     
     public class DataTypeComparer : IEqualityComparer<DataType> {

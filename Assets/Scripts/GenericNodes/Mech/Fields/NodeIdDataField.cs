@@ -21,6 +21,14 @@ namespace GenericNodes.Mech.Fields {
             return base.InitializeFromHashtable(ht);
         }
         
+        public override void FromJson(Hashtable ht, bool isAddition = false) {
+            Value = new NodeId(ht.GetInt32(Name));
+        }
+        
+        public override void ToJsonObject(Hashtable ht) {
+            ht[Name] = Value.Id;
+        }
+        
         public override DataField Clone() {
             NodeIdDataField node = new NodeIdDataField {Value = Value};
             return node;
