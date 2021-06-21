@@ -21,7 +21,7 @@ namespace GenericNodes.Visual.GenericFields {
             inputFieldContent.text = Field.Value;
         }
 
-        public void SetData(NodeVisual nodeVisual, DataField data) {
+        public void SetData(NodeVisual nodeVisual, DataField data, IGenericFieldParent fieldParent) {
             SetData(data as StringDataField);
         }
 

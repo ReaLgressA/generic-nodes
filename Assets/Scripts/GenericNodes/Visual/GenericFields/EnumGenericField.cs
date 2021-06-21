@@ -24,7 +24,7 @@ namespace GenericNodes.Visual.GenericFields {
             dropdown.SetValueWithoutNotify(field.SelectedIndex);
         }
 
-        public void SetData(NodeVisual nodeVisual, DataField data) {
+        public void SetData(NodeVisual nodeVisual, DataField data, IGenericFieldParent fieldParent) {
             SetData(data as EnumDataField);
         }
 

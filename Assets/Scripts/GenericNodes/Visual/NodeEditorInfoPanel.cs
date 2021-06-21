@@ -51,7 +51,7 @@ namespace GenericNodes.Visual
                 rtr.localScale = Vector3.one;
                 rtr.SetAsLastSibling();
                 IGenericField field = goField.GetComponent<IGenericField>();
-                field.SetData(null, data.Fields[i]);
+                field.SetData(null, data.Fields[i], null);
                 fields.Add(field);
             }
         }

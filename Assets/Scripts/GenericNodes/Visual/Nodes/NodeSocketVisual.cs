@@ -1,5 +1,6 @@
 using GenericNodes.Mech.Data;
 using GenericNodes.Visual.GenericFields;
+using GenericNodes.Visual.Interfaces;
 using GenericNodes.Visual.Links;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,24 +27,22 @@ namespace GenericNodes.Visual.Nodes {
         public RectTransform Transform => rectTransform ??= GetComponent<RectTransform>();
 
         public NodeSocketMode Mode => mode;
-        public NodeVisual NodeVisual { get; private set; }
-        public NodeIdGenericField NodeIdField { get; set; }
-        public NodeId Id => NodeVisual.NodeId;
+        
+        public IGenericFieldParent FieldParent { get; private set; }
+        public NodeId Id => FieldParent.NodeId;
 
-        public Vector2 Position =>
-            NodeVisual.Transform.anchoredPosition + Transform.anchoredPosition +
-            (NodeIdField == null ? Vector2.zero : NodeIdField.Transform.anchoredPosition);
+        public Vector2 Position => Transform.anchoredPosition + FieldParent.ParentPositionShift;
+            // NodeVisual.Transform.anchoredPosition + Transform.anchoredPosition +
+            // (NodeIdField == null ? Vector2.zero : NodeIdField.Transform.anchoredPosition);
 
         public Color LinkColor => socketColor;
 
         public void Initialize(NodeVisual nodeVisual) {
-            NodeVisual = nodeVisual;
-            NodeIdField = null;
+            FieldParent = nodeVisual;
         }
 
         public void Initialize(NodeIdGenericField nodeIdField) {
-            NodeIdField = nodeIdField;
-            NodeVisual = NodeIdField.MasterNode;
+            FieldParent = nodeIdField;
         }
     }
 }

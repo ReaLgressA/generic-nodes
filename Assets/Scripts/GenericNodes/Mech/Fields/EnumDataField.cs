@@ -33,10 +33,10 @@ namespace GenericNodes.Mech.Fields {
             Value = EnumDescription.Enumeration[selectedIndex];
         }
         
-        public override DataField InitializeFromHashtable(Hashtable ht) {
+        public override DataField Construct(Hashtable ht) {
             EnumSet = ht.GetStringSafe("EnumType", EnumSet);
             Value = ht.GetStringSafe("Value", Value);
-            return base.InitializeFromHashtable(ht);
+            return base.Construct(ht);
         }
         
         public override void FromJson(Hashtable ht, bool isAddition = false) {

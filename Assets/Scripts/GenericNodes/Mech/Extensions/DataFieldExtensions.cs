@@ -21,5 +21,13 @@ namespace GenericNodes.Mech.Extensions {
             }
             return fields;
         }
+        
+        public static DataField[] CloneFields(this DataField[] fieldList) {
+            DataField[] fields = new DataField[fieldList.Length];
+            for (int i = 0; i < fields.Length; ++i) {
+                fields[i] = fieldList[i].Clone();
+            }
+            return fields;
+        }
     }
 }

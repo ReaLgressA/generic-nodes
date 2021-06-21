@@ -16,9 +16,9 @@ namespace GenericNodes.Mech.Fields {
             Value = value;
         }
         
-        public override DataField InitializeFromHashtable(Hashtable ht) {
+        public override DataField Construct(Hashtable ht) {
             Value = ht.GetInt32("Value", Value);
-            return base.InitializeFromHashtable(ht);
+            return base.Construct(ht);
         }
         
         public override void FromJson(Hashtable ht, bool isAddition = false) {

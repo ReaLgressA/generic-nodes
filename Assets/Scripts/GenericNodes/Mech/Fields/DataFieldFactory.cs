@@ -8,13 +8,14 @@ namespace GenericNodes.Mech.Fields {
 
         private static readonly Dictionary<DataType, Func<Hashtable, DataField>> creatorMethods =
             new Dictionary<DataType, Func<Hashtable, DataField>>(DataTypeComparer.Instance) {
-                {DataType.Bool, ht => new BoolDataField().InitializeFromHashtable(ht) },
-                {DataType.Int, ht => new IntDataField().InitializeFromHashtable(ht) },
-                {DataType.Float, ht => new FloatDataField().InitializeFromHashtable(ht) },
-                {DataType.String, ht => new StringDataField().InitializeFromHashtable(ht) },
-                {DataType.Text, ht => new TextDataField().InitializeFromHashtable(ht) },
-                {DataType.Enum, ht => new EnumDataField(CurrentGraphScheme).InitializeFromHashtable(ht) },
-                {DataType.NodeId, ht => new NodeIdDataField().InitializeFromHashtable(ht) }
+                {DataType.Bool, ht => new BoolDataField().Construct(ht) },
+                {DataType.Int, ht => new IntDataField().Construct(ht) },
+                {DataType.Float, ht => new FloatDataField().Construct(ht) },
+                {DataType.String, ht => new StringDataField().Construct(ht) },
+                {DataType.Text, ht => new TextDataField().Construct(ht) },
+                {DataType.Enum, ht => new EnumDataField(CurrentGraphScheme).Construct(ht) },
+                {DataType.NodeId, ht => new NodeIdDataField().Construct(ht) },
+                {DataType.CustomObject, ht => new CustomObjectDataField(CurrentGraphScheme).Construct(ht) }
             };
 
         public static GraphScheme CurrentGraphScheme { get; set; } = null;

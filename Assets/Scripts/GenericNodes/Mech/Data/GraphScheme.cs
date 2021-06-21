@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using GenericNodes.Mech.Extensions;
 using GenericNodes.Mech.Fields;
 using GenericNodes.Visual;
+using UnityEngine;
 
 namespace GenericNodes.Mech.Data {
     public class GraphScheme : IJsonInterface {
@@ -51,6 +52,15 @@ namespace GenericNodes.Mech.Data {
             }
             return null;
         }
-        
+
+        public DataField[] GetCustomDataTypeFields(string objectType) {
+            for (int i = 0; i < CustomDataTypes.Length; ++i) {
+                if (CustomDataTypes[i].Type.Equals(objectType, StringComparison.Ordinal)) {
+                    return CustomDataTypes[i].Fields.CloneFields();
+                }               
+            }
+            Debug.LogError($"GetCustomDataTypeFields failed! No such custom data type '{objectType}'.");
+            return new DataField[0];
+        }
     }
 }

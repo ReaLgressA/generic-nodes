@@ -10,7 +10,8 @@ namespace GenericNodes.Mech.Fields {
         Text,
         Enum,
         NodeId,
-        GenericArray
+        GenericArray,
+        CustomObject
     }
     
     public class DataTypeComparer : IEqualityComparer<DataType> {

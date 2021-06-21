@@ -11,6 +11,7 @@ namespace GenericNodes.Visual.Nodes
     [RequireComponent(typeof(RectTransform))]
     public class NodeVisual : DraggableEventTrigger,
                               INodeLinkSocketProvider,
+                              IGenericFieldParent,
                               IHoldable {
         
         [SerializeField] private Image imageBackground;
@@ -26,6 +27,8 @@ namespace GenericNodes.Visual.Nodes
         public RectTransform Transform => rTransform ??= GetComponent<RectTransform>();
         public NodeData Data { get; private set; } = null;
         public NodeId NodeId => Data.NodeId;
+        public Vector2 ParentPositionShift => Transform.anchoredPosition;
+        public IGenericFieldParent Parent => null;
         public WorkspaceArea Workspace { get; private set; }
         
         protected override void Awake() {
@@ -45,7 +48,7 @@ namespace GenericNodes.Visual.Nodes
                 rtr.localScale = Vector3.one;
                 rtr.SetAsLastSibling();
                 IGenericField field = goField.GetComponent<IGenericField>();
-                field.SetData(this, data.Fields[i]);
+                field.SetData(this, data.Fields[i], this);
                 fields.Add(field);
             }
         }

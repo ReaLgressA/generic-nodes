@@ -50,7 +50,16 @@
                 },
                 {
                     "Type": "NodeId",
-                    "Name": "ActIndex"
+                    "Name": "ActIndex1"
+                },
+                {
+                    "Type": "CustomObject",
+                    "ObjectType": "ActOption",
+                    "Name": "NextActOption"
+                },
+                {
+                    "Type": "NodeId",
+                    "Name": "ActIndex2"
                 }
             ]
         },

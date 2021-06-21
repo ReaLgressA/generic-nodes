@@ -12,7 +12,7 @@ namespace GenericNodes.Mech.Fields {
             Name = name;
         }
 
-        public virtual DataField InitializeFromHashtable(Hashtable ht) {
+        public virtual DataField Construct(Hashtable ht) {
             Name = ht.GetStringSafe(Keys.NAME, Name);
             return this;
         }
