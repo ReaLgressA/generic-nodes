@@ -60,6 +60,12 @@
                 {
                     "Type": "NodeId",
                     "Name": "ActIndex2"
+                },
+                {
+                    "Type": "GenericArray",
+                    "ArrayType": "ActOption",
+                    "MaxCapacity": 6,
+                    "Name": "ActOptions"
                 }
             ]
         },

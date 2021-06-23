@@ -15,7 +15,8 @@ namespace GenericNodes.Mech.Fields {
                 {DataType.Text, ht => new TextDataField().Construct(ht) },
                 {DataType.Enum, ht => new EnumDataField(CurrentGraphScheme).Construct(ht) },
                 {DataType.NodeId, ht => new NodeIdDataField().Construct(ht) },
-                {DataType.CustomObject, ht => new CustomObjectDataField(CurrentGraphScheme).Construct(ht) }
+                {DataType.CustomObject, ht => new CustomObjectDataField(CurrentGraphScheme).Construct(ht) },
+                {DataType.GenericArray, ht => new GenericArrayDataField(CurrentGraphScheme).Construct(ht) }
             };
 
         public static GraphScheme CurrentGraphScheme { get; set; } = null;

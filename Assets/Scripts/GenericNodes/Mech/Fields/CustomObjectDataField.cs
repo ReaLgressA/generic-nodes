@@ -12,10 +12,15 @@ namespace GenericNodes.Mech.Fields {
         
         public string ObjectType { get; private set; }
         
-        private GraphScheme Scheme { get; set; }
+        private GraphScheme Scheme { get; }
 
         public CustomObjectDataField(GraphScheme scheme) {
             Scheme = scheme;
+        }
+        
+        public CustomObjectDataField(GraphScheme scheme, string objectType) {
+            Scheme = scheme;
+            ObjectType = objectType;
         }
 
         public override DataField Construct(Hashtable ht) {

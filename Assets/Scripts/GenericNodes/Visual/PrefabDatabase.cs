@@ -39,7 +39,7 @@ namespace GenericNodes.Visual {
             fieldPrefabs.Add(DataType.Enum, enumFieldPrefab.gameObject);
             fieldPrefabs.Add(DataType.NodeId, nodeIdGenericFieldPrefab.gameObject);
             fieldPrefabs.Add(DataType.CustomObject, customObjectDataFieldPrefab.gameObject);
-            //fieldPrefabs.Add(DataType.GenericArray, customArrayFieldPrefab.gameObject);
+            fieldPrefabs.Add(DataType.GenericArray, customArrayFieldPrefab.gameObject);
         }
 
         public static GameObject GetFieldPrefab(DataType type) {

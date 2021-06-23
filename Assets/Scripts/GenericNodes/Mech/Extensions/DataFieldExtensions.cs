@@ -5,11 +5,10 @@ using GenericNodes.Mech.Fields;
 namespace GenericNodes.Mech.Extensions {
     public static class DataFieldExtensions {
 
-        public static List<GenericArrayElement> CloneElements(this List<GenericArrayElement> elementsList,
-                                                              GenericArrayDataField arrayDataField) {
-            List<GenericArrayElement> fields = new List<GenericArrayElement>(elementsList.Count);
+        public static List<CustomObjectDataField> CloneElements(this List<CustomObjectDataField> elementsList) {
+            List<CustomObjectDataField> fields = new List<CustomObjectDataField>(elementsList.Count);
             for (int i = 0; i < elementsList.Count; ++i) {
-                fields.Add(elementsList[i].Clone(arrayDataField));
+                fields.Add(elementsList[i].Clone() as CustomObjectDataField);
             }
             return fields;
         }

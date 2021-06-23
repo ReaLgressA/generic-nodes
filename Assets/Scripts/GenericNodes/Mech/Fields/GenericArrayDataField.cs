@@ -15,7 +15,7 @@ namespace GenericNodes.Mech.Fields {
         public override DataType Type => DataType.GenericArray;
         public string ArrayType { get; private set; }
         public int MaxCapacity { get; private set; } = 0;
-        public List<GenericArrayElement> Elements { get; private set; }
+        public List<CustomObjectDataField> Elements { get; private set; }
         public bool CanAddElement => Elements.Count < MaxCapacity || MaxCapacity == 0;
         private GraphScheme Scheme { get; }
         
@@ -33,12 +33,12 @@ namespace GenericNodes.Mech.Fields {
             Scheme = scheme;
             ArrayType = arrayType;
             MaxCapacity = maxCapacity;
-            Elements = new List<GenericArrayElement>();
+            Elements = new List<CustomObjectDataField>();
         }
 
         public void AddElement() {
             if (CanAddElement) {
-                Elements.Add(new GenericArrayElement(this));
+                Elements.Add(new CustomObjectDataField(Scheme, ArrayType));
                 ElementsUpdated?.Invoke();
             }
         }
@@ -53,6 +53,7 @@ namespace GenericNodes.Mech.Fields {
         public override DataField Construct(Hashtable ht) {
             ArrayType = ht.GetString(Keys.ARRAY_TYPE);
             MaxCapacity = ht.GetInt32(Keys.MAX_CAPACITY, MaxCapacity);
+            Elements = new List<CustomObjectDataField>();
             return base.Construct(ht);
         }
         
@@ -66,8 +67,9 @@ namespace GenericNodes.Mech.Fields {
         }
         
         public override DataField Clone() {
-            GenericArrayDataField field = new GenericArrayDataField(Scheme, Name, ArrayType);
-            field.Elements = field.Elements.CloneElements(field);
+            GenericArrayDataField field = new GenericArrayDataField(Scheme, Name, ArrayType) {
+                Elements = Elements.CloneElements()
+            };
             return CloneBaseData(field);
         }
     }
