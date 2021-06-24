@@ -2,7 +2,7 @@ using System.Collections;
 
 namespace GenericNodes.Mech.Fields {
     public abstract class DataField : IJsonInterface {
-        public string Name { get; private set; }
+        public string Name { get; set; }
 
         public abstract DataType Type { get; } 
         
@@ -17,10 +17,11 @@ namespace GenericNodes.Mech.Fields {
             return this;
         }
 
+        public virtual void ProcessDestruction() {}
+
         public abstract void FromJson(Hashtable ht, bool isAddition = false);
         
         public abstract void ToJsonObject(Hashtable ht);
-        
 
         public abstract DataField Clone();
 

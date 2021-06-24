@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using GenericNodes.Mech.Data;
 using GenericNodes.Mech.Extensions;
 
@@ -26,6 +27,13 @@ namespace GenericNodes.Mech.Fields {
         public override DataField Construct(Hashtable ht) {
             ObjectType = ht.GetString(Keys.OBJECT_TYPE, ObjectType);
             return base.Construct(ht);
+        }
+
+        public override void ProcessDestruction() {
+            for (int i = 0; i < Fields.Length; ++i) {
+                Fields[i].ProcessDestruction();
+            }
+            base.ProcessDestruction();
         }
 
         public override void FromJson(Hashtable ht, bool isAddition = false) {

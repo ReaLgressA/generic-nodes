@@ -20,7 +20,14 @@ namespace GenericNodes.Mech.Fields {
             Value = ht.GetAs("Value", Value);
             return base.Construct(ht);
         }
-        
+
+        public override void ProcessDestruction() {
+            base.ProcessDestruction();
+            if (Value != NodeId.None) {
+                //TODO: destroy outgoing links
+            }
+        }
+
         public override void FromJson(Hashtable ht, bool isAddition = false) {
             Value = new NodeId(ht.GetInt32(Name));
         }

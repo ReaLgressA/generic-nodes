@@ -56,7 +56,14 @@ namespace GenericNodes.Mech.Fields {
             Elements = new List<CustomObjectDataField>();
             return base.Construct(ht);
         }
-        
+
+        public override void ProcessDestruction() {
+            for (int i = 0; i < Elements.Count; i++) {
+                Elements[i].ProcessDestruction();
+            }
+            base.ProcessDestruction();
+        }
+
         public override void FromJson(Hashtable ht, bool isAddition = false) {
             //TODO: Generic array deserealization
         }

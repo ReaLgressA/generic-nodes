@@ -65,10 +65,11 @@ namespace GenericNodes.Visual.GenericFields {
         
         private void RefreshElementsList() {
             ResetElements();
+            while (arrayElements.Count < Field.Elements.Count) {
+                SpawnExtraArrayElement();
+            }
             for (int i = 0; i < Field.Elements.Count; ++i) {
-                if (arrayElements.Count >= i) {
-                    SpawnExtraArrayElement();
-                }
+                Field.Elements[i].Name = $"#{i}";
                 arrayElements[i].SetData(MasterNode, Field.Elements[i], this);
                 arrayElements[i].gameObject.SetActive(true);
             }

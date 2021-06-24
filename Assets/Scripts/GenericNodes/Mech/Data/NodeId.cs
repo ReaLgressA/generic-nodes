@@ -19,5 +19,13 @@ namespace GenericNodes.Mech.Data {
         public void FromJson(Hashtable ht, bool isAddition = false) {
             Id = ht.GetInt32("Id", Id);
         }
+        
+        public static bool operator ==(NodeId a, NodeId b) {
+            return a.Id == b.Id;
+        }
+
+        public static bool operator !=(NodeId a, NodeId b) {
+            return a.Id != b.Id;
+        }
     }
 }
