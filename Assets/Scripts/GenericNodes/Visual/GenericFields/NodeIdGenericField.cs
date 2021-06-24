@@ -1,6 +1,7 @@
 using GenericNodes.Mech.Data;
 using GenericNodes.Mech.Fields;
 using GenericNodes.Visual.Interfaces;
+using GenericNodes.Visual.Links;
 using GenericNodes.Visual.Nodes;
 using TMPro;
 using UnityEngine;
@@ -26,6 +27,11 @@ namespace GenericNodes.Visual.GenericFields {
         
         private void Awake() {
             buttonLink.onClick.AddListener(ProcessLinkButtonClick);
+            linkSocket.SocketLinked += ProcessSocketLinked;
+        }
+
+        private void OnDestroy() {
+            linkSocket.SocketLinked -= ProcessSocketLinked;
         }
 
         public void SetData(NodeIdDataField field) {
@@ -41,12 +47,24 @@ namespace GenericNodes.Visual.GenericFields {
         }
 
         public void Destroy() {
+            UnlinkSocketIfNeeded();
             Field = null;
             GameObject.Destroy(gameObject);
         }
     
         private void ProcessLinkButtonClick() {
+            UnlinkSocketIfNeeded();
             MasterNode.Workspace.LinkSystem.ProcessLinkSocketClick(linkSocket);
+        }
+
+        private void UnlinkSocketIfNeeded() {
+            if (Field.Value != NodeId.None) {
+                MasterNode.Workspace.LinkSystem.UnlinkSocket(linkSocket);
+            }
+        }
+        
+        private void ProcessSocketLinked(INodeLinkSocket socket, NodeId nodeId) {
+            Field.SetId(nodeId);
         }
     }
     

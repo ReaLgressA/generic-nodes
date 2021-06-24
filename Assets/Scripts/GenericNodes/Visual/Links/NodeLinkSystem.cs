@@ -48,7 +48,7 @@ namespace GenericNodes.Visual.Links {
             }
         }
 
-        public NodeLink GetLink() {
+        private NodeLink GetLink() {
             for (int i = 0; i < links.Count; ++i) {
                 if (!links[i].gameObject.activeSelf) {
                     return links[i];
@@ -62,6 +62,20 @@ namespace GenericNodes.Visual.Links {
             link.transform.localScale = Vector3.one;
             links.Add(link);
             return link;
+        }
+
+        public void UnlinkSocket(NodeSocketVisual socket) {
+            if (socket.Mode == NodeSocketMode.Output) {
+                for (int i = 0; i < nodeLinks.Count; ++i) {
+                    if (ReferenceEquals(socket, nodeLinks[i].SourceSocket)) {
+                        nodeLinks[i].Reset();
+                        nodeLinks.RemoveAt(i);
+                        return;
+                    }
+                }
+            } else {
+                Debug.LogError("Can't UnlinkOutputSocket, the socket is not in Output mode!");
+            }
         }
     }
 }

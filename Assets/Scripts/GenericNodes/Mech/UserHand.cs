@@ -1,3 +1,4 @@
+using System;
 using GenericNodes.Mech.Data;
 using GenericNodes.Visual;
 using GenericNodes.Visual.Interfaces;
@@ -22,6 +23,11 @@ namespace GenericNodes.Mech {
         public Color LinkColor => Color.white;
         public NodeSocketMode Mode => NodeSocketMode.Input;
         
+        public event Action<INodeLinkSocket, NodeId> SocketLinked;
+        public void LinkSocketTo(NodeId nodeId) {
+            //Hand only receives the link, so no need to link anything
+        }
+
         public UserHand(WorkspaceArea workspaceArea) {
             this.workspaceArea = workspaceArea;
 

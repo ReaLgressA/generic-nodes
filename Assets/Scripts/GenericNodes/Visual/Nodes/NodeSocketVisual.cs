@@ -1,3 +1,4 @@
+using System;
 using GenericNodes.Mech.Data;
 using GenericNodes.Visual.GenericFields;
 using GenericNodes.Visual.Interfaces;
@@ -27,7 +28,8 @@ namespace GenericNodes.Visual.Nodes {
         public RectTransform Transform => rectTransform ??= GetComponent<RectTransform>();
 
         public NodeSocketMode Mode => mode;
-        
+        public event Action<INodeLinkSocket, NodeId> SocketLinked;
+
         public IGenericFieldParent FieldParent { get; private set; }
         public NodeId Id => FieldParent.NodeId;
 
@@ -43,6 +45,10 @@ namespace GenericNodes.Visual.Nodes {
 
         public void Initialize(NodeIdGenericField nodeIdField) {
             FieldParent = nodeIdField;
+        }
+        
+        public void LinkSocketTo(NodeId nodeId) {
+            SocketLinked?.Invoke(this, nodeId);
         }
     }
 }
