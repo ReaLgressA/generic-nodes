@@ -148,5 +148,14 @@ namespace GenericNodes.Visual {
             rTrNodesRoot.anchoredPosition = worldPosition;
             nodeLinkSystem.Transform.anchoredPosition = worldPosition;
         }
+
+        public NodeVisual GetNode(NodeId nodeId) {
+            for (int i = 0; i < nodes.Count; ++i) {
+                if (nodes[i].NodeId == nodeId) {
+                    return nodes[i];
+                }
+            }
+            return null;
+        }
     }
 }

@@ -35,7 +35,11 @@ namespace GenericNodes.Visual.GenericFields {
         }
 
         public void SetData(NodeIdDataField field) {
+            if (Field != null) {
+                Field.ValueChanged -= ProcessLinkedNodeIdChanged;    
+            }
             Field = field;
+            Field.ValueChanged += ProcessLinkedNodeIdChanged;
             textLabel.text = Field.Name;
             linkSocket.Initialize(this);
         }
@@ -58,13 +62,21 @@ namespace GenericNodes.Visual.GenericFields {
         }
 
         private void UnlinkSocketIfNeeded() {
-            if (Field.Value != NodeId.None) {
+            if (Field != null && Field.Value != NodeId.None) {
                 MasterNode.Workspace.LinkSystem.UnlinkSocket(linkSocket);
             }
         }
         
         private void ProcessSocketLinked(INodeLinkSocket socket, NodeId nodeId) {
             Field.SetId(nodeId);
+        }
+        
+        private void ProcessLinkedNodeIdChanged(NodeIdDataField dataField) {
+            if (linkSocket.LinkedToId != dataField.Value) {
+                UnlinkSocketIfNeeded();
+                MasterNode.Workspace.LinkSystem.LinkSocketToNode(linkSocket, dataField.Value);
+                
+            }
         }
     }
     

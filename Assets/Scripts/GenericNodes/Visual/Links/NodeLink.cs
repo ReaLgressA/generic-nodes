@@ -33,10 +33,16 @@ namespace GenericNodes.Visual.Links {
         }
 
         public void RefreshLink() {
-            lineRenderer.Points = new[] {
-                SourceSocket.Position,
-                TargetSocket.Position
-            };
+            if (LineRenderer != null) {
+                if (SourceSocket != null && TargetSocket != null) {
+                    lineRenderer.Points = new[] {
+                        SourceSocket.Position,
+                        TargetSocket.Position
+                    };
+                } else {
+                    lineRenderer.Points = null;
+                }
+            }
         }
 
         public void ConnectSockets() {

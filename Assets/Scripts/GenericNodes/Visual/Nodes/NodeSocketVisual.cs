@@ -32,6 +32,8 @@ namespace GenericNodes.Visual.Nodes {
 
         public IGenericFieldParent FieldParent { get; private set; }
         public NodeId Id => FieldParent.NodeId;
+        
+        public NodeId LinkedToId { get; private set; } = NodeId.None;
 
         public Vector2 Position => Transform.anchoredPosition + FieldParent.ParentPositionShift;
             // NodeVisual.Transform.anchoredPosition + Transform.anchoredPosition +
@@ -48,6 +50,7 @@ namespace GenericNodes.Visual.Nodes {
         }
         
         public void LinkSocketTo(NodeId nodeId) {
+            LinkedToId = nodeId;
             SocketLinked?.Invoke(this, nodeId);
         }
     }

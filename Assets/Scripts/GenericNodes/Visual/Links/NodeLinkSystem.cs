@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using GenericNodes.Mech;
+using GenericNodes.Mech.Data;
 using GenericNodes.Visual.Nodes;
 using UnityEngine;
 
@@ -75,6 +76,19 @@ namespace GenericNodes.Visual.Links {
                 }
             } else {
                 Debug.LogError("Can't UnlinkOutputSocket, the socket is not in Output mode!");
+            }
+        }
+
+        public void LinkSocketToNode(NodeSocketVisual socket, NodeId nodeId) {
+            if (nodeId != NodeId.None) {
+                NodeLink link = GetLink();
+                if (socket.Mode == NodeSocketMode.Output) {
+                    link.SetupLink(socket, workspace.GetNode(nodeId).GetLinkSocket());
+                    nodeLinks.Add(link);
+                    link.ConnectSockets();
+                } else {
+                    Debug.LogError("Can't connect input socket as output");
+                }
             }
         }
     }

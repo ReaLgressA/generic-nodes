@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using GenericNodes.Mech.Data;
 
 namespace GenericNodes.Mech.Fields {
     public class NodeIdDataField : DataField {
         public NodeId Value { get; private set; } = NodeId.None;
+
+        public event Action<NodeIdDataField> ValueChanged;
         
         public NodeIdDataField() {}
         public NodeIdDataField(string name, NodeId defaultValue) : base(name) {
@@ -14,6 +17,7 @@ namespace GenericNodes.Mech.Fields {
         
         public void SetId(NodeId id) {
             Value = id;
+            ValueChanged?.Invoke(this);
         }
         
         public override DataField Construct(Hashtable ht) {
@@ -24,7 +28,8 @@ namespace GenericNodes.Mech.Fields {
         public override void ProcessDestruction() {
             base.ProcessDestruction();
             if (Value != NodeId.None) {
-                //TODO: destroy outgoing links
+                Value = null;
+                ValueChanged?.Invoke(this);
             }
         }
 
