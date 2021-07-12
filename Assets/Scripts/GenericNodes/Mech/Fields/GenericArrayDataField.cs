@@ -45,6 +45,7 @@ namespace GenericNodes.Mech.Fields {
 
         public void RemoveElementAt(int index) {
             if (index >= 0 && index < Elements.Count) {
+                Elements[index].ProcessDestruction();
                 Elements.RemoveAt(index);
                 ElementsUpdated?.Invoke();
             }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GenericNodes.Mech.Data;
 using GenericNodes.Visual.Links;
 using UnityEngine;
 
@@ -17,6 +18,8 @@ namespace GenericNodes.Visual.Nodes {
                 if (!sockets[i].gameObject.activeSelf) {
                     sockets[i].Initialize(nodeVisual);
                     sockets[i].gameObject.SetActive(true);
+                    sockets[i].transform.SetAsLastSibling();
+                    sockets[i].SocketLinked += ProcessSocketLinked;
                     return sockets[i];
                 }
             }
@@ -35,8 +38,15 @@ namespace GenericNodes.Visual.Nodes {
         public void ReleaseSocket(INodeLinkSocket linkSocket) {
             for (int i = 0; i < sockets.Count; ++i) {
                 if (ReferenceEquals(linkSocket, sockets[i])) {
+                    sockets[i].SocketLinked -= ProcessSocketLinked;
                     sockets[i].gameObject.SetActive(false);
                 }   
+            }
+        }
+        
+        private void ProcessSocketLinked(INodeLinkSocket socket, NodeId nodeId) {
+            if (nodeId == NodeId.None) {
+                ReleaseSocket(socket);
             }
         }
     }
