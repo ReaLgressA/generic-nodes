@@ -598,6 +598,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabDirectoryView: {fileID: 1396228215386357957, guid: 9f5b2840f662a4e6ea748c65e535faaf, type: 3}
   prefabFileView: {fileID: 3606997713360921004, guid: caaf0a8c6d0314735aa6f9168bbd855a, type: 3}
+  textInputActiveFilename: {fileID: 896396294487077473}
   textActiveDirectoryPath: {fileID: 1927798320454655768}
   textActionButton: {fileID: 5185258367429480542}
   buttonAction: {fileID: 6747451913846458288}
@@ -913,7 +914,7 @@ GameObject:
   - component: {fileID: 2181157099468354532}
   - component: {fileID: 5334151426342992890}
   m_Layer: 0
-  m_Name: LabelText (1)
+  m_Name: LabelText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

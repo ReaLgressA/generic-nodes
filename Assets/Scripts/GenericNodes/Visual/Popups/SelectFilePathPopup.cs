@@ -13,14 +13,12 @@ namespace GenericNodes.Visual.Popups {
     public class SelectFilePathPopup : MonoBehaviour {
         [SerializeField] private DirectoryViewEntry prefabDirectoryView;
         [SerializeField] private FileViewEntry prefabFileView;
-        
-        [FormerlySerializedAs("textFilePath")] 
+
+        [SerializeField] private TMP_InputField textInputActiveFilename; 
         [SerializeField] private TextMeshProUGUI textActiveDirectoryPath;
         [SerializeField] private TextMeshProUGUI textActionButton;
-        
         [SerializeField] private Button buttonAction;
         [SerializeField] private Button buttonClose;
-
         [SerializeField] private RectTransform rtrPrefabPoolsRoot;
         [SerializeField] private RectTransform rtrContentRoot;
 
