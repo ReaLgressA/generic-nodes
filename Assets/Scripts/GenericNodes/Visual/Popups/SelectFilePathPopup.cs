@@ -33,10 +33,11 @@ namespace GenericNodes.Visual.Popups {
         private string fileExtensionFilter = null;
         
         private string activeDirectoryPath;
-        private string selectedEntryPath = null;
+        private IFilePathEntry selectedEntry = null;
 
         private readonly List<DirectoryViewEntry> directoryEntries = new List<DirectoryViewEntry>();
-
+        private readonly List<FileViewEntry> fileEntries = new List<FileViewEntry>();
+        
         private void Awake() {
             buttonAction.onClick.AddListener(ProcessActionButtonClick);
             buttonClose.onClick.AddListener(ProcessCloseButtonClick);
@@ -49,7 +50,7 @@ namespace GenericNodes.Visual.Popups {
             activeDirectoryPath = openDirectoryPath;
             this.fileExtensionFilter = fileExtensionFilter;
             
-            //poolFileViews = new PrefabPool<FileViewEntry>(prefabFileView, rtrPrefabPoolsRoot, 16);
+            poolFileViews = new PrefabPool<FileViewEntry>(prefabFileView, rtrPrefabPoolsRoot, 16);
             poolDirectoryViews = new PrefabPool<DirectoryViewEntry>(prefabDirectoryView, rtrPrefabPoolsRoot, 16);
 
             textActionButton.text = actionName;
@@ -57,19 +58,21 @@ namespace GenericNodes.Visual.Popups {
             gameObject.SetActive(true);
         }
 
-        private void SelectFile(string filePath) {
-            selectedEntryPath = filePath;
-        }
-
-        private void OpenDirectory(string directoryPath) {
-            activeDirectoryPath = directoryPath;
-            selectedEntryPath = directoryPath;
-            textActiveDirectoryPath.text = activeDirectoryPath;
-            RefreshDirectoryContent();
-        }
-        
         public void Hide() {
             gameObject.SetActive(false);
+        }
+        
+        private void OpenDirectory(string directoryPath) {
+            activeDirectoryPath = directoryPath;
+            selectedEntry = null;
+            textActiveDirectoryPath.text = activeDirectoryPath.Reverse();
+            RefreshDirectoryContent();
+        }
+
+        private void OpenFile(string filePath) {
+            if (selectionPolicy == FileSelectionPolicy.OpenFile) {
+                ProcessActionButtonClick();
+            }
         }
         
         private void RefreshDirectoryContent() {
@@ -78,16 +81,26 @@ namespace GenericNodes.Visual.Popups {
             Debug.Log($"RefreshDirectoryContent: {activeDirectoryPath}");
             UnsubscribeFromEntryEvents();
             directoryEntries.Clear();
+            fileEntries.Clear();
+            poolFileViews.ReleaseAll();
             poolDirectoryViews.ReleaseAll();
             if (dirInfo.Parent != null) {
                 directoryEntries.Add(poolDirectoryViews.Request().Setup(dirInfo.Parent.FullName, "..", rtrContentRoot));
             }
             for (int i = 0; i < directories.Length; ++i) {
+                if ((directories[i].Attributes & FileAttributes.Directory) == 0 
+                    || (directories[i].Attributes & FileAttributes.Hidden) > 0) {
+                    continue;
+                }
                 directoryEntries.Add(poolDirectoryViews.Request().Setup(directories[i].FullName, directories[i].Name, rtrContentRoot));
             }
             FileInfo[] files = dirInfo.GetFiles();
             for (int i = 0; i < files.Length; ++i) {
-                Debug.Log($"File: {files[i].Name}");
+                if ((files[i].Attributes & FileAttributes.Normal) == 0
+                    || (files[i].Attributes & FileAttributes.Hidden) > 0) {
+                    continue;   
+                }
+                fileEntries.Add(poolFileViews.Request().Setup(files[i].FullName, files[i].Name, files[i].Extension, rtrContentRoot));
             }
             SubscribeToEntryEvents();
         }
@@ -95,24 +108,29 @@ namespace GenericNodes.Visual.Popups {
         private void UnsubscribeFromEntryEvents() {
             for (int i = 0; i < directoryEntries.Count; ++i) {
                 directoryEntries[i].OpenDirectory -= OpenDirectory;
-                directoryEntries[i].SelectDirectory -= SelectDirectory;
+                directoryEntries[i].SelectEntry -= SelectEntry;
+            }
+            for (int i = 0; i < fileEntries.Count; ++i) {
+                fileEntries[i].OpenFile -= OpenFile;
+                fileEntries[i].SelectEntry -= SelectEntry;
             }
         }
 
         private void SubscribeToEntryEvents() {
             for (int i = 0; i < directoryEntries.Count; ++i) {
                 directoryEntries[i].OpenDirectory += OpenDirectory;
-                directoryEntries[i].SelectDirectory += SelectDirectory;
+                directoryEntries[i].SelectEntry += SelectEntry;
+            }
+            for (int i = 0; i < fileEntries.Count; ++i) {
+                fileEntries[i].OpenFile += OpenFile;
+                fileEntries[i].SelectEntry += SelectEntry;
             }
         }
 
-        private void SelectDirectory(string directoryPath) {
-            Debug.Log($"Select directory: {directoryPath}");
-            for (int i = 0; i < directoryEntries.Count; ++i) {
-                if (directoryEntries[i].DirectoryPath.Equals(directoryPath, StringComparison.Ordinal)) {
-                    directoryEntries[i].SetSelected(true);
-                } 
-            }
+        private void SelectEntry(IFilePathEntry fileEntry) {
+            selectedEntry?.SetSelected(false);
+            selectedEntry = fileEntry;
+            fileEntry.SetSelected(true);
         }
 
         private void ProcessActionButtonClick() {

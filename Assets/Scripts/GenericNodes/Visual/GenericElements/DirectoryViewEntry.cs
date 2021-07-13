@@ -3,15 +3,19 @@ using TMPro;
 using UnityEngine;
 
 namespace GenericNodes.Visual.Views {
-    public class DirectoryViewEntry : ClickableEntry {
+    public class DirectoryViewEntry : ClickableEntry,
+                                      IFilePathEntry {
         [SerializeField] private TextMeshProUGUI textFileName;
 
         private string directoryPath;
 
-        public event Action<string> SelectDirectory;
+        public event Action<IFilePathEntry> SelectEntry;
         public event Action<string> OpenDirectory;
 
         public string DirectoryPath => directoryPath;
+        
+        public bool IsDirectory => true;
+        public string Path => DirectoryPath;
         
         public DirectoryViewEntry Setup(string directoryPath, string directoryName, RectTransform rtrRoot) {
             Reset();
@@ -35,7 +39,7 @@ namespace GenericNodes.Visual.Views {
             if (IsSelected) {
                 OpenDirectory?.Invoke(directoryPath);
             } else {
-                SelectDirectory?.Invoke(directoryPath);
+                SelectEntry?.Invoke(this);
             }
         }
     }

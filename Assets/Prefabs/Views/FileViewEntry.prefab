@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7172930099406261156}
   - component: {fileID: 2949554951392824873}
   m_Layer: 5
-  m_Name: TextDirectoryName
+  m_Name: TextFileName
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 4007068797857081282}
   - component: {fileID: 174201689256455432}
   m_Layer: 5
-  m_Name: IconDirectory
+  m_Name: IconFileExtension
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -186,7 +186,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3169285459386885632}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -199,7 +199,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ebd70944b4db54bf49c2bc3e8d239b0f, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -221,9 +221,9 @@ GameObject:
   - component: {fileID: 6813609388702168323}
   - component: {fileID: 6096973680651899442}
   - component: {fileID: 1028991312581841827}
-  - component: {fileID: 1396228215386357957}
+  - component: {fileID: 3606997713360921004}
   m_Layer: 5
-  m_Name: DirectoryViewEntry
+  m_Name: FileViewEntry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -308,7 +308,7 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!114 &1396228215386357957
+--- !u!114 &3606997713360921004
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -317,7 +317,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5011993684207067887}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2efb0ed8447147db99416e6aca95307d, type: 3}
+  m_Script: {fileID: 11500000, guid: b3dfcb6701824b20a9ff7b24104e16a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   colorNormal: {r: 0, g: 0, b: 0, a: 0}
@@ -325,3 +325,4 @@ MonoBehaviour:
   colorSelected: {r: 0.57254905, g: 0.19215687, b: 0.19215687, a: 1}
   imageBackground: {fileID: 6096973680651899442}
   textFileName: {fileID: 2949554951392824873}
+  iconFileExtension: {fileID: 174201689256455432}
