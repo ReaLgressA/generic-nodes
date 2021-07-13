@@ -4,6 +4,7 @@ using System.IO;
 namespace GenericNodes.Mech.Data {
     public class GenericNodesProjectInfo : IJsonInterface {
         public string ProjectName { get; set; } = "New Project";
+
         public GenericNodesProjectDirectory RootDirectory { get; set; }
 
         public string RootPath { get; set; } = null;
@@ -19,11 +20,21 @@ namespace GenericNodes.Mech.Data {
         }
 
         public bool TryGetPath(GenericNodesProjectDirectory directory, out string path) {
-            return RootDirectory.TryGetPath(directory, out path);
+            if (RootDirectory.TryGetPath(directory, out path)) {
+                path = Path.Combine(RootPath, path);
+                return true;
+            }
+            path = null;
+            return false;
         }
         
         public bool TryGetPath(GenericNodesProjectFile file, out string path) {
-            return RootDirectory.TryGetPath(file, out path);
+            if (RootDirectory.TryGetPath(file, out path)) {
+                path = Path.Combine(RootPath, path);
+                return true;
+            }
+            path = null;
+            return false;
         }
 
         private class Keys {

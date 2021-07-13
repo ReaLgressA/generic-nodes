@@ -31,10 +31,15 @@ namespace GenericNodes.Visual.Views.Project {
         
         private void CreateProject(string projectDirectoryPath) {
             Directory.CreateDirectory(projectDirectoryPath);
+            string rootDirectoryName = Path.GetDirectoryName(projectDirectoryPath);
             
             string projectInfoFilePath = Path.Combine(projectDirectoryPath, PROJECT_INFO_FILE_NAME);
             GenericNodesProjectInfo projectInfo = new GenericNodesProjectInfo {
-                ProjectName = Path.GetDirectoryName(projectDirectoryPath)
+                ProjectName = Path.GetDirectoryName(projectDirectoryPath),
+                RootDirectory = new GenericNodesProjectDirectory {
+                    Name = rootDirectoryName
+                },
+                RootPath = Directory.GetParent(projectDirectoryPath)?.FullName ?? string.Empty
             };
             //File.OpenWrite(projectInfoFilePath);
         }
