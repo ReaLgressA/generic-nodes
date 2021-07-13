@@ -5,7 +5,6 @@ using GenericNodes.Utility;
 using GenericNodes.Visual.Views;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 
@@ -65,6 +64,7 @@ namespace GenericNodes.Visual.Popups {
             selectedEntry = null;
             textActiveDirectoryPath.text = activeDirectoryPath.Reverse();
             RefreshDirectoryContent();
+            RefreshActionButtonState();
         }
 
         private void OpenFile(string filePath) {
@@ -129,10 +129,27 @@ namespace GenericNodes.Visual.Popups {
             selectedEntry?.SetSelected(false);
             selectedEntry = fileEntry;
             fileEntry.SetSelected(true);
+            RefreshActionButtonState();
+        }
+
+        private void RefreshActionButtonState() {
+            
+            bool isInteractable = ((selectionPolicy & FileSelectionPolicy.OpenFile) > 0 && !selectedEntry.IsDirectory) 
+                                  || ((selectionPolicy & FileSelectionPolicy.OpenDirectory) > 0 && selectedEntry.IsDirectory)
+                                  || ((selectionPolicy & FileSelectionPolicy.CreateAny) > 0 && IsActiveFilenameValid());
+            buttonAction.interactable = isInteractable;
+        }
+
+        private bool IsActiveFilenameValid() {
+            return textInputActiveFilename.text.Length > 0;
         }
 
         private void ProcessActionButtonClick() {
-            
+            if ((selectionPolicy & FileSelectionPolicy.CreateAny) > 0) {
+                selectionAction?.Invoke(Path.Combine(activeDirectoryPath, textInputActiveFilename.text));
+            } else {
+                selectionAction?.Invoke(selectedEntry.Path);   
+            }
         }
         
         private void ProcessCloseButtonClick() {
@@ -145,7 +162,9 @@ namespace GenericNodes.Visual.Popups {
             OpenDirectory = 2,
             CreateFile = 4,
             CreateDirectory = 8,
-            OpenAny = OpenDirectory | OpenFile
+            OpenAny = OpenDirectory | OpenFile,
+            CreateAny = CreateFile | CreateDirectory,
+            CustomValidator = 1024
         }
     }
 }
