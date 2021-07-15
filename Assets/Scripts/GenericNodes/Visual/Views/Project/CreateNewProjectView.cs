@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace GenericNodes.Visual.Views.Project {
     public class CreateNewProjectView : MonoBehaviour {
-        private const string PROJECT_INFO_FILE_NAME = ".gn-project";
+        private const string PROJECT_INFO_FILE_NAME = ".gnproject";
         
         [SerializeField] private Button buttonCreateNewProject;
         [SerializeField] private Button buttonOpenProject;
@@ -27,6 +27,7 @@ namespace GenericNodes.Visual.Views.Project {
         }
 
         private void OpenProject(string projectDirectoryPath) {
+            
         }
         
         private void CreateProject(string projectDirectoryPath) {
@@ -41,7 +42,6 @@ namespace GenericNodes.Visual.Views.Project {
                 },
                 RootPath = Directory.GetParent(projectDirectoryPath)?.FullName ?? string.Empty
             };
-            //File.OpenWrite(projectInfoFilePath);
         }
     }
 }
