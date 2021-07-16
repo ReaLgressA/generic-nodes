@@ -24,9 +24,9 @@ namespace GenericNodes.Visual.Popups {
             return popup;
         }
 
-        private static Dictionary<string, MonoBehaviour> popupCache = new Dictionary<string, MonoBehaviour>();
+        private static readonly Dictionary<string, MonoBehaviour> popupCache = new Dictionary<string, MonoBehaviour>();
         
-        private static Dictionary<Type, string> mapTypeToPath = new Dictionary<Type, string> {
+        private static readonly Dictionary<Type, string> mapTypeToPath = new Dictionary<Type, string> {
             { typeof(SelectFilePathPopup), "Prefabs/UI/Popups/SelectFilePathPopup" }
         };
     }
