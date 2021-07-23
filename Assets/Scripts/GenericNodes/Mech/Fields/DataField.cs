@@ -1,4 +1,5 @@
 using System.Collections;
+using MiniJSON;
 
 namespace GenericNodes.Mech.Fields {
     public abstract class DataField : IJsonInterface {

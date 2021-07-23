@@ -1,5 +1,6 @@
 using System.Collections;
 using System.IO;
+using MiniJSON;
 
 namespace GenericNodes.Mech.Data {
     public class GenericNodesProjectInfo : IJsonInterface {

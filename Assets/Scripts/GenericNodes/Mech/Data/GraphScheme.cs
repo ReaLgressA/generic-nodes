@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using GenericNodes.Mech.Extensions;
 using GenericNodes.Mech.Fields;
 using GenericNodes.Visual;
+using MiniJSON;
 using UnityEngine;
 
 namespace GenericNodes.Mech.Data {

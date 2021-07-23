@@ -2,6 +2,7 @@
 using System.Collections;
 using GenericNodes.Mech.Data;
 using GenericNodes.Mech.Extensions;
+using MiniJSON;
 
 namespace GenericNodes.Mech.Fields {
     public class CustomObjectDataField : DataField {

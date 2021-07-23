@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
+using MiniJSON;
 
 namespace GenericNodes.Utility.JsonSerialization
 {
-    public static partial class StringExtensions {
+    public static class StringExtensions {
     
         public static Hashtable ReadJson(string pathJson) {
             try {

@@ -14,13 +14,15 @@ namespace VaultKeeper.Utility {
             return json;
         }
         
-        public static async Task<Texture2D> LoadTexture2D(this ZipFile zipFile, string path, TextureFormat textureFormat) {
+        public static async Task<Texture2D> LoadTexture2D(this ZipFile zipFile, string path,
+                                                          TextureFormat textureFormat, bool isSRGB) {
             ZipEntry vaultEntry = zipFile.GetEntry(path);
             
             using Stream stream = zipFile.GetInputStream(vaultEntry);
-            byte[] bytes = stream.ReadToEnd();
+            
+            byte[] bytes = stream.ReadToEnd(); //ReadToEndAsync :(
 
-            return TextureSerializer.LoadTexture(bytes, textureFormat);
+            return TextureSerializer.LoadTexture(bytes, textureFormat, isSRGB);
         }
         
         public static void CreateDirectoryEntry(this ZipOutputStream stream, string directoryPath) {

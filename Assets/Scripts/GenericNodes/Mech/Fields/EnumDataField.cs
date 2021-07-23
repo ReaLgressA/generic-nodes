@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using GenericNodes.Mech.Data;
+using MiniJSON;
 
 namespace GenericNodes.Mech.Fields {
     public class EnumDataField : DataField {

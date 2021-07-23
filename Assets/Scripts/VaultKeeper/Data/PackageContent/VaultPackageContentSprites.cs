@@ -32,6 +32,7 @@ namespace VaultKeeper.Data.PackageContent {
             [SerializeField] private bool generateFallbackPhysicsShape;
             [SerializeField] private FilterMode filterMode;
             [SerializeField] private TextureFormat textureFormat;
+            [SerializeField] private bool isSRGB;
 
             public SpriteSettings(Sprite sprite) {
                 this.sprite = sprite;
@@ -59,10 +60,11 @@ namespace VaultKeeper.Data.PackageContent {
                 spriteBorder = sprite.border;
                 filterMode = sprite.texture.filterMode;
                 textureFormat = sprite.texture.format;
-
+                
                 TextureImporterSettings settings = new TextureImporterSettings();
                 TextureImporter importer = AssetImporter.GetAtPath(assetPath) as TextureImporter;
                 importer!.ReadTextureSettings(settings);
+                isSRGB = settings.sRGBTexture;
                 spriteMeshType = settings.spriteMeshType;
                 spriteExtrude = settings.spriteExtrude;
                 generateFallbackPhysicsShape = settings.spriteGenerateFallbackPhysicsShape;
@@ -74,12 +76,12 @@ namespace VaultKeeper.Data.PackageContent {
             }
             
             public async Task PrepareAfterImport(ZipFile zipFile, string directorySprites) {
-                Texture2D texture = await zipFile.LoadTexture2D($"{directorySprites}{id}.png", textureFormat);
+                Texture2D texture = await zipFile.LoadTexture2D($"{directorySprites}{id}.png", textureFormat, isSRGB);
                 texture.filterMode = filterMode;
                 Rect fixedRect = new Rect(0, 0, Mathf.FloorToInt(rect.width), Mathf.FloorToInt(rect.height));
                 
-                sprite = Sprite.Create(texture, fixedRect, pivot, pixelsPerUnit, spriteExtrude, spriteMeshType, spriteBorder,
-                                       generateFallbackPhysicsShape);
+                sprite = Sprite.Create(texture, fixedRect, pivot, pixelsPerUnit, spriteExtrude, spriteMeshType,
+                                       spriteBorder, generateFallbackPhysicsShape);
             }
         }
 
@@ -115,6 +117,5 @@ namespace VaultKeeper.Data.PackageContent {
                 sprites[i].Export(stream, directorySprites);    
             }
         }
-        
     }
 }

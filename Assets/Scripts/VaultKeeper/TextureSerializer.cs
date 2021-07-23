@@ -4,8 +4,8 @@ using UnityEngine;
 namespace VaultKeeper {
     public static class TextureSerializer {
         
-        public static Texture2D LoadTexture(byte[] bytes, TextureFormat textureFormat) {
-            Texture2D texture2D = new Texture2D(1, 1, textureFormat, false, true);
+        public static Texture2D LoadTexture(byte[] bytes, TextureFormat textureFormat, bool isSRGB) {
+            Texture2D texture2D = new Texture2D(1, 1, textureFormat, false, !isSRGB);
             texture2D.LoadImage(bytes, false);
             return texture2D;
         }
@@ -16,7 +16,7 @@ namespace VaultKeeper {
             int w = Mathf.Min(sprite.texture.width,Mathf.FloorToInt(sprite.rect.width));
             int h = Mathf.Min(sprite.texture.height,Mathf.FloorToInt(sprite.rect.height));
             
-            Texture2D texture = new Texture2D(w, h, TextureFormat.RGBA32, false, true);
+            Texture2D texture = new Texture2D(w, h, sprite.texture.format, false, false);
             Color[] pixels = sprite.texture.GetPixels(x, y, w, h);
             texture.SetPixels(0, 0, w, h, pixels);
             texture.Apply(false);
