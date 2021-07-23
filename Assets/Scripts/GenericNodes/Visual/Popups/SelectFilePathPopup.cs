@@ -57,6 +57,7 @@ namespace GenericNodes.Visual.Popups {
 
         public void Hide() {
             gameObject.SetActive(false);
+            ResetContent();
         }
         
         private void OpenDirectory(string directoryPath) {
@@ -77,32 +78,38 @@ namespace GenericNodes.Visual.Popups {
             DirectoryInfo dirInfo = new DirectoryInfo(activeDirectoryPath);
             DirectoryInfo[] directories = dirInfo.GetDirectories();
             Debug.Log($"RefreshDirectoryContent: {activeDirectoryPath}");
-            UnsubscribeFromEntryEvents();
-            directoryEntries.Clear();
-            fileEntries.Clear();
-            poolFileViews.ReleaseAll();
-            poolDirectoryViews.ReleaseAll();
+            ResetContent();
             if (dirInfo.Parent != null) {
-                directoryEntries.Add(poolDirectoryViews.Request().Setup(dirInfo.Parent.FullName, "..", rtrContentRoot));
+                directoryEntries.Add(poolDirectoryViews.Request().Setup(dirInfo.Parent.FullName,
+                                                                        "..", rtrContentRoot));
             }
             for (int i = 0; i < directories.Length; ++i) {
                 if ((directories[i].Attributes & FileAttributes.Directory) == 0 
                     || (directories[i].Attributes & FileAttributes.Hidden) > 0) {
                     continue;
                 }
-                directoryEntries.Add(poolDirectoryViews.Request().Setup(directories[i].FullName, directories[i].Name, rtrContentRoot));
+                directoryEntries.Add(poolDirectoryViews.Request().Setup(directories[i].FullName,
+                                                                        directories[i].Name, rtrContentRoot));
             }
             FileInfo[] files = dirInfo.GetFiles();
             for (int i = 0; i < files.Length; ++i) {
-                if ((files[i].Attributes & FileAttributes.Normal) == 0
-                    || (files[i].Attributes & FileAttributes.Hidden) > 0) {
+                if ((files[i].Attributes & FileAttributes.Hidden) > 0) {
                     continue;   
                 }
-                fileEntries.Add(poolFileViews.Request().Setup(files[i].FullName, files[i].Name, files[i].Extension, rtrContentRoot));
+                fileEntries.Add(poolFileViews.Request().Setup(files[i].FullName, files[i].Name,
+                                                              files[i].Extension, rtrContentRoot));
             }
             SubscribeToEntryEvents();
         }
-        
+
+        private void ResetContent() {
+            UnsubscribeFromEntryEvents();
+            directoryEntries.Clear();
+            fileEntries.Clear();
+            poolFileViews.ReleaseAll();
+            poolDirectoryViews.ReleaseAll();
+        }
+
         private void UnsubscribeFromEntryEvents() {
             for (int i = 0; i < directoryEntries.Count; ++i) {
                 directoryEntries[i].OpenDirectory -= OpenDirectory;
@@ -133,9 +140,12 @@ namespace GenericNodes.Visual.Popups {
         }
 
         private void RefreshActionButtonState() {
-            
-            bool isInteractable = ((selectionPolicy & FileSelectionPolicy.OpenFile) > 0 && !selectedEntry.IsDirectory) 
-                                  || ((selectionPolicy & FileSelectionPolicy.OpenDirectory) > 0 && selectedEntry.IsDirectory)
+
+            bool notNull = selectedEntry != null;
+            bool isInteractable = ((selectionPolicy & FileSelectionPolicy.OpenFile) > 0 
+                                   && notNull && !selectedEntry.IsDirectory) 
+                                  || ((selectionPolicy & FileSelectionPolicy.OpenDirectory) > 0 
+                                      && notNull &&  selectedEntry.IsDirectory)
                                   || ((selectionPolicy & FileSelectionPolicy.CreateAny) > 0 && IsActiveFilenameValid());
             buttonAction.interactable = isInteractable;
         }
