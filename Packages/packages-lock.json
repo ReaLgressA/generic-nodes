@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.realgressa.sharpziplib": {
+      "version": "https://github.com/ReaLgressA/SharpZipLib.git?path=/SharpZipLib/Assets/",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "b0a4b1301d24e297255bcad54ddae79d883d7971"
+    },
     "com.unity.2d.animation": {
       "version": "5.0.5",
       "depth": 1,
