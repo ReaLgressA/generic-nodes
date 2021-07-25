@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using MiniJSON;
+using JsonParser;
 
 namespace GenericNodes.Mech.Data {
     public class EnumDescription : IJsonInterface {

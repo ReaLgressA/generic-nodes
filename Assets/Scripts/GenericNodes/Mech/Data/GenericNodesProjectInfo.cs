@@ -1,6 +1,6 @@
 using System.Collections;
 using System.IO;
-using MiniJSON;
+using JsonParser;
 
 namespace GenericNodes.Mech.Data {
     public class GenericNodesProjectInfo : IJsonInterface {
@@ -9,7 +9,11 @@ namespace GenericNodes.Mech.Data {
         public GenericNodesProjectDirectory RootDirectory { get; set; }
 
         public string RootPath { get; set; } = null;
+        public string AbsoluteRootPath => Path.Combine(RootPath, RootDirectory.Name);
+        public GraphSchemeProvider SchemeProvider { get; private set; }
         
+        public GenericNodesProjectInfo() {}
+
         public void ToJsonObject(Hashtable ht) {
             ht[Keys.PROJECT_NAME] = ProjectName;
             ht[Keys.ROOT_DIRECTORY] = RootDirectory;
@@ -20,22 +24,9 @@ namespace GenericNodes.Mech.Data {
             RootDirectory = ht.GetAs(Keys.ROOT_DIRECTORY, RootDirectory);
         }
 
-        public bool TryGetPath(GenericNodesProjectDirectory directory, out string path) {
-            if (RootDirectory.TryGetPath(directory, out path)) {
-                path = Path.Combine(RootPath, path);
-                return true;
-            }
-            path = null;
-            return false;
-        }
-        
-        public bool TryGetPath(GenericNodesProjectFile file, out string path) {
-            if (RootDirectory.TryGetPath(file, out path)) {
-                path = Path.Combine(RootPath, path);
-                return true;
-            }
-            path = null;
-            return false;
+        public void BuildProviders() {
+            SchemeProvider = new GraphSchemeProvider();
+            SchemeProvider.Setup(this);
         }
 
         private class Keys {

@@ -24,6 +24,7 @@ namespace GenericNodes.Visual.PopupMenus {
         }
 
         public void SetupScheme(GraphScheme scheme) {
+            Reset();
             this.scheme = scheme;
             for (int i = 0; i < scheme.Nodes.Length; ++i) {
                 AddPopupMenuItem(scheme.Nodes[i]);

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using GenericNodes.Mech.Fields;
-using MiniJSON;
+using JsonParser;
 
 namespace GenericNodes.Mech.Data {
     public class NodeDescription : IJsonInterface {

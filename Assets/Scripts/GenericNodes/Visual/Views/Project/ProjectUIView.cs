@@ -1,3 +1,4 @@
+using GenericNodes.Mech.Data;
 using GenericNodes.Utility;
 using TMPro;
 using UnityEngine;
@@ -6,13 +7,35 @@ using UnityEngine.UI;
 namespace GenericNodes.Visual.Views.Project {
     public class ProjectUIView : MonoBehaviour {
         [SerializeField] private CreateNewProjectView createNewProjectView;
+        [SerializeField] private ProjectHierarchyUIView projectHierarchyView;
         [SerializeField] private RectTransform rtrPanelRoot;
         [SerializeField] private Button buttonToggleHide;
         [SerializeField] private TextMeshProUGUI textToggleHide;
 
         private bool isHidden = false;
         
+        public void OpenProject(GenericNodesProjectInfo projectInfo) {
+            projectInfo.BuildProviders();
+            projectHierarchyView.gameObject.SetActive(true);
+            createNewProjectView.gameObject.SetActive(false);
+            projectHierarchyView.SetProject(projectInfo);
+        }
+
+        public void CloseProject() {
+            projectHierarchyView.gameObject.SetActive(false);
+            createNewProjectView.gameObject.SetActive(true);
+            projectHierarchyView.SetProject(null);
+        }
+        
+        public void OpenGraphFile(string filePath) {
+            Debug.Log($"Open graph: {filePath}");
+        }
+        
         private void Awake() {
+            createNewProjectView.Setup(this);
+            projectHierarchyView.Setup(this);
+            
+            projectHierarchyView.gameObject.SetActive(false);
             createNewProjectView.gameObject.SetActive(true);
             buttonToggleHide.onClick.AddListener(ToggleHideWindow);
         }

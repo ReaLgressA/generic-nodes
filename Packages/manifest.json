@@ -10,6 +10,7 @@
   ],
   "dependencies": {
     "com.realgressa.sharpziplib": "https://github.com/ReaLgressA/SharpZipLib.git?path=/SharpZipLib/Assets/",
+    "com.realgressa.jsonparser": "https://github.com/ReaLgressA/json-parser.git?path=/Assets/",
     "com.unity.2d.pixel-perfect": "4.0.1",
     "com.unity.2d.psdimporter": "4.0.2",
     "com.unity.2d.sprite": "1.0.0",

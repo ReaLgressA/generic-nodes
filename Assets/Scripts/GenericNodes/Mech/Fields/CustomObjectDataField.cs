@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using GenericNodes.Mech.Data;
 using GenericNodes.Mech.Extensions;
-using MiniJSON;
+using JsonParser;
 
 namespace GenericNodes.Mech.Fields {
     public class CustomObjectDataField : DataField {

@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.realgressa.jsonparser": {
+      "version": "https://github.com/ReaLgressA/json-parser.git?path=/Assets/",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "05b6224c3f8c1d126d31f76c15d307a9e90b40ad"
+    },
     "com.realgressa.sharpziplib": {
       "version": "https://github.com/ReaLgressA/SharpZipLib.git?path=/SharpZipLib/Assets/",
       "depth": 0,

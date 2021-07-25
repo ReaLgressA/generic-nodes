@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GenericNodes.Mech.Data;
 using GenericNodes.Mech.Extensions;
-using MiniJSON;
+using JsonParser;
 
 namespace GenericNodes.Mech.Fields {
     public class GenericArrayDataField : DataField {

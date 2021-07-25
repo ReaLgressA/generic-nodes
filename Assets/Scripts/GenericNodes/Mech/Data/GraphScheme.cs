@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using GenericNodes.Mech.Extensions;
 using GenericNodes.Mech.Fields;
-using GenericNodes.Visual;
-using MiniJSON;
+using JsonParser;
 using UnityEngine;
 
 namespace GenericNodes.Mech.Data {
@@ -26,9 +25,9 @@ namespace GenericNodes.Mech.Data {
         
         public string NodeArrayName { get; private set; } = null;
 
-        public GraphData CreateGraph() {
+        public GraphData CreateGraph(string filePath) {
             NodeData graphInfo = new NodeData(this, Type, NodeId.None, Fields.CloneFields());
-            return new GraphData(Type, graphInfo, this);
+            return new GraphData(Type, graphInfo, this, filePath);
         }
 
         public void ToJsonObject(Hashtable ht) {

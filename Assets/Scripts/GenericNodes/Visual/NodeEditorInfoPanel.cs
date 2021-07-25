@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using GenericNodes.Mech.Data;
+using GenericNodes.Mech.Fields;
 using GenericNodes.Utility;
 using GenericNodes.Visual.Interfaces;
 using TMPro;
@@ -14,14 +15,21 @@ namespace GenericNodes.Visual
         [SerializeField] private TextMeshProUGUI textToggleHide;
         [SerializeField] private TextMeshProUGUI textHeader;
         [SerializeField] private RectTransform rtrContentRoot;
-
+        [SerializeField] private Button buttonSave;
 
         private readonly List<IGenericField> fields = new List<IGenericField>();
     
         private bool isHidden = false;
-    
+
+        public GraphData Data { get; private set; } = null;
+        
         private void Awake() {
             buttonToggleHide.onClick.AddListener(ToggleHideWindow);
+            buttonSave.onClick.AddListener(SaveGraph);
+        }
+
+        private void SaveGraph() {
+            Data.SaveToFile();
         }
 
         private void Update() {
@@ -32,27 +40,44 @@ namespace GenericNodes.Visual
 
         private void OnDestroy() {
             buttonToggleHide.onClick.RemoveAllListeners();
+            buttonSave.onClick.RemoveAllListeners();
         }
-    
-        private async void ToggleHideWindow() {
+
+        private void ToggleHideWindow() {
+            ToggleHideWindow(false);
+        }
+
+        private async void ToggleHideWindow(bool isForced) {
+            if (Data == null && !isForced) {
+                return;
+            } 
             isHidden = !isHidden;
             textToggleHide.text = isHidden ? ">" : "<";
             await rtrPanelRoot.TweenAnchoredPos(isHidden ? new Vector2(-rtrPanelRoot.sizeDelta.x, 0f) : Vector2.zero,
                                                 0.5f, Easings.EaseInOutQuad);
         }
 
-        public void SetupData(string graphType, NodeData data) {
-            textHeader.text = graphType;
+        public void SetupData(GraphData data) {
             ClearFields();
-            for (int i = 0; i < data.Fields.Count; ++i) {
-                GameObject goField = Instantiate(PrefabDatabase.GetFieldPrefab(data.Fields[i].Type));
+            Data = data;
+            if (data == null) {
+                if (!isHidden) {
+                    ToggleHideWindow(true);
+                }
+                return;
+            }
+            for (int i = 0; i < data.Info.Fields.Count; ++i) {
+                GameObject goField = Instantiate(PrefabDatabase.GetFieldPrefab(data.Info.Fields[i].Type));
                 var rtr = goField.GetComponent<RectTransform>();
                 rtr.SetParent(rtrContentRoot);
                 rtr.localScale = Vector3.one;
                 rtr.SetAsLastSibling();
                 IGenericField field = goField.GetComponent<IGenericField>();
-                field.SetData(null, data.Fields[i], null);
+                field.SetData(null, data.Info.Fields[i], null);
                 fields.Add(field);
+            }
+            if (isHidden) {
+                ToggleHideWindow(true);
             }
         }
 

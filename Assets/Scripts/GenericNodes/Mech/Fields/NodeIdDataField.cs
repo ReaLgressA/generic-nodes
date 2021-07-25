@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using GenericNodes.Mech.Data;
-using MiniJSON;
+using JsonParser;
 
 namespace GenericNodes.Mech.Fields {
     public class NodeIdDataField : DataField {

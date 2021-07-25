@@ -6,7 +6,6 @@ using GenericNodes.Visual.Views;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Debug = UnityEngine.Debug;
 
 namespace GenericNodes.Visual.Popups {
     public class SelectFilePathPopup : MonoBehaviour {
@@ -40,13 +39,14 @@ namespace GenericNodes.Visual.Popups {
             buttonClose.onClick.AddListener(ProcessCloseButtonClick);
         }
         
-        public void Show(Action<string> action, string actionName, string openDirectoryPath,
+        public void Show(Action<string> action, string actionName, string openDirectoryPath, string targetName,
                          FileSelectionPolicy policy, string fileExtensionFilter = null) {
             selectionAction = action;
             selectionPolicy = policy;
             activeDirectoryPath = openDirectoryPath;
             this.fileExtensionFilter = fileExtensionFilter;
-            
+
+            textInputActiveFilename.text = targetName;
             poolFileViews = new PrefabPool<FileViewEntry>(prefabFileView, rtrPrefabPoolsRoot, 16);
             poolDirectoryViews = new PrefabPool<DirectoryViewEntry>(prefabDirectoryView, rtrPrefabPoolsRoot, 16);
 
@@ -77,7 +77,7 @@ namespace GenericNodes.Visual.Popups {
         private void RefreshDirectoryContent() {
             DirectoryInfo dirInfo = new DirectoryInfo(activeDirectoryPath);
             DirectoryInfo[] directories = dirInfo.GetDirectories();
-            Debug.Log($"RefreshDirectoryContent: {activeDirectoryPath}");
+            //Debug.Log($"RefreshDirectoryContent: {activeDirectoryPath}");
             ResetContent();
             if (dirInfo.Parent != null) {
                 directoryEntries.Add(poolDirectoryViews.Request().Setup(dirInfo.Parent.FullName,
@@ -157,8 +157,10 @@ namespace GenericNodes.Visual.Popups {
         private void ProcessActionButtonClick() {
             if ((selectionPolicy & FileSelectionPolicy.CreateAny) > 0) {
                 selectionAction?.Invoke(Path.Combine(activeDirectoryPath, textInputActiveFilename.text));
+                Hide();
             } else {
-                selectionAction?.Invoke(selectedEntry.Path);   
+                selectionAction?.Invoke(selectedEntry.Path);
+                Hide();
             }
         }
         

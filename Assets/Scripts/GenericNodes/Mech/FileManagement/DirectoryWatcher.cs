@@ -9,25 +9,33 @@ namespace GenericNodes.Mech.FileManagement {
         public event Action RefreshDirectory;
         
         public DirectoryWatcher(string path) {
-            watcher = new FileSystemWatcher(path) {
-                NotifyFilter = (NotifyFilters)(~0),
-                IncludeSubdirectories = true,
-                EnableRaisingEvents = true
-            };
+            watcher = new FileSystemWatcher(path);
+            watcher.IncludeSubdirectories = true;
+            watcher.EnableRaisingEvents = true;
             watcher.Changed += OnChanged;
             watcher.Created += OnCreated;
             watcher.Deleted += OnDeleted;
             watcher.Renamed += OnRenamed;
             watcher.Error += OnError;
+            watcher.BeginInit();
         }
         
-        public void Dispose()
-        {
-            watcher?.Dispose();
+        public void Dispose() {
+            if (watcher == null) {
+                return;
+            }
+            watcher.Changed -= OnChanged;
+            watcher.Created -= OnCreated;
+            watcher.Deleted -= OnDeleted;
+            watcher.Renamed -= OnRenamed;
+            watcher.Error -= OnError;
+            watcher.EndInit();
+            watcher.Dispose();
         }
 
         private void OnError(object sender, ErrorEventArgs args) {
             Debug.LogError($"DirectoryWatcher error: {args.GetException()}");
+            RefreshDirectory?.Invoke();
         }
 
         private void OnRenamed(object sender, RenamedEventArgs args) {
