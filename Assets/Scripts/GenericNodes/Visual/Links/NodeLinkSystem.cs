@@ -42,7 +42,7 @@ namespace GenericNodes.Visual.Links {
             if (socket.Mode == NodeSocketMode.Input) {
                 link.SetupLink(link.SourceSocket, socket);
                 nodeLinks.Add(link);
-                link.ConnectSockets();
+                //link.ConnectSockets();
                 Hand.NodeLink = null;
             } else {
                 Hand.Reset();
@@ -85,7 +85,7 @@ namespace GenericNodes.Visual.Links {
                 if (socket.Mode == NodeSocketMode.Output) {
                     link.SetupLink(socket, workspace.GetNode(nodeId).GetLinkSocket());
                     nodeLinks.Add(link);
-                    link.ConnectSockets();
+                    //link.ConnectSockets();
                 } else {
                     Debug.LogError("Can't connect input socket as output");
                 }

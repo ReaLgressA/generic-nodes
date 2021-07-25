@@ -53,6 +53,15 @@ namespace GenericNodes.Mech.Data {
             return null;
         }
 
+        public DataField[] GetFieldsForNode(string nodeType) {
+            for (int i = 0; i < Nodes.Length; ++i) {
+                if (string.Equals(Nodes[i].Type, nodeType, StringComparison.Ordinal)) {
+                    return Nodes[i].Fields.CloneFields();
+                }
+            }
+            return new DataField[0];
+        }
+
         public DataField[] GetCustomDataTypeFields(string objectType) {
             for (int i = 0; i < CustomDataTypes.Length; ++i) {
                 if (CustomDataTypes[i].Type.Equals(objectType, StringComparison.Ordinal)) {

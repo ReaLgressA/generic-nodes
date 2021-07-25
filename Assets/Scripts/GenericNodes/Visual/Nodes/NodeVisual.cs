@@ -71,5 +71,11 @@ namespace GenericNodes.Visual.Nodes
         public void ReleaseSocket(INodeLinkSocket linkSocket) {
             socketArray.ReleaseSocket(linkSocket);
         }
+
+        public void RebuildLinks() {
+            for (int i = 0; i < fields.Count; ++i) {
+                fields[i].RebuildLinks();
+            }
+        }
     }
 }

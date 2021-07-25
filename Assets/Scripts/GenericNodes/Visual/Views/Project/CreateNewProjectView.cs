@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.IO;
 using GenericNodes.Mech.Data;
@@ -23,7 +24,14 @@ namespace GenericNodes.Visual.Views.Project {
             buttonOpenProject.onClick.AddListener(OpenProject);
             buttonCreateNewProject.onClick.AddListener(CreateNewProject);
         }
-        
+
+        private void Start() {
+            string lastOpenProjectPath = PlayerPrefs.GetString(LAST_OPEN_PROJECT, null);
+            if (!string.IsNullOrWhiteSpace(lastOpenProjectPath) && Directory.Exists(lastOpenProjectPath)) {
+                OpenProject(lastOpenProjectPath);
+            }
+        }
+
         private void OpenProject() {
             string lastPath = PlayerPrefs.GetString(LAST_OPEN_PATH, Application.dataPath);
             if (!Directory.Exists(lastPath) && !File.Exists(lastPath)) {
@@ -58,6 +66,9 @@ namespace GenericNodes.Visual.Views.Project {
             }
             projectInfo.RootPath = Directory.GetParent(projectInfoFilePath)?.Parent?.FullName ?? string.Empty;
             ProjectView.OpenProject(projectInfo);
+            
+            PlayerPrefs.SetString(LAST_OPEN_PROJECT, projectDirectoryPath);
+            PlayerPrefs.Save();
         }
         
         private void CreateProject(string projectDirectoryPath) {
@@ -77,9 +88,11 @@ namespace GenericNodes.Visual.Views.Project {
             string infoJson = MiniJSON.JsonEncode(projectInfo, true);
             File.WriteAllText(projectInfoFilePath, infoJson);
             ProjectView.OpenProject(projectInfo);
+            PlayerPrefs.Save();
         }
         
         private const string LAST_SAVE_PATH = "LAST_SAVE_PATH";
         private const string LAST_OPEN_PATH = "LAST_OPEN_PATH";
+        private const string LAST_OPEN_PROJECT = "LAST_OPEN_PROJECT";
     }
 }

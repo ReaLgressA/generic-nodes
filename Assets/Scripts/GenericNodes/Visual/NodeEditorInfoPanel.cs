@@ -10,6 +10,7 @@ using UnityEngine.UI;
 namespace GenericNodes.Visual
 {
     public class NodeEditorInfoPanel : MonoBehaviour {
+        [SerializeField] private WorkspaceArea workspaceArea;
         [SerializeField] private RectTransform rtrPanelRoot;
         [SerializeField] private Button buttonToggleHide;
         [SerializeField] private TextMeshProUGUI textToggleHide;
@@ -23,12 +24,14 @@ namespace GenericNodes.Visual
 
         public GraphData Data { get; private set; } = null;
         
+        
         private void Awake() {
             buttonToggleHide.onClick.AddListener(ToggleHideWindow);
             buttonSave.onClick.AddListener(SaveGraph);
         }
 
         private void SaveGraph() {
+            workspaceArea.ExportNodesToGraph();
             Data.SaveToFile();
         }
 
@@ -60,6 +63,7 @@ namespace GenericNodes.Visual
         public void SetupData(GraphData data) {
             ClearFields();
             Data = data;
+            workspaceArea.SetGraphData(data);
             if (data == null) {
                 if (!isHidden) {
                     ToggleHideWindow(true);
@@ -79,6 +83,8 @@ namespace GenericNodes.Visual
             if (isHidden) {
                 ToggleHideWindow(true);
             }
+
+            workspaceArea.RebuildNodesFromGraphData();
         }
 
         private void ClearFields() {

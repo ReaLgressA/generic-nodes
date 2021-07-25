@@ -24,6 +24,8 @@ namespace GenericNodes.Mech {
         public NodeSocketMode Mode => NodeSocketMode.Input;
         
         public event Action<INodeLinkSocket, NodeId> SocketLinked;
+        public event Action PositionChanged;
+
         public void LinkSocketTo(NodeId nodeId) {
             //Hand only receives the link, so no need to link anything
         }
@@ -32,10 +34,12 @@ namespace GenericNodes.Mech {
             this.workspaceArea = workspaceArea;
 
             workspaceArea.OnInterruptLmbClick += ClearNodeLinkIfNeeded;
+            workspaceArea.OnInterruptRmbClick += ClearNodeLinkIfNeeded;
         }
 
         ~UserHand() {
             workspaceArea.OnInterruptLmbClick -= ClearNodeLinkIfNeeded;
+            workspaceArea.OnInterruptRmbClick -= ClearNodeLinkIfNeeded;
         }
 
         public INodeLinkSocket GetLinkSocket() {
@@ -57,6 +61,7 @@ namespace GenericNodes.Mech {
             if (Holdable != null) {
                 ProcessNodeDrag(Holdable);
             }
+            PositionChanged?.Invoke();
         }
 
         private void SetupHoldableNode(NodeVisual node) {

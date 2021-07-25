@@ -23,23 +23,31 @@ namespace GenericNodes.Visual.Nodes {
 
         private Image iconSocket;
         private RectTransform rectTransform = null;
+        
+        private Vector2 lastTrackedPosition = Vector2.zero;
 
         public Image IconSocket => iconSocket ??= GetComponent<Image>();
         public RectTransform Transform => rectTransform ??= GetComponent<RectTransform>();
 
         public NodeSocketMode Mode => mode;
-        public event Action<INodeLinkSocket, NodeId> SocketLinked;
+        //public event Action<INodeLinkSocket, NodeId> SocketLinked;
+        public event Action PositionChanged;
 
         public IGenericFieldParent FieldParent { get; private set; }
         public NodeId Id => FieldParent.NodeId;
         
-        public NodeId LinkedToId { get; private set; } = NodeId.None;
-
+        //public NodeId LinkedToId { get; private set; } = NodeId.None;
+        
         public Vector2 Position => Transform.anchoredPosition + FieldParent.ParentPositionShift;
-            // NodeVisual.Transform.anchoredPosition + Transform.anchoredPosition +
-            // (NodeIdField == null ? Vector2.zero : NodeIdField.Transform.anchoredPosition);
 
         public Color LinkColor => socketColor;
+
+        private void Update() {
+            if ((Position - lastTrackedPosition).sqrMagnitude > 0.01f) {
+                PositionChanged?.Invoke();
+                lastTrackedPosition = Position;
+            }
+        }
 
         public void Initialize(NodeVisual nodeVisual) {
             FieldParent = nodeVisual;
@@ -48,10 +56,10 @@ namespace GenericNodes.Visual.Nodes {
         public void Initialize(NodeIdGenericField nodeIdField) {
             FieldParent = nodeIdField;
         }
-        
-        public void LinkSocketTo(NodeId nodeId) {
-            LinkedToId = nodeId;
-            SocketLinked?.Invoke(this, nodeId);
-        }
+
+        // public void LinkSocketTo(NodeId nodeId) {
+        //     //LinkedToId = nodeId;
+        //     SocketLinked?.Invoke(this, nodeId);
+        // }
     }
 }

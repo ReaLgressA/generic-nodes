@@ -1,4 +1,3 @@
-using GenericNodes.Mech.Data;
 using UnityEngine;
 using UnityEngine.UI.Extensions;
 
@@ -15,22 +14,24 @@ namespace GenericNodes.Visual.Links {
         public void SetupLink(INodeLinkSocket source, INodeLinkSocket target) {
             SourceSocket = source;
             TargetSocket = target;
+            SourceSocket.PositionChanged += RefreshLink;
+            TargetSocket.PositionChanged += RefreshLink;
             RefreshLink();
         }
 
         public void Reset() {
-            SourceSocket.LinkSocketTo(NodeId.None);
-            TargetSocket.LinkSocketTo(NodeId.None);
+            //SourceSocket.LinkSocketTo(NodeId.None);
+            //TargetSocket.LinkSocketTo(NodeId.None);
             SourceSocket = null;
             TargetSocket = null;
             gameObject.SetActive(false);
         }
 
-        private void Update() {
-            if (SourceSocket != null && TargetSocket != null) {
-                RefreshLink();
-            }
-        }
+        // private void Update() {
+        //     if (SourceSocket != null && TargetSocket != null) {
+        //         RefreshLink();
+        //     }
+        // }
 
         public void RefreshLink() {
             if (LineRenderer != null) {
@@ -45,8 +46,8 @@ namespace GenericNodes.Visual.Links {
             }
         }
 
-        public void ConnectSockets() {
-            SourceSocket.LinkSocketTo(TargetSocket.Id);
-        }
+        // public void ConnectSockets() {
+        //     //SourceSocket.LinkSocketTo(TargetSocket.Id);
+        // }
     }
 }

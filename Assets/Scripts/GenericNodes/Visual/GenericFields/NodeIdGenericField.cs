@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using GenericNodes.Mech.Data;
 using GenericNodes.Mech.Fields;
 using GenericNodes.Visual.Interfaces;
@@ -27,11 +29,16 @@ namespace GenericNodes.Visual.GenericFields {
         
         private void Awake() {
             buttonLink.onClick.AddListener(ProcessLinkButtonClick);
-            linkSocket.SocketLinked += ProcessSocketLinked;
+            // linkSocket.SocketLinked += ProcessSocketLinked;
+        }
+
+        private void OnDisable() {
+            UnlinkSocketIfNeeded();
         }
 
         private void OnDestroy() {
-            linkSocket.SocketLinked -= ProcessSocketLinked;
+            // linkSocket.SocketLinked -= ProcessSocketLinked;
+            //
         }
 
         public void SetData(NodeIdDataField field) {
@@ -42,6 +49,9 @@ namespace GenericNodes.Visual.GenericFields {
             Field.ValueChanged += ProcessLinkedNodeIdChanged;
             textLabel.text = Field.Name;
             linkSocket.Initialize(this);
+            
+            UnlinkSocketIfNeeded();
+            
         }
 
         public void SetData(NodeVisual nodeVisual, DataField data, IGenericFieldParent fieldParent) {
@@ -55,6 +65,13 @@ namespace GenericNodes.Visual.GenericFields {
             Field = null;
             GameObject.Destroy(gameObject);
         }
+
+        public void RebuildLinks() {
+            UnlinkSocketIfNeeded();
+            if (Field.Value != NodeId.None) {
+                MasterNode.Workspace.LinkSystem.LinkSocketToNode(linkSocket, Field.Value);
+            }
+        }
     
         private void ProcessLinkButtonClick() {
             UnlinkSocketIfNeeded();
@@ -62,21 +79,20 @@ namespace GenericNodes.Visual.GenericFields {
         }
 
         private void UnlinkSocketIfNeeded() {
-            if (Field != null && Field.Value != NodeId.None) {
-                MasterNode.Workspace.LinkSystem.UnlinkSocket(linkSocket);
-            }
+            //if (Field != null && Field.Value != NodeId.None) {
+            MasterNode?.Workspace?.LinkSystem?.UnlinkSocket(linkSocket);
+            //}
         }
         
-        private void ProcessSocketLinked(INodeLinkSocket socket, NodeId nodeId) {
-            Field.SetId(nodeId);
-        }
+        // private void ProcessSocketLinked(INodeLinkSocket socket, NodeId nodeId) {
+        //     Field.SetId(nodeId);
+        // }
         
         private void ProcessLinkedNodeIdChanged(NodeIdDataField dataField) {
-            if (linkSocket.LinkedToId != dataField.Value) {
-                UnlinkSocketIfNeeded();
-                MasterNode.Workspace.LinkSystem.LinkSocketToNode(linkSocket, dataField.Value);
-                
-            }
+            //if (linkSocket.LinkedToId != dataField.Value) {
+            UnlinkSocketIfNeeded();
+            MasterNode.Workspace.LinkSystem.LinkSocketToNode(linkSocket, dataField.Value);
+            //}
         }
     }
     

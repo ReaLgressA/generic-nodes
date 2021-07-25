@@ -10,8 +10,9 @@ namespace GenericNodes.Visual.Links {
         Color LinkColor { get; }
         NodeSocketMode Mode { get; }
 
-        event Action<INodeLinkSocket, NodeId> SocketLinked;
+        //event Action<INodeLinkSocket, NodeId> SocketLinked;
+        event Action PositionChanged;
 
-        void LinkSocketTo(NodeId nodeId);
+        //void LinkSocketTo(NodeId nodeId);
     }
 }
