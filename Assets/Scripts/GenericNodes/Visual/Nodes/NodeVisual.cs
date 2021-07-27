@@ -10,8 +10,8 @@ namespace GenericNodes.Visual.Nodes
 {
     [RequireComponent(typeof(RectTransform))]
     public class NodeVisual : DraggableEventTrigger,
+                              INodeIdSocketContainer,
                               INodeLinkSocketProvider,
-                              IGenericFieldParent,
                               IHoldable {
         
         [SerializeField] private Image imageBackground;
@@ -29,6 +29,8 @@ namespace GenericNodes.Visual.Nodes
         public NodeId NodeId => Data.NodeId;
         public Vector2 ParentPositionShift => Transform.anchoredPosition;
         public IGenericFieldParent Parent => null;
+        
+
         public WorkspaceArea Workspace { get; private set; }
         
         protected override void Awake() {
@@ -76,6 +78,10 @@ namespace GenericNodes.Visual.Nodes
             for (int i = 0; i < fields.Count; ++i) {
                 fields[i].RebuildLinks();
             }
+        }
+        
+        public void SetLinkedNodeId(NodeId nodeId) {
+            //here goes nothing because node visual is always an input side of the link
         }
     }
 }

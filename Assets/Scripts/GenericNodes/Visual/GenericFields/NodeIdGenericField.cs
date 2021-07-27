@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using GenericNodes.Mech.Data;
 using GenericNodes.Mech.Fields;
 using GenericNodes.Visual.Interfaces;
-using GenericNodes.Visual.Links;
 using GenericNodes.Visual.Nodes;
 using TMPro;
 using UnityEngine;
@@ -12,7 +11,7 @@ using UnityEngine.UI;
 namespace GenericNodes.Visual.GenericFields {
     
     public class NodeIdGenericField : MonoBehaviour,
-                                      IGenericFieldParent,
+                                      INodeIdSocketContainer,
                                       IGenericField {
         [SerializeField] private TextMeshProUGUI textLabel;
         [SerializeField] private NodeSocketVisual linkSocket;
@@ -25,6 +24,7 @@ namespace GenericNodes.Visual.GenericFields {
         public NodeId NodeId => MasterNode.NodeId;
         public Vector2 ParentPositionShift => Transform.anchoredPosition + Parent.ParentPositionShift;
         public IGenericFieldParent Parent { get; private set; }
+
         public RectTransform Transform => rectTransform ??= GetComponent<RectTransform>();
         
         private void Awake() {
@@ -33,7 +33,7 @@ namespace GenericNodes.Visual.GenericFields {
         }
 
         private void OnDisable() {
-            UnlinkSocketIfNeeded();
+            UnlinkSocket();
         }
 
         private void OnDestroy() {
@@ -50,8 +50,11 @@ namespace GenericNodes.Visual.GenericFields {
             textLabel.text = Field.Name;
             linkSocket.Initialize(this);
             
-            UnlinkSocketIfNeeded();
-            
+            UnlinkSocket();
+        }
+        
+        public void SetLinkedNodeId(NodeId nodeId) {
+            Field.SetId(nodeId);
         }
 
         public void SetData(NodeVisual nodeVisual, DataField data, IGenericFieldParent fieldParent) {
@@ -61,38 +64,30 @@ namespace GenericNodes.Visual.GenericFields {
         }
 
         public void Destroy() {
-            UnlinkSocketIfNeeded();
+            UnlinkSocket();
             Field = null;
             GameObject.Destroy(gameObject);
         }
 
         public void RebuildLinks() {
-            UnlinkSocketIfNeeded();
+            UnlinkSocket();
             if (Field.Value != NodeId.None) {
                 MasterNode.Workspace.LinkSystem.LinkSocketToNode(linkSocket, Field.Value);
             }
         }
     
         private void ProcessLinkButtonClick() {
-            UnlinkSocketIfNeeded();
+            UnlinkSocket();
             MasterNode.Workspace.LinkSystem.ProcessLinkSocketClick(linkSocket);
         }
 
-        private void UnlinkSocketIfNeeded() {
-            //if (Field != null && Field.Value != NodeId.None) {
+        private void UnlinkSocket() {
             MasterNode?.Workspace?.LinkSystem?.UnlinkSocket(linkSocket);
-            //}
         }
         
-        // private void ProcessSocketLinked(INodeLinkSocket socket, NodeId nodeId) {
-        //     Field.SetId(nodeId);
-        // }
-        
         private void ProcessLinkedNodeIdChanged(NodeIdDataField dataField) {
-            //if (linkSocket.LinkedToId != dataField.Value) {
-            UnlinkSocketIfNeeded();
+            UnlinkSocket();
             MasterNode.Workspace.LinkSystem.LinkSocketToNode(linkSocket, dataField.Value);
-            //}
         }
     }
     

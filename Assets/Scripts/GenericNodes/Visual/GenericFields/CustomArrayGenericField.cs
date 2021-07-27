@@ -58,7 +58,7 @@ namespace GenericNodes.Visual.GenericFields {
         }
         
         public void RebuildLinks() {
-            for (int i = 0; i < arrayElements.Count; ++i) {
+            for (int i = 0; i < Field.Elements.Count; ++i) {
                 arrayElements[i].RebuildLinks();
             }
         }

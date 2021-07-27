@@ -20,19 +20,11 @@ namespace GenericNodes.Visual.Links {
         }
 
         public void Reset() {
-            //SourceSocket.LinkSocketTo(NodeId.None);
-            //TargetSocket.LinkSocketTo(NodeId.None);
             SourceSocket = null;
             TargetSocket = null;
             gameObject.SetActive(false);
         }
-
-        // private void Update() {
-        //     if (SourceSocket != null && TargetSocket != null) {
-        //         RefreshLink();
-        //     }
-        // }
-
+        
         public void RefreshLink() {
             if (LineRenderer != null) {
                 if (SourceSocket != null && TargetSocket != null) {
@@ -45,9 +37,5 @@ namespace GenericNodes.Visual.Links {
                 }
             }
         }
-
-        // public void ConnectSockets() {
-        //     //SourceSocket.LinkSocketTo(TargetSocket.Id);
-        // }
     }
 }

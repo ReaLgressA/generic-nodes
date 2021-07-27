@@ -14,5 +14,7 @@ namespace GenericNodes.Visual.Links {
         event Action PositionChanged;
 
         //void LinkSocketTo(NodeId nodeId);
+
+        public void SetLinkedNodeId(NodeId id);
     }
 }

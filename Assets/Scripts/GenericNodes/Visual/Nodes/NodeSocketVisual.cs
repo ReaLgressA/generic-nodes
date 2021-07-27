@@ -30,15 +30,12 @@ namespace GenericNodes.Visual.Nodes {
         public RectTransform Transform => rectTransform ??= GetComponent<RectTransform>();
 
         public NodeSocketMode Mode => mode;
-        //public event Action<INodeLinkSocket, NodeId> SocketLinked;
         public event Action PositionChanged;
+        
+        public INodeIdSocketContainer SocketContainer { get; private set; }
+        public NodeId Id => SocketContainer.NodeId;
 
-        public IGenericFieldParent FieldParent { get; private set; }
-        public NodeId Id => FieldParent.NodeId;
-        
-        //public NodeId LinkedToId { get; private set; } = NodeId.None;
-        
-        public Vector2 Position => Transform.anchoredPosition + FieldParent.ParentPositionShift;
+        public Vector2 Position => Transform.anchoredPosition + SocketContainer.ParentPositionShift;
 
         public Color LinkColor => socketColor;
 
@@ -49,12 +46,12 @@ namespace GenericNodes.Visual.Nodes {
             }
         }
 
-        public void Initialize(NodeVisual nodeVisual) {
-            FieldParent = nodeVisual;
+        public void Initialize(INodeIdSocketContainer nodeVisual) {
+            SocketContainer = nodeVisual;
         }
 
-        public void Initialize(NodeIdGenericField nodeIdField) {
-            FieldParent = nodeIdField;
+        public void SetLinkedNodeId(NodeId id) {
+            
         }
 
         // public void LinkSocketTo(NodeId nodeId) {

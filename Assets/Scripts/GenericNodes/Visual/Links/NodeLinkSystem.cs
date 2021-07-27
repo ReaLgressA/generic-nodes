@@ -85,6 +85,7 @@ namespace GenericNodes.Visual.Links {
                 if (socket.Mode == NodeSocketMode.Output) {
                     link.SetupLink(socket, workspace.GetNode(nodeId).GetLinkSocket());
                     nodeLinks.Add(link);
+                    
                     //link.ConnectSockets();
                 } else {
                     Debug.LogError("Can't connect input socket as output");

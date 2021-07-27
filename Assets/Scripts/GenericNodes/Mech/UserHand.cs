@@ -25,9 +25,9 @@ namespace GenericNodes.Mech {
         
         public event Action<INodeLinkSocket, NodeId> SocketLinked;
         public event Action PositionChanged;
-
-        public void LinkSocketTo(NodeId nodeId) {
-            //Hand only receives the link, so no need to link anything
+        
+        public void SetLinkedNodeId(NodeId id) {
+            //Hand only receives the link, so no need to link anything            
         }
 
         public UserHand(WorkspaceArea workspaceArea) {
