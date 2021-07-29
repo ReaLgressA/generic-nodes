@@ -7,9 +7,10 @@ using UnityEngine;
 
 namespace GenericNodes.Mech.Data {
     public class GraphSchemeProvider {
-        public List<GraphScheme> Schemes { get; private set; } = new List<GraphScheme>();
+        public List<GraphScheme> Schemes { get; } = new List<GraphScheme>();
 
         public void Setup(GenericNodesProjectInfo projectInfo) {
+            Schemes.Clear();
             string schemesDirectoryPath = Path.Combine(projectInfo.AbsoluteRootPath, "Schemes");
             if (!Directory.Exists(schemesDirectoryPath)) {
                 Directory.CreateDirectory(schemesDirectoryPath);
