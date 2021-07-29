@@ -10,14 +10,7 @@ namespace GenericNodes.Mech
         public GraphData Data { get; private set; }
     
         public GraphScheme Scheme { get; private set; }
-    
-        void Awake() {
-            //Scheme = new GraphScheme();
-            //Scheme.FromJson(StringExtensions.ReadJson("scheme-game-event.json"));
         
-            //Data = Scheme.CreateGraph();
-        }
-
         void Start() {
             hud.OpenGraph(null);
         }

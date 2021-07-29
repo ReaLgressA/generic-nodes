@@ -14,6 +14,15 @@
       "dependencies": {},
       "hash": "b0a4b1301d24e297255bcad54ddae79d883d7971"
     },
+    "com.realgressa.vaultkeeper": {
+      "version": "https://github.com/ReaLgressA/vault-keeper.git?path=/Assets/VaultKeeper/#1.0.0",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.realgressa.sharpziplib": "https://github.com/ReaLgressA/SharpZipLib.git?path=/SharpZipLib/Assets/"
+      },
+      "hash": "327a15304fc0c6632bf1e12f0b9d3a08621c69ff"
+    },
     "com.unity.2d.animation": {
       "version": "5.0.5",
       "depth": 1,
