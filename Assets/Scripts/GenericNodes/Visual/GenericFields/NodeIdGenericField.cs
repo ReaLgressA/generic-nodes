@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using GenericNodes.Mech.Data;
 using GenericNodes.Mech.Fields;
 using GenericNodes.Visual.Interfaces;
@@ -52,7 +50,11 @@ namespace GenericNodes.Visual.GenericFields {
             
             UnlinkSocket();
         }
-        
+
+        private void Update() {
+            textLabel.text = Field == null ? "NULL" : $"{Field.Name}[{Field.Value.Id}]";
+        }
+
         public void SetLinkedNodeId(NodeId nodeId) {
             Field.SetId(nodeId);
         }
