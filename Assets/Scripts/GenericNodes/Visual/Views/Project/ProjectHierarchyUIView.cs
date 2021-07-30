@@ -16,7 +16,7 @@ namespace GenericNodes.Visual.Views.Project {
                                           IFilePathEntryManager {
         private DirectoryWatcher directoryWatcher = null;
 
-        private GenericNodesProjectInfo Info { get; set; }
+        public GenericNodesProjectInfo Info { get; private set; }
         private ProjectUIView ProjectView { get; set; }
 
         [SerializeField] private NodeEditorController nodeEditorController;

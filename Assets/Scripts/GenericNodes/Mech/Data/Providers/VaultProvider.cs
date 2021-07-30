@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using VaultKeeper.Data;
+using VaultKeeper.Data.PackageContent;
 
 namespace GenericNodes.Mech.Data {
     public class VaultProvider {
@@ -21,15 +22,18 @@ namespace GenericNodes.Mech.Data {
                 try {
                     Vault vault = await Vault.ImportVault(files[i].FullName);
                     if (vault != null) {
+                        Debug.Log($"Import vault {files[i].Name} with {vault.Packages} packages.");
                         Vaults.Add(vault);
+                    } else {
+                        Debug.LogError($"Failed to import vault by path: {files[i].FullName}");
                     }
                 } catch (Exception ex) {
-                    Debug.LogError($"Failed to parse graph scheme by path: {files[i].FullName}. Exception: {ex.Message}\n{ex.StackTrace}");
+                    Debug.LogError($"Failed to parse vault file by path: {files[i].FullName}. Exception: {ex.Message}\n{ex.StackTrace}");
                 }
             }
         }
 
-        public void GetSprites(string packageLabel, List<Sprite> sprites) {
+        public void GetSprites(string packageLabel, List<VaultPackageContentSprites.SpriteSettings> sprites) {
             sprites.Clear();
             for (int i = 0; i < Vaults.Count; ++i) {
                 for (int j = 0; j < Vaults[i].Packages.Count; ++j) {
@@ -38,13 +42,37 @@ namespace GenericNodes.Mech.Data {
             }
         }
 
-        private void GetPackageSprites(VaultPackage package, string packageLabel, List<Sprite> sprites) {
-            if (!package.Label.Equals(packageLabel, StringComparison.Ordinal)) {
+        private void GetPackageSprites(VaultPackage package, string packageLabel,
+                                       List<VaultPackageContentSprites.SpriteSettings> sprites) {
+            
+            if (!string.IsNullOrWhiteSpace(packageLabel) 
+                && !package.Label.Equals(packageLabel, StringComparison.Ordinal)) {
                 return;
             }
             for (int i = 0; i < package.ContentSprites.Sprites.Count; ++i) {
-                sprites.Add(package.ContentSprites.Sprites[i].sprite);
+                sprites.Add(package.ContentSprites.Sprites[i]);
             }
+        }
+
+        private VaultPackageContentSprites.SpriteSettings GetSprite(VaultPackage package, string id) {
+            for (int i = 0; i < package.ContentSprites.Sprites.Count; ++i) {
+                if (string.Equals(package.ContentSprites.Sprites[i].id, id, StringComparison.Ordinal)) {
+                    return package.ContentSprites.Sprites[i];
+                }
+            }
+            return null;
+        }
+
+        public VaultPackageContentSprites.SpriteSettings GetSprite(string id) {
+            for (int i = 0; i < Vaults.Count; ++i) {
+                for (int j = 0; j < Vaults[i].Packages.Count; ++j) {
+                    var sprite = GetSprite(Vaults[i].Packages[j], id);
+                    if (sprite != null) {
+                        return sprite;
+                    }
+                }
+            }
+            return null;
         }
     }
 }

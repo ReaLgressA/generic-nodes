@@ -1879,7 +1879,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0000076293945}
+  m_AnchoredPosition: {x: 0, y: 0.0000038146973}
   m_SizeDelta: {x: 0, y: 128}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &947607672
@@ -3321,6 +3321,7 @@ MonoBehaviour:
   nodeIdGenericFieldPrefab: {fileID: 246270418227586197, guid: 2e29891bd175449ec98567e9c8d2ae53, type: 3}
   customObjectDataFieldPrefab: {fileID: 4519309711822325575, guid: 6ca6a8fd15ad67c47b5d8c5aba312d8f, type: 3}
   customArrayFieldPrefab: {fileID: 2874543658249645196, guid: 80a61f9281fc64045802c2d8439bccc3, type: 3}
+  spriteAssetFieldPrefab: {fileID: 3528246831251584340, guid: d4f40a83316ac4f53802ed4b0b5d087c, type: 3}
   prefabPopupMenuItem: {fileID: 1762330004199953547, guid: 6faf25271275d4245a23c87265e3f55c, type: 3}
   prefabPopupMenuCategory: {fileID: 0}
   prefabGenericNode: {fileID: 9122244761563238949, guid: 5b72efad617f40e4185e84b3476fc936, type: 3}
