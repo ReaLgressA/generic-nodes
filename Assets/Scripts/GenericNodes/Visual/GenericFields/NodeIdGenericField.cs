@@ -88,8 +88,10 @@ namespace GenericNodes.Visual.GenericFields {
         }
         
         private void ProcessLinkedNodeIdChanged(NodeIdDataField dataField) {
-            UnlinkSocket();
-            MasterNode.Workspace.LinkSystem.LinkSocketToNode(linkSocket, dataField.Value);
+            // UnlinkSocket();
+            // if (dataField.Value != NodeId.None) {
+            //     MasterNode.Workspace.LinkSystem.LinkSocketToNode(linkSocket, dataField.Value);
+            // }
         }
     }
     

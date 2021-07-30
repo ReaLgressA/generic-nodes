@@ -51,12 +51,9 @@ namespace GenericNodes.Visual.Nodes {
         }
 
         public void SetLinkedNodeId(NodeId id) {
-            
+            if (Mode == NodeSocketMode.Output) {
+                SocketContainer.SetLinkedNodeId(id);
+            }
         }
-
-        // public void LinkSocketTo(NodeId nodeId) {
-        //     //LinkedToId = nodeId;
-        //     SocketLinked?.Invoke(this, nodeId);
-        // }
     }
 }

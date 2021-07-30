@@ -69,7 +69,7 @@ namespace GenericNodes.Visual {
         }
 
         public NodeId GetNextNodeId() {
-            return new NodeId(lastNodeId++);
+            return new NodeId(++lastNodeId);
         }
         
         public Vector2 GetWorldPosition(Vector2 screenPosition) {

@@ -52,8 +52,8 @@ namespace GenericNodes.Mech {
         }
 
         public void Reset() {
-            Holdable = null;
             ClearNodeLinkIfNeeded();
+            Holdable = null;
             nodeVisual = null;
         }
 
@@ -79,6 +79,7 @@ namespace GenericNodes.Mech {
         private void ClearNodeLinkIfNeeded() {
             if (NodeLink != null) {
                 NodeLink.Reset();
+                workspaceArea.LinkSystem.ReleaseLink(NodeLink);
                 NodeLink = null;
             }    
         }

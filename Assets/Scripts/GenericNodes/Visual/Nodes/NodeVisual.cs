@@ -41,7 +41,7 @@ namespace GenericNodes.Visual.Nodes
         public void SetupData(WorkspaceArea workspaceArea, NodeData data) {
             Workspace = workspaceArea;
             Data = data;
-            textHeader.text = data.NodeType;
+            textHeader.text = $"{data.NodeType}[{data.NodeId.Id}]";
             ClearFields();
             for (int i = 0; i < data.Fields.Count; ++i) {
                 GameObject goField = Instantiate(PrefabDatabase.GetFieldPrefab(data.Fields[i].Type));
