@@ -146,7 +146,8 @@ namespace GenericNodes.Visual {
         public void RegisterNode(NodeVisual node) {
             nodes.Add(node);
             lastNodeId = Mathf.Max(lastNodeId, node.NodeId.Id);
-            node.OnActionClick += ProcessNodeClick;
+            node.OnActionLeftClick += ProcessNodeLeftClick;
+            node.OnActionRightClick += ProcessNodeRightClick;
             node.OnActionBeginDrag += ProcessNodeBeginDrag;
             node.OnActionEndDrag += ProcessNodeEndDrag;
         }
@@ -157,8 +158,15 @@ namespace GenericNodes.Visual {
             }
             Hand.Reset();
         }
-        
-        private void ProcessNodeClick(IHoldable holdable) {
+
+        private void ProcessNodeRightClick(IHoldable holdable) {
+            if (GraphData == null || Hand.NodeLink != null) {
+                return;
+            }
+            Debug.Log($"RClick node: {(holdable as NodeVisual).Data.NodeId.Id}");
+        }
+
+        private void ProcessNodeLeftClick(IHoldable holdable) {
             if (GraphData == null) {
                 return;
             }
@@ -196,6 +204,10 @@ namespace GenericNodes.Visual {
 
         public void Reset() {
             for (int i = 0; i < nodes.Count; ++i) {
+                nodes[i].OnActionLeftClick -= ProcessNodeLeftClick;
+                nodes[i].OnActionRightClick -= ProcessNodeRightClick;
+                nodes[i].OnActionBeginDrag -= ProcessNodeBeginDrag;
+                nodes[i].OnActionEndDrag -= ProcessNodeEndDrag;
                 Destroy(nodes[i].gameObject);
             }
             nodes.Clear();

@@ -11,7 +11,6 @@ namespace GenericNodes.Visual.PopupMenus {
         [SerializeField] private RectTransform rtrPopupRoot;
         [SerializeField] private RectTransform rtrItemsRoot;
         
-
         public List<PopupMenuItem> Items { get; private set; } = new List<PopupMenuItem>();
         
         private GraphScheme scheme;
