@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using GenericNodes.Mech.Extensions;
 using GenericNodes.Mech.Fields;
-using GenericNodes.Visual;
+using JsonParser;
 using UnityEngine;
 
 namespace GenericNodes.Mech.Data {
@@ -25,9 +25,9 @@ namespace GenericNodes.Mech.Data {
         
         public string NodeArrayName { get; private set; } = null;
 
-        public GraphData CreateGraph() {
+        public GraphData CreateGraph(string filePath) {
             NodeData graphInfo = new NodeData(this, Type, NodeId.None, Fields.CloneFields());
-            return new GraphData(Type, graphInfo, this);
+            return new GraphData(Type, graphInfo, this, filePath);
         }
 
         public void ToJsonObject(Hashtable ht) {
@@ -51,6 +51,15 @@ namespace GenericNodes.Mech.Data {
                 }
             }
             return null;
+        }
+
+        public DataField[] GetFieldsForNode(string nodeType) {
+            for (int i = 0; i < Nodes.Length; ++i) {
+                if (string.Equals(Nodes[i].Type, nodeType, StringComparison.Ordinal)) {
+                    return Nodes[i].Fields.CloneFields();
+                }
+            }
+            return new DataField[0];
         }
 
         public DataField[] GetCustomDataTypeFields(string objectType) {

@@ -23,35 +23,37 @@ namespace GenericNodes.Visual.Nodes {
 
         private Image iconSocket;
         private RectTransform rectTransform = null;
+        
+        private Vector2 lastTrackedPosition = Vector2.zero;
 
         public Image IconSocket => iconSocket ??= GetComponent<Image>();
         public RectTransform Transform => rectTransform ??= GetComponent<RectTransform>();
 
         public NodeSocketMode Mode => mode;
-        public event Action<INodeLinkSocket, NodeId> SocketLinked;
-
-        public IGenericFieldParent FieldParent { get; private set; }
-        public NodeId Id => FieldParent.NodeId;
+        public event Action PositionChanged;
         
-        public NodeId LinkedToId { get; private set; } = NodeId.None;
+        public INodeIdSocketContainer SocketContainer { get; private set; }
+        public NodeId Id => SocketContainer.NodeId;
 
-        public Vector2 Position => Transform.anchoredPosition + FieldParent.ParentPositionShift;
-            // NodeVisual.Transform.anchoredPosition + Transform.anchoredPosition +
-            // (NodeIdField == null ? Vector2.zero : NodeIdField.Transform.anchoredPosition);
+        public Vector2 Position => Transform.anchoredPosition + SocketContainer.ParentPositionShift;
 
         public Color LinkColor => socketColor;
 
-        public void Initialize(NodeVisual nodeVisual) {
-            FieldParent = nodeVisual;
+        private void Update() {
+            if ((Position - lastTrackedPosition).sqrMagnitude > 0.01f) {
+                PositionChanged?.Invoke();
+                lastTrackedPosition = Position;
+            }
         }
 
-        public void Initialize(NodeIdGenericField nodeIdField) {
-            FieldParent = nodeIdField;
+        public void Initialize(INodeIdSocketContainer nodeVisual) {
+            SocketContainer = nodeVisual;
         }
-        
-        public void LinkSocketTo(NodeId nodeId) {
-            LinkedToId = nodeId;
-            SocketLinked?.Invoke(this, nodeId);
+
+        public void SetLinkedNodeId(NodeId id) {
+            if (Mode == NodeSocketMode.Output) {
+                SocketContainer.SetLinkedNodeId(id);
+            }
         }
     }
 }

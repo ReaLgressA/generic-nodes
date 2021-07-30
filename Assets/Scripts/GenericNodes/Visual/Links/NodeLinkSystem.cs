@@ -1,22 +1,32 @@
 using System.Collections.Generic;
 using GenericNodes.Mech;
 using GenericNodes.Mech.Data;
+using GenericNodes.Utility;
 using GenericNodes.Visual.Nodes;
 using UnityEngine;
 
 namespace GenericNodes.Visual.Links {
     public class NodeLinkSystem : MonoBehaviour {
-        [SerializeField] private List<NodeLink> links = new List<NodeLink>();
+        [SerializeField] private NodeLink prefabNodeLink;
+        //[SerializeField] private List<NodeLink> links = new List<NodeLink>();
         [SerializeField] private WorkspaceArea workspace;
 
         private RectTransform rectTransform = null;
 
-        public List<NodeLink> nodeLinks = new List<NodeLink>();
+        //public List<NodeLink> nodeLinks = new List<NodeLink>();
 
+        public PrefabPool<NodeLink> poolNodeLinks;
+        
         public UserHand Hand => workspace.Hand;
 
         public RectTransform Transform => rectTransform ??= GetComponent<RectTransform>();
-        
+
+        public Dictionary<INodeLinkSocket, NodeLink> mapOutputSocketLinks = new Dictionary<INodeLinkSocket, NodeLink>();
+
+        private void Awake() {
+            poolNodeLinks = new PrefabPool<NodeLink>(prefabNodeLink, transform, 0);
+        }
+
         public bool ProcessLinkSocketClick(INodeLinkSocket socket) {
             if (Hand.IsFree) {
                 StartLinkFromSocket(socket);
@@ -32,6 +42,8 @@ namespace GenericNodes.Visual.Links {
 
         private void StartLinkFromSocket(INodeLinkSocket socket) {
             if (socket.Mode == NodeSocketMode.Output) {
+                UnlinkSocket(socket);
+                socket.SetLinkedNodeId(NodeId.None);
                 Hand.NodeLink = GetLink();
                 Hand.NodeLink.gameObject.SetActive(true);
                 Hand.NodeLink.SetupLink(socket, Hand.GetLinkSocket());
@@ -40,52 +52,44 @@ namespace GenericNodes.Visual.Links {
         
         private void TryLinkToSocket(NodeLink link, INodeLinkSocket socket) {
             if (socket.Mode == NodeSocketMode.Input) {
-                link.SetupLink(link.SourceSocket, socket);
-                nodeLinks.Add(link);
-                link.ConnectSockets();
-                Hand.NodeLink = null;
-            } else {
-                Hand.Reset();
+                NodeLink nodeLink = GetLink();
+                nodeLink.SetupLink(link.SourceSocket, socket);
+                nodeLink.SourceSocket.SetLinkedNodeId(nodeLink.TargetSocket.Id);
+                mapOutputSocketLinks[nodeLink.SourceSocket] = nodeLink;
             }
+            Hand.Reset();
         }
 
-        private NodeLink GetLink() {
-            for (int i = 0; i < links.Count; ++i) {
-                if (!links[i].gameObject.activeSelf) {
-                    return links[i];
-                }
-            }
-            return CreateExtraLink();
-        }
-
-        private NodeLink CreateExtraLink() {
-            NodeLink link = Instantiate(links[0], links[0].transform.parent);
-            link.transform.localScale = Vector3.one;
-            links.Add(link);
+        public NodeLink GetLink() {
+            NodeLink link = poolNodeLinks.Request();
+            link.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
             return link;
         }
 
-        public void UnlinkSocket(NodeSocketVisual socket) {
-            if (socket.Mode == NodeSocketMode.Output) {
-                for (int i = 0; i < nodeLinks.Count; ++i) {
-                    if (ReferenceEquals(socket, nodeLinks[i].SourceSocket)) {
-                        nodeLinks[i].Reset();
-                        nodeLinks.RemoveAt(i);
-                        return;
-                    }
-                }
-            } else {
-                Debug.LogError("Can't UnlinkOutputSocket, the socket is not in Output mode!");
+        public void ReleaseLink(NodeLink link) {
+            poolNodeLinks.Release(link);
+        }
+
+        public void UnlinkSocket(INodeLinkSocket socket) {
+            if (mapOutputSocketLinks.TryGetValue(socket, out NodeLink link)) {
+                link.Reset();
+                ReleaseLink(link);
+                mapOutputSocketLinks.Remove(socket);
             }
         }
 
         public void LinkSocketToNode(NodeSocketVisual socket, NodeId nodeId) {
             if (nodeId != NodeId.None) {
-                NodeLink link = GetLink();
                 if (socket.Mode == NodeSocketMode.Output) {
-                    link.SetupLink(socket, workspace.GetNode(nodeId).GetLinkSocket());
-                    nodeLinks.Add(link);
-                    link.ConnectSockets();
+                    INodeLinkSocket targetLinkSocket = workspace.GetNode(nodeId)?.GetLinkSocket();
+                    if (targetLinkSocket == null) {
+                        Debug.LogWarning($"Can't connect socket to node with id {nodeId}: node not found");
+                        return;
+                    }
+                    NodeLink nodeLink = GetLink();
+                    nodeLink.SetupLink(socket, targetLinkSocket);
+                    nodeLink.SourceSocket.SetLinkedNodeId(nodeLink.TargetSocket.Id);
+                    mapOutputSocketLinks[nodeLink.SourceSocket] = nodeLink;
                 } else {
                     Debug.LogError("Can't connect input socket as output");
                 }

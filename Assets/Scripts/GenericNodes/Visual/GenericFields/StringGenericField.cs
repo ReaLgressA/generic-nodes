@@ -30,6 +30,8 @@ namespace GenericNodes.Visual.GenericFields {
             GameObject.Destroy(gameObject);
         }
         
+        public void RebuildLinks() { }
+        
         private void ProcessEndEdit(string value) {
             Debug.Log($"End edit '{Field?.Name}' with value '{value}'");
             Field?.SetValue(value);

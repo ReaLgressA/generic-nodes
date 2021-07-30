@@ -6,6 +6,7 @@ using GenericNodes.Utility;
 using GenericNodes.Visual.Interfaces;
 using GenericNodes.Visual.Links;
 using GenericNodes.Visual.Nodes;
+using UnityEditor.Graphs;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -39,13 +40,23 @@ namespace GenericNodes.Visual {
         public RectTransform NodesRoot => rTrNodesRoot;
         public float CanvasScale => canvasScaler.scaleFactor;
         public UserHand Hand { get; set; }
+        
+        public GraphData GraphData { get; private set; }
+
+        public void SetGraphData(GraphData graphData) {
+            Hand.Reset();
+            GraphData = graphData;
+            lastNodeId = 0;
+        }
 
         private void Awake() {
-            //rTransform = GetComponent<RectTransform>();
             Hand = new UserHand(this);
         }
 
         private void LateUpdate() {
+            if (GraphData == null) {
+                return;
+            }
             Hand.Update(Time.deltaTime);
             if (isLmbHeld) {
                 ProcessLmbHold(Input.mousePosition);
@@ -58,7 +69,7 @@ namespace GenericNodes.Visual {
         }
 
         public NodeId GetNextNodeId() {
-            return new NodeId(lastNodeId++);
+            return new NodeId(++lastNodeId);
         }
         
         public Vector2 GetWorldPosition(Vector2 screenPosition) {
@@ -70,6 +81,9 @@ namespace GenericNodes.Visual {
         }
 
         public void OnPointerClick (PointerEventData eventData) {
+            if (GraphData == null) {
+                return;
+            }
             if (eventData.button == PointerEventData.InputButton.Left) {
                 OnInterruptRmbClick?.Invoke();
                 OnAreaLmbClick?.Invoke(eventData.position);
@@ -80,6 +94,9 @@ namespace GenericNodes.Visual {
         }
 
         public void OnPointerDown(PointerEventData eventData) {
+            if (GraphData == null) {
+                return;
+            }
             if (eventData.button == PointerEventData.InputButton.Left) {
                 OnInterruptRmbClick?.Invoke();
                 if (!isLmbHeld) {
@@ -95,6 +112,9 @@ namespace GenericNodes.Visual {
         }
 
         public void OnPointerUp(PointerEventData eventData) {
+            if (GraphData == null) {
+                return;
+            }
             if (isLmbHeld && eventData.button == PointerEventData.InputButton.Left) {
                 OnInterruptRmbClick?.Invoke();
                 isLmbHeld = false;
@@ -108,27 +128,40 @@ namespace GenericNodes.Visual {
         }
 
         private void ProcessLmbHold(Vector2 pointerPosition) {
+            if (GraphData == null) {
+                return;
+            }
             UpdateWorkspaceShift(GetWorldPosition(pointerPosition));
             OnInterruptRmbClick?.Invoke();
         }
         
         private void ProcessMmbRelease(Vector2 pointerPosition) {
+            if (GraphData == null) {
+                return;
+            }
             UpdateWorkspaceShift(GetWorldPosition(pointerPosition));
             OnInterruptRmbClick?.Invoke();
         }
 
         public void RegisterNode(NodeVisual node) {
             nodes.Add(node);
+            lastNodeId = Mathf.Max(lastNodeId, node.NodeId.Id);
             node.OnActionClick += ProcessNodeClick;
             node.OnActionBeginDrag += ProcessNodeBeginDrag;
             node.OnActionEndDrag += ProcessNodeEndDrag;
         }
 
         private void ProcessNodeEndDrag(IHoldable holdable) {
+            if (GraphData == null) {
+                return;
+            }
             Hand.Reset();
         }
         
         private void ProcessNodeClick(IHoldable holdable) {
+            if (GraphData == null) {
+                return;
+            }
             if (Hand.NodeLink != null) {
                 NodeVisual node = holdable as NodeVisual;
                 INodeLinkSocket linkSocket = node.GetLinkSocket();
@@ -139,6 +172,9 @@ namespace GenericNodes.Visual {
         }
 
         private void ProcessNodeBeginDrag(IHoldable holdable) {
+            if (GraphData == null) {
+                return;
+            }
             if (Hand.Holdable == null) {
                 Hand.SetHoldableItem(holdable);
             }
@@ -156,6 +192,48 @@ namespace GenericNodes.Visual {
                 }
             }
             return null;
+        }
+
+        public void Reset() {
+            for (int i = 0; i < nodes.Count; ++i) {
+                Destroy(nodes[i].gameObject);
+            }
+            nodes.Clear();
+        }
+
+        public void ExportNodesToGraph() {
+            if (GraphData == null) {
+                Debug.LogError("No graphData to export nodes!");
+                return;
+            }
+            GraphData.Nodes.Clear();
+            for (int i = 0; i < nodes.Count; ++i) {
+                nodes[i].Data.Position = nodes[i].Transform.anchoredPosition;
+                GraphData.Nodes.Add(nodes[i].Data);
+            }
+        }
+
+        public void RebuildNodesFromGraphData() {
+            Reset();
+            for (int i = 0; i < GraphData.Nodes.Count; ++i) {
+                NodeData nodeData = GraphData.Nodes[i];
+                NodeVisual nodeVisual = SpawnNodeVisual(nodeData);
+                RegisterNode(nodeVisual);
+            }
+            for (int i = 0; i < nodes.Count; ++i) {
+                nodes[i].RebuildLinks();
+            }
+        }
+
+        private NodeVisual SpawnNodeVisual(NodeData nodeData) {
+            NodeVisual node = Instantiate(PrefabDatabase.Instance.PrefabGenericNode, NodesRoot.parent);
+            RectTransform rtr = node.GetComponent<RectTransform>();
+            rtr.localScale = Vector3.one;
+            rtr.anchoredPosition = nodeData.Position;
+            rtr.SetParent(NodesRoot);
+            rtr.SetAsLastSibling();
+            node.SetupData(this, nodeData);
+            return node;
         }
     }
 }

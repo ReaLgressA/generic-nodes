@@ -14,16 +14,23 @@ namespace GenericNodes.Visual.Nodes {
         }
         
         public NodeSocketVisual GetFreeSocket() {
-            for (int i = 0; i < sockets.Count; ++i) {
-                if (!sockets[i].gameObject.activeSelf) {
-                    sockets[i].Initialize(nodeVisual);
-                    sockets[i].gameObject.SetActive(true);
-                    sockets[i].transform.SetAsLastSibling();
-                    sockets[i].SocketLinked += ProcessSocketLinked;
-                    return sockets[i];
-                }
+            if (sockets.Count == 0) {
+                return CreateExtraSocket();
             }
-            return CreateExtraSocket();
+            sockets[0].Initialize(nodeVisual);
+            sockets[0].gameObject.SetActive(true);
+            sockets[0].transform.SetAsLastSibling();
+            return sockets[0];
+            // for (int i = 0; i < sockets.Count; ++i) {
+            //     if (!sockets[i].gameObject.activeSelf) {
+            //         sockets[i].Initialize(nodeVisual);
+            //         sockets[i].gameObject.SetActive(true);
+            //         sockets[i].transform.SetAsLastSibling();
+            //         //sockets[i].SocketLinked += ProcessSocketLinked;
+            //         return sockets[i];
+            //     }
+            // }
+            // return CreateExtraSocket();
         }
 
         private NodeSocketVisual CreateExtraSocket() {
@@ -38,16 +45,16 @@ namespace GenericNodes.Visual.Nodes {
         public void ReleaseSocket(INodeLinkSocket linkSocket) {
             for (int i = 0; i < sockets.Count; ++i) {
                 if (ReferenceEquals(linkSocket, sockets[i])) {
-                    sockets[i].SocketLinked -= ProcessSocketLinked;
+                    //sockets[i].SocketLinked -= ProcessSocketLinked;
                     sockets[i].gameObject.SetActive(false);
                 }   
             }
         }
         
-        private void ProcessSocketLinked(INodeLinkSocket socket, NodeId nodeId) {
-            if (nodeId == NodeId.None) {
-                ReleaseSocket(socket);
-            }
-        }
+        // private void ProcessSocketLinked(INodeLinkSocket socket, NodeId nodeId) {
+        //     if (nodeId == NodeId.None) {
+        //         ReleaseSocket(socket);
+        //     }
+        // }
     }
 }

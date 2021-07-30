@@ -10,10 +10,24 @@ namespace GenericNodes.Visual
         [SerializeField] private PopupMenu popupMenu;
     
         public void OpenGraph(GraphData data) {
+            UnsubscribeFromEvents();
+            if (data != null) {
+                SubscribeForEvents();
+                infoPanel.SetupData(data);
+                popupMenu.SetupScheme(data.Scheme);
+            } else {
+                infoPanel.SetupData(null);
+            }
+        }
+
+        private void SubscribeForEvents() {
             workspaceArea.OnAreaRmbClick += OpenNodeCreatePopupMenu;
             workspaceArea.OnInterruptRmbClick += popupMenu.Hide;
-            infoPanel.SetupData(data.Type, data.Info);
-            popupMenu.SetupScheme(data.Scheme);
+        }
+        
+        private void UnsubscribeFromEvents() {
+            workspaceArea.OnAreaRmbClick -= OpenNodeCreatePopupMenu;
+            workspaceArea.OnInterruptRmbClick -= popupMenu.Hide;
         }
 
         private void OpenNodeCreatePopupMenu(Vector2 position) {

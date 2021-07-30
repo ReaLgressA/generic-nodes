@@ -30,7 +30,9 @@ namespace GenericNodes.Visual.GenericFields {
             Field = null;
             GameObject.Destroy(gameObject);
         }
-        
+
+        public void RebuildLinks() { }
+
         private void ProcessToggle(bool value) {
             Field?.SetValue(value);   
         }

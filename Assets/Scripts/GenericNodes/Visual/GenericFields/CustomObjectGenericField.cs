@@ -53,6 +53,12 @@ namespace GenericNodes.Visual.GenericFields {
             Destroy(gameObject);
         }
         
+        public void RebuildLinks() {
+            for (int i = 0; i < genericFields.Count; ++i) {
+                genericFields[i].RebuildLinks();
+            }
+        }
+        
         private void ClearFields() {
             for (int i = 0; i < genericFields.Count; ++i) {
                 genericFields[i].Destroy();

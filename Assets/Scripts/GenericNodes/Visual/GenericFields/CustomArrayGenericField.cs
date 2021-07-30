@@ -41,18 +41,26 @@ namespace GenericNodes.Visual.GenericFields {
             Field = data;
             textLabel.text = Field.Name;
             Field.ElementsUpdated += RefreshElementsList;
+            RefreshElementsList();
         }
 
         public void SetData(NodeVisual nodeVisual, DataField data, IGenericFieldParent fieldParent) {
             MasterNode = nodeVisual;
             Parent = fieldParent;
             SetData(data as GenericArrayDataField);
+            RefreshElementsList();
         }
 
         public void Destroy() {
             Field.ElementsUpdated -= RefreshElementsList;
             Field = null;
             GameObject.Destroy(gameObject);
+        }
+        
+        public void RebuildLinks() {
+            for (int i = 0; i < Field.Elements.Count; ++i) {
+                arrayElements[i].RebuildLinks();
+            }
         }
         
         private void AddNewElement() {
@@ -73,6 +81,7 @@ namespace GenericNodes.Visual.GenericFields {
                 arrayElements[i].SetData(MasterNode, Field.Elements[i], this);
                 arrayElements[i].gameObject.SetActive(true);
             }
+            RebuildLinks();
         }
 
         private void ResetElements() {

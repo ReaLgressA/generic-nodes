@@ -5,7 +5,8 @@ using TMPro;
 using UnityEngine;
 
 namespace GenericNodes.Visual.GenericFields {
-    public class FloatGenericField : MonoBehaviour, IGenericField {
+    public class FloatGenericField : MonoBehaviour,
+                                     IGenericField {
         [SerializeField] private TextMeshProUGUI textLabel;
         [SerializeField] private TMP_InputField inputFieldContent;
 
@@ -30,6 +31,8 @@ namespace GenericNodes.Visual.GenericFields {
             Field = null;
             GameObject.Destroy(gameObject);
         }
+        
+        public void RebuildLinks() { }
         
         private void ProcessEndEdit(string value) {
             Debug.Log($"End edit '{Field?.Name}' with value '{value}'");

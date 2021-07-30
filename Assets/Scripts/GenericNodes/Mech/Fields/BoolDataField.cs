@@ -1,4 +1,5 @@
 using System.Collections;
+using JsonParser;
 
 namespace GenericNodes.Mech.Fields {
     public class BoolDataField : DataField {

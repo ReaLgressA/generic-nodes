@@ -1,0 +1,17 @@
+{
+    "name": "com.realgressa.genericnodes",
+    "displayName": "Generic Nodes",
+    "version": "0.1.0",
+    "unity": "2020.3",
+    "description": "Customizable graph editor with export to json",
+    "keywords": [
+        "json",
+        "unity"
+    ],
+    "category": "Unity",
+    "dependencies": {
+        "com.realgressa.sharpziplib": "https://github.com/ReaLgressA/SharpZipLib.git?path=/SharpZipLib/Assets/",
+        "com.realgressa.jsonparser": "https://github.com/ReaLgressA/json-parser.git?path=/Assets/",
+        "com.unity.textmeshpro": "3.0.6"
+    }
+}

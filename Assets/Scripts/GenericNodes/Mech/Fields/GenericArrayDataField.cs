@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GenericNodes.Mech.Data;
 using GenericNodes.Mech.Extensions;
+using JsonParser;
 
 namespace GenericNodes.Mech.Fields {
     public class GenericArrayDataField : DataField {
@@ -66,12 +67,24 @@ namespace GenericNodes.Mech.Fields {
         }
 
         public override void FromJson(Hashtable ht, bool isAddition = false) {
-            //TODO: Generic array deserealization
+            if (ht.Contains(Name) && ht[Name] != null) {
+                if (ht[Name] is ArrayList array) {
+                    Elements = new List<CustomObjectDataField>(array.Count);
+                    for (int i = 0; i < array.Count; i++) {
+                        CustomObjectDataField item = new CustomObjectDataField(Scheme);
+                        if (array[i] != null) {
+                            Hashtable htDataField = (Hashtable)array[i];
+                            item.FromJson(htDataField);
+                        }
+                        Elements.Add(item);
+                    }
+                }
+            }
+            ElementsUpdated?.Invoke();
         }
         
         public override void ToJsonObject(Hashtable ht) {
-            //TODO: Generic array serialization
-            //ht[Name] = ;
+            ht[Name] = Elements;
         }
         
         public override DataField Clone() {

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using GenericNodes.Mech.Data;
 using GenericNodes.Mech.Extensions;
+using JsonParser;
 
 namespace GenericNodes.Mech.Fields {
     public class CustomObjectDataField : DataField {
@@ -37,11 +37,17 @@ namespace GenericNodes.Mech.Fields {
         }
 
         public override void FromJson(Hashtable ht, bool isAddition = false) {
-            //ObjectType = ht.GetString(Keys.OBJECT_TYPE, ObjectType);
+            ObjectType = ht.GetString(Keys.OBJECT_TYPE, ObjectType);
+            for (int i = 0; i < Fields.Length; ++i) {
+                Fields[i].FromJson(ht);
+            }
         }
 
         public override void ToJsonObject(Hashtable ht) {
-            //ht[Keys.OBJECT_TYPE] = ObjectType;
+            ht[Keys.OBJECT_TYPE] = ObjectType;
+            for (int i = 0; i < Fields.Length; ++i) {
+                Fields[i].ToJsonObject(ht);
+            }
         }
 
         public override DataField Clone() {

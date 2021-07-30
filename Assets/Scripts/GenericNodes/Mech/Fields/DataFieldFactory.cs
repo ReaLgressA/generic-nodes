@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using GenericNodes.Mech.Data;
+using JsonParser;
 
 namespace GenericNodes.Mech.Fields {
     public static class DataFieldFactory {

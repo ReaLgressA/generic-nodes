@@ -33,6 +33,8 @@ namespace GenericNodes.Visual.GenericFields {
             GameObject.Destroy(gameObject);
         }
         
+        public void RebuildLinks() { }
+        
         private void ProcessDropdownSelection(int selectedIndex) {
             Debug.Log($"End edit '{Field?.Name}' with value '{selectedIndex}'");
             Field?.SetValue(selectedIndex);

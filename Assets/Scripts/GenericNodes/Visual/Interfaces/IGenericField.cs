@@ -7,5 +7,7 @@ namespace GenericNodes.Visual.Interfaces {
         void SetData(NodeVisual nodeVisual, DataField data, IGenericFieldParent fieldParent);
         
         void Destroy();
+
+        void RebuildLinks();
     }
 }

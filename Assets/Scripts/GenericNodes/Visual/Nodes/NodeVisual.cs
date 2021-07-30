@@ -10,8 +10,8 @@ namespace GenericNodes.Visual.Nodes
 {
     [RequireComponent(typeof(RectTransform))]
     public class NodeVisual : DraggableEventTrigger,
+                              INodeIdSocketContainer,
                               INodeLinkSocketProvider,
-                              IGenericFieldParent,
                               IHoldable {
         
         [SerializeField] private Image imageBackground;
@@ -29,6 +29,8 @@ namespace GenericNodes.Visual.Nodes
         public NodeId NodeId => Data.NodeId;
         public Vector2 ParentPositionShift => Transform.anchoredPosition;
         public IGenericFieldParent Parent => null;
+        
+
         public WorkspaceArea Workspace { get; private set; }
         
         protected override void Awake() {
@@ -39,7 +41,7 @@ namespace GenericNodes.Visual.Nodes
         public void SetupData(WorkspaceArea workspaceArea, NodeData data) {
             Workspace = workspaceArea;
             Data = data;
-            textHeader.text = data.NodeType;
+            textHeader.text = $"{data.NodeType}[{data.NodeId.Id}]";
             ClearFields();
             for (int i = 0; i < data.Fields.Count; ++i) {
                 GameObject goField = Instantiate(PrefabDatabase.GetFieldPrefab(data.Fields[i].Type));
@@ -70,6 +72,16 @@ namespace GenericNodes.Visual.Nodes
 
         public void ReleaseSocket(INodeLinkSocket linkSocket) {
             socketArray.ReleaseSocket(linkSocket);
+        }
+
+        public void RebuildLinks() {
+            for (int i = 0; i < fields.Count; ++i) {
+                fields[i].RebuildLinks();
+            }
+        }
+        
+        public void SetLinkedNodeId(NodeId nodeId) {
+            //here goes nothing because node visual is always an input side of the link
         }
     }
 }
