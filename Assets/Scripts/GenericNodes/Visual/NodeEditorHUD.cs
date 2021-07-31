@@ -1,4 +1,5 @@
 using GenericNodes.Mech.Data;
+using GenericNodes.Visual.Nodes;
 using GenericNodes.Visual.PopupMenus;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ namespace GenericNodes.Visual
         [SerializeField] private WorkspaceArea workspaceArea;
         [SerializeField] private NodeEditorInfoPanel infoPanel;
         [SerializeField] private PopupMenu popupMenu;
-    
+
         public void OpenGraph(GraphData data) {
             UnsubscribeFromEvents();
             if (data != null) {
@@ -21,6 +22,7 @@ namespace GenericNodes.Visual
         }
 
         private void SubscribeForEvents() {
+            workspaceArea.OnNodeRightClick += OpenNodePopupMenu;
             workspaceArea.OnAreaRmbClick += OpenNodeCreatePopupMenu;
             workspaceArea.OnInterruptRmbClick += popupMenu.Hide;
         }
@@ -30,8 +32,18 @@ namespace GenericNodes.Visual
             workspaceArea.OnInterruptRmbClick -= popupMenu.Hide;
         }
 
+        private void OpenNodePopupMenu(Vector2 position, NodeVisual nodeVisual) {
+            if (infoPanel.Data != null) {
+                popupMenu.SetupNode(nodeVisual);
+                popupMenu.Show("Node Options", position);
+            }
+        }
+        
         private void OpenNodeCreatePopupMenu(Vector2 position) {
-            popupMenu.Show("Create Node", position);
+            if (infoPanel.Data != null) {
+                popupMenu.SetupScheme(infoPanel.Data.Scheme);
+                popupMenu.Show("Create Node", position);
+            }
         }
     }
 }

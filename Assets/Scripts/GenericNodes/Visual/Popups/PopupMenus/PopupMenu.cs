@@ -11,11 +11,14 @@ namespace GenericNodes.Visual.PopupMenus {
         [SerializeField] private RectTransform rtrPopupRoot;
         [SerializeField] private RectTransform rtrItemsRoot;
         
-        public List<PopupMenuItem> Items { get; private set; } = new List<PopupMenuItem>();
+        public List<PopupMenuItem> Items { get; } = new List<PopupMenuItem>();
         
         private GraphScheme scheme;
+        private NodeVisual nodeVisual;
 
         public void Reset() {
+            scheme = null;
+            nodeVisual = null;
             for (int i = 0; i < Items.Count; ++i) {
                 Destroy(Items[i].gameObject);
             }
@@ -28,6 +31,25 @@ namespace GenericNodes.Visual.PopupMenus {
             for (int i = 0; i < scheme.Nodes.Length; ++i) {
                 AddPopupMenuItem(scheme.Nodes[i]);
             }
+        }
+        
+        public void SetupNode(NodeVisual nodeVisual) {
+            Reset();
+            this.nodeVisual = nodeVisual;
+            
+            var item = InstantiateItem();
+            item.Initilize("Delete", ApplyNodeOptionAction);
+            Items.Add(item);
+            
+        }
+
+        private void ApplyNodeOptionAction(string actionName) {
+            switch (actionName) {
+                case "Delete":
+                    workspaceArea.DeleteNode(nodeVisual.Data.NodeId);
+                    break;
+            }
+            Hide();
         }
 
         public void Show(string title, Vector2 position) {
