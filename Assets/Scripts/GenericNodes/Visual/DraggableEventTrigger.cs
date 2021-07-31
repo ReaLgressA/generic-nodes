@@ -14,7 +14,8 @@ namespace GenericNodes.Visual
                                          IPointerExitHandler, 
                                          IDropHandler {
     
-        public event Action<IHoldable> OnActionClick;
+        public event Action<IHoldable> OnActionLeftClick;
+        public event Action<IHoldable> OnActionRightClick;
         public event Action<IHoldable> OnActionBeginDrag;
         public event Action<IHoldable> OnActionDrag;
         public event Action<IHoldable> OnActionEndDrag;
@@ -30,7 +31,10 @@ namespace GenericNodes.Visual
 
         public void OnPointerClick(PointerEventData eventData) {
             if (eventData.button == PointerEventData.InputButton.Left) {
-                OnActionClick?.Invoke(holdable);
+                OnActionLeftClick?.Invoke(holdable);
+            }
+            if (eventData.button == PointerEventData.InputButton.Right) {
+                OnActionRightClick?.Invoke(holdable);
             }
         }
 

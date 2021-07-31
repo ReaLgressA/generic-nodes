@@ -1,5 +1,6 @@
 using System.Collections;
 using System.IO;
+using GenericNodes.Visual.Popups;
 using JsonParser;
 
 namespace GenericNodes.Mech.Data {
@@ -11,6 +12,7 @@ namespace GenericNodes.Mech.Data {
         public string RootPath { get; set; } = null;
         public string AbsoluteRootPath => Path.Combine(RootPath, RootDirectory.Name);
         public GraphSchemeProvider SchemeProvider { get; private set; }
+        public VaultProvider VaultProvider { get; private set; }
         
         public GenericNodesProjectInfo() {}
 
@@ -27,6 +29,9 @@ namespace GenericNodes.Mech.Data {
         public void BuildProviders() {
             SchemeProvider = new GraphSchemeProvider();
             SchemeProvider.Setup(this);
+            VaultProvider = new VaultProvider();
+            VaultProvider.Setup(this);
+            PopupManager.GetPopup<SelectSpriteAssetPopup>().VaultProvider = VaultProvider;
         }
 
         private class Keys {

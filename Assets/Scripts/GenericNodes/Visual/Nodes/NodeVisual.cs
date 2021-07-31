@@ -29,8 +29,6 @@ namespace GenericNodes.Visual.Nodes
         public NodeId NodeId => Data.NodeId;
         public Vector2 ParentPositionShift => Transform.anchoredPosition;
         public IGenericFieldParent Parent => null;
-        
-
         public WorkspaceArea Workspace { get; private set; }
         
         protected override void Awake() {

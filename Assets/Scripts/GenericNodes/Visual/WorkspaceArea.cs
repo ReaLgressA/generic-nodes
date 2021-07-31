@@ -31,7 +31,8 @@ namespace GenericNodes.Visual {
         
         private readonly List<NodeVisual> nodes = new List<NodeVisual>();
         public NodeLinkSystem LinkSystem => nodeLinkSystem;
-        
+
+        public event Action<Vector2, NodeVisual> OnNodeRightClick;
         public event Action<Vector2> OnAreaLmbClick;
         public event Action<Vector2> OnAreaRmbClick;
         public event Action OnInterruptRmbClick;
@@ -126,65 +127,7 @@ namespace GenericNodes.Visual {
                 OnInterruptLmbClick?.Invoke();
             }
         }
-
-        private void ProcessLmbHold(Vector2 pointerPosition) {
-            if (GraphData == null) {
-                return;
-            }
-            UpdateWorkspaceShift(GetWorldPosition(pointerPosition));
-            OnInterruptRmbClick?.Invoke();
-        }
         
-        private void ProcessMmbRelease(Vector2 pointerPosition) {
-            if (GraphData == null) {
-                return;
-            }
-            UpdateWorkspaceShift(GetWorldPosition(pointerPosition));
-            OnInterruptRmbClick?.Invoke();
-        }
-
-        public void RegisterNode(NodeVisual node) {
-            nodes.Add(node);
-            lastNodeId = Mathf.Max(lastNodeId, node.NodeId.Id);
-            node.OnActionClick += ProcessNodeClick;
-            node.OnActionBeginDrag += ProcessNodeBeginDrag;
-            node.OnActionEndDrag += ProcessNodeEndDrag;
-        }
-
-        private void ProcessNodeEndDrag(IHoldable holdable) {
-            if (GraphData == null) {
-                return;
-            }
-            Hand.Reset();
-        }
-        
-        private void ProcessNodeClick(IHoldable holdable) {
-            if (GraphData == null) {
-                return;
-            }
-            if (Hand.NodeLink != null) {
-                NodeVisual node = holdable as NodeVisual;
-                INodeLinkSocket linkSocket = node.GetLinkSocket();
-                if (!LinkSystem.ProcessLinkSocketClick(linkSocket)) {
-                    node.ReleaseSocket(linkSocket);
-                }
-            }
-        }
-
-        private void ProcessNodeBeginDrag(IHoldable holdable) {
-            if (GraphData == null) {
-                return;
-            }
-            if (Hand.Holdable == null) {
-                Hand.SetHoldableItem(holdable);
-            }
-        }
-
-        private void UpdateWorkspaceShift(Vector2 worldPosition) {
-            rTrNodesRoot.anchoredPosition = worldPosition;
-            nodeLinkSystem.Transform.anchoredPosition = worldPosition;
-        }
-
         public NodeVisual GetNode(NodeId nodeId) {
             for (int i = 0; i < nodes.Count; ++i) {
                 if (nodes[i].NodeId == nodeId) {
@@ -196,6 +139,10 @@ namespace GenericNodes.Visual {
 
         public void Reset() {
             for (int i = 0; i < nodes.Count; ++i) {
+                nodes[i].OnActionLeftClick -= ProcessNodeLeftClick;
+                nodes[i].OnActionRightClick -= ProcessNodeRightClick;
+                nodes[i].OnActionBeginDrag -= ProcessNodeBeginDrag;
+                nodes[i].OnActionEndDrag -= ProcessNodeEndDrag;
                 Destroy(nodes[i].gameObject);
             }
             nodes.Clear();
@@ -223,6 +170,90 @@ namespace GenericNodes.Visual {
             for (int i = 0; i < nodes.Count; ++i) {
                 nodes[i].RebuildLinks();
             }
+        }
+        
+        public void RegisterNode(NodeVisual node) {
+            nodes.Add(node);
+            lastNodeId = Mathf.Max(lastNodeId, node.NodeId.Id);
+            node.OnActionLeftClick += ProcessNodeLeftClick;
+            node.OnActionRightClick += ProcessNodeRightClick;
+            node.OnActionBeginDrag += ProcessNodeBeginDrag;
+            node.OnActionEndDrag += ProcessNodeEndDrag;
+        }
+        
+        public void DeleteNode(NodeId nodeId) {
+            for (int i = 0; i < nodes.Count; ++i) {
+                if (nodes[i].NodeId == nodeId) {
+                    Destroy(nodes[i].gameObject);
+                    nodes.RemoveAt(i);
+                    RebuildNodeLinks();
+                    return;
+                }
+            }
+        }
+
+        public void RebuildNodeLinks() {
+            for (int i = 0; i < nodes.Count; ++i) {
+                nodes[i].RebuildLinks();
+            }
+        }
+
+        private void ProcessLmbHold(Vector2 pointerPosition) {
+            if (GraphData == null) {
+                return;
+            }
+            UpdateWorkspaceShift(GetWorldPosition(pointerPosition));
+            OnInterruptRmbClick?.Invoke();
+        }
+        
+        private void ProcessMmbRelease(Vector2 pointerPosition) {
+            if (GraphData == null) {
+                return;
+            }
+            UpdateWorkspaceShift(GetWorldPosition(pointerPosition));
+            OnInterruptRmbClick?.Invoke();
+        }
+
+        private void ProcessNodeEndDrag(IHoldable holdable) {
+            if (GraphData == null) {
+                return;
+            }
+            Hand.Reset();
+        }
+
+        private void ProcessNodeRightClick(IHoldable holdable) {
+            if (GraphData == null || Hand.NodeLink != null) {
+                return;
+            }
+            OnNodeRightClick?.Invoke(Input.mousePosition, holdable as NodeVisual);
+            Debug.Log($"RClick node: {(holdable as NodeVisual).Data.NodeId.Id}");
+        }
+
+        private void ProcessNodeLeftClick(IHoldable holdable) {
+            if (GraphData == null) {
+                return;
+            }
+            if (Hand.NodeLink != null) {
+                NodeVisual node = holdable as NodeVisual;
+                INodeLinkSocket linkSocket = node.GetLinkSocket();
+                if (!LinkSystem.ProcessLinkSocketClick(linkSocket)) {
+                    node.ReleaseSocket(linkSocket);
+                }
+            }
+        }
+
+        private void ProcessNodeBeginDrag(IHoldable holdable) {
+            if (GraphData == null) {
+                return;
+            }
+            if (Hand.Holdable == null) {
+                Hand.SetHoldableItem(holdable);
+            }
+        }
+
+        private void UpdateWorkspaceShift(Vector2 worldPosition) {
+            rTrNodesRoot.anchoredPosition = worldPosition;
+            nodeLinkSystem.Transform.anchoredPosition = worldPosition;
         }
 
         private NodeVisual SpawnNodeVisual(NodeData nodeData) {
