@@ -9,5 +9,7 @@ namespace GenericNodes.Visual.Interfaces {
         void Destroy();
 
         void RebuildLinks();
+
+        void ResetLinksIfTargetNodeNotExist();
     }
 }

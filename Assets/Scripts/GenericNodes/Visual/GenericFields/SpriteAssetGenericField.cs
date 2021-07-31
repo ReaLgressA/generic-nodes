@@ -48,6 +48,7 @@ namespace GenericNodes.Visual.GenericFields {
         }
         
         public void RebuildLinks() { }
+        public void ResetLinksIfTargetNodeNotExist() { }
 
         private void SelectSpriteAsset() {
             PopupManager.GetPopup<SelectSpriteAssetPopup>().Show(Field);

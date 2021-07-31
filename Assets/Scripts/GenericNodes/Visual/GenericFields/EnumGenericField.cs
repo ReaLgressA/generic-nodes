@@ -34,6 +34,7 @@ namespace GenericNodes.Visual.GenericFields {
         }
         
         public void RebuildLinks() { }
+        public void ResetLinksIfTargetNodeNotExist() { }
         
         private void ProcessDropdownSelection(int selectedIndex) {
             Debug.Log($"End edit '{Field?.Name}' with value '{selectedIndex}'");

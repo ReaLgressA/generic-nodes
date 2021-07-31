@@ -32,6 +32,7 @@ namespace GenericNodes.Visual.GenericFields {
         }
         
         public void RebuildLinks() { }
+        public void ResetLinksIfTargetNodeNotExist() { }
         
         private void ProcessEndEdit(string value) {
             Debug.Log($"End edit '{Field?.Name}' with value '{value}'");

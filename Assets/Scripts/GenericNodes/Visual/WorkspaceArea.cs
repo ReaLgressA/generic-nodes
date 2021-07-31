@@ -138,6 +138,8 @@ namespace GenericNodes.Visual {
         }
 
         public void Reset() {
+            canvasScaler.scaleFactor = 1f;
+            UpdateWorkspaceShift(Vector2.zero);
             for (int i = 0; i < nodes.Count; ++i) {
                 nodes[i].OnActionLeftClick -= ProcessNodeLeftClick;
                 nodes[i].OnActionRightClick -= ProcessNodeRightClick;
@@ -186,9 +188,15 @@ namespace GenericNodes.Visual {
                 if (nodes[i].NodeId == nodeId) {
                     Destroy(nodes[i].gameObject);
                     nodes.RemoveAt(i);
-                    RebuildNodeLinks();
+                    ResetBrokenNodeLinks();
                     return;
                 }
+            }
+        }
+        
+        public void ResetBrokenNodeLinks() {
+            for (int i = 0; i < nodes.Count; ++i) {
+                nodes[i].ResetLinksIfTargetNodeNotExist();
             }
         }
 

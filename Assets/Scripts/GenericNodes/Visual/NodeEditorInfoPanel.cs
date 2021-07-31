@@ -24,7 +24,6 @@ namespace GenericNodes.Visual
 
         public GraphData Data { get; private set; } = null;
         
-        
         private void Awake() {
             buttonToggleHide.onClick.AddListener(ToggleHideWindow);
             buttonSave.onClick.AddListener(SaveGraph);

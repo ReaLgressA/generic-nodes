@@ -78,6 +78,12 @@ namespace GenericNodes.Visual.Nodes
             }
         }
         
+        public void ResetLinksIfTargetNodeNotExist() {
+            for (int i = 0; i < fields.Count; ++i) {
+                fields[i].ResetLinksIfTargetNodeNotExist();
+            }
+        }
+        
         public void SetLinkedNodeId(NodeId nodeId) {
             //here goes nothing because node visual is always an input side of the link
         }

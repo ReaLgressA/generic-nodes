@@ -74,12 +74,18 @@ namespace GenericNodes.Visual.GenericFields {
         public void RebuildLinks() {
             UnlinkSocket();
             if (Field.Value != NodeId.None) {
-                NodeVisual targetNode = MasterNode.Workspace.GetNode(Field.Value);
-                if (targetNode == null) {
-                    Field.SetId(NodeId.None);
-                    return;
-                }
                 MasterNode.Workspace.LinkSystem.LinkSocketToNode(linkSocket, Field.Value);
+            }
+        }
+
+        public void ResetLinksIfTargetNodeNotExist() {
+            if (Field.Value == NodeId.None) {
+                return;
+            }
+            NodeVisual targetNode = MasterNode.Workspace.GetNode(Field.Value);
+            if (targetNode == null) {
+                Field.SetId(NodeId.None);
+                RebuildLinks();
             }
         }
     

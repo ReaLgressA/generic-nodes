@@ -58,6 +58,12 @@ namespace GenericNodes.Visual.GenericFields {
                 genericFields[i].RebuildLinks();
             }
         }
+
+        public void ResetLinksIfTargetNodeNotExist() {
+            for (int i = 0; i < genericFields.Count; ++i) {
+                genericFields[i].ResetLinksIfTargetNodeNotExist();
+            }
+        }
         
         private void ClearFields() {
             for (int i = 0; i < genericFields.Count; ++i) {

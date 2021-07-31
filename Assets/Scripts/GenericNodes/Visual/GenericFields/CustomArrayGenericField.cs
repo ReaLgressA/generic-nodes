@@ -62,6 +62,12 @@ namespace GenericNodes.Visual.GenericFields {
                 arrayElements[i].RebuildLinks();
             }
         }
+
+        public void ResetLinksIfTargetNodeNotExist() {
+            for (int i = 0; i < Field.Elements.Count; ++i) {
+                arrayElements[i].ResetLinksIfTargetNodeNotExist();
+            }
+        }
         
         private void AddNewElement() {
             Field.AddElement();

@@ -32,6 +32,7 @@ namespace GenericNodes.Visual.GenericFields {
         }
 
         public void RebuildLinks() { }
+        public void ResetLinksIfTargetNodeNotExist() { }
 
         private void ProcessToggle(bool value) {
             Field?.SetValue(value);   
