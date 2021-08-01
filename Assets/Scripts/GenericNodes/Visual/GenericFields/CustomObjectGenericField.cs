@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GenericNodes.Mech.Data;
 using GenericNodes.Mech.Fields;
 using GenericNodes.Visual.Interfaces;
 using GenericNodes.Visual.Nodes;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace GenericNodes.Visual.GenericFields {
     public class CustomObjectGenericField : MonoBehaviour,
@@ -12,7 +14,8 @@ namespace GenericNodes.Visual.GenericFields {
                                             IGenericField {
         [SerializeField] private TextMeshProUGUI textLabel;
         [SerializeField] private RectTransform rtrContentRoot;
-
+        [SerializeField] private Toggle toggleIsOptional;
+        
         private RectTransform rtrRoot;
         
         private readonly List<IGenericField> genericFields = new List<IGenericField>();
@@ -25,10 +28,18 @@ namespace GenericNodes.Visual.GenericFields {
 
         private RectTransform RtrRoot => rtrRoot ??= GetComponent<RectTransform>();
 
+        private void Awake() {
+            toggleIsOptional.onValueChanged.AddListener(ProcessIsOptionAllowedValueUpdate);
+        }
+
         public void SetData(CustomObjectDataField field) {
             textLabel.text = field.Name;
             Field = field;
             ClearFields();
+            toggleIsOptional.gameObject.SetActive(field.IsOptional);
+            if (field.IsOptional) {
+                toggleIsOptional.SetIsOnWithoutNotify(field.IsOptionAllowed);    
+            }
             for (int i = 0; i < Field.Fields.Length; ++i) {
                 DataField dataField = Field.Fields[i];
                 GameObject goField = Instantiate(PrefabDatabase.GetFieldPrefab(dataField.Type));
@@ -40,6 +51,7 @@ namespace GenericNodes.Visual.GenericFields {
                 objectField.SetData(MasterNode, dataField, this);
                 genericFields.Add(objectField);
             }
+            RefreshContentVisibility();
         }
         
         public void SetData(NodeVisual nodeVisual, DataField data, IGenericFieldParent fieldParent) {
@@ -70,6 +82,16 @@ namespace GenericNodes.Visual.GenericFields {
                 genericFields[i].Destroy();
             }
             genericFields.Clear();
+        }
+        
+        private void ProcessIsOptionAllowedValueUpdate(bool isAllowed) {
+            Field.IsOptionAllowed = isAllowed;
+            RefreshContentVisibility();
+        }
+
+        private void RefreshContentVisibility() {
+            bool isVisible = !Field.IsOptional || Field.IsOptionAllowed;
+            rtrContentRoot.gameObject.SetActive(isVisible);
         }
     }
 }

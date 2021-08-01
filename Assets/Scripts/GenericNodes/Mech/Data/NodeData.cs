@@ -33,7 +33,9 @@ namespace GenericNodes.Mech.Data {
                 ht[Keys.NODE_ID] = htNodeId;
             }
             for (int i = 0; i < Fields.Count; ++i) {
-                Fields[i].ToJsonObject(ht);
+                if (!Fields[i].IsOptional || Fields[i].IsOptionAllowed) {
+                    Fields[i].ToJsonObject(ht);
+                }
             }
         }
 

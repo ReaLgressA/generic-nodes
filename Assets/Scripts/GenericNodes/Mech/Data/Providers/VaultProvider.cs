@@ -36,40 +36,15 @@ namespace GenericNodes.Mech.Data {
         public void GetSprites(string packageLabel, List<VaultPackageContentSprites.SpriteSettings> sprites) {
             sprites.Clear();
             for (int i = 0; i < Vaults.Count; ++i) {
-                for (int j = 0; j < Vaults[i].Packages.Count; ++j) {
-                    GetPackageSprites(Vaults[i].Packages[j], packageLabel, sprites);
-                }
+                Vaults[i].GetSprites(packageLabel, sprites);
             }
-        }
-
-        private void GetPackageSprites(VaultPackage package, string packageLabel,
-                                       List<VaultPackageContentSprites.SpriteSettings> sprites) {
-            
-            if (!string.IsNullOrWhiteSpace(packageLabel) 
-                && !package.Label.Equals(packageLabel, StringComparison.Ordinal)) {
-                return;
-            }
-            for (int i = 0; i < package.ContentSprites.Sprites.Count; ++i) {
-                sprites.Add(package.ContentSprites.Sprites[i]);
-            }
-        }
-
-        private VaultPackageContentSprites.SpriteSettings GetSprite(VaultPackage package, string id) {
-            for (int i = 0; i < package.ContentSprites.Sprites.Count; ++i) {
-                if (string.Equals(package.ContentSprites.Sprites[i].id, id, StringComparison.Ordinal)) {
-                    return package.ContentSprites.Sprites[i];
-                }
-            }
-            return null;
         }
 
         public VaultPackageContentSprites.SpriteSettings GetSprite(string id) {
             for (int i = 0; i < Vaults.Count; ++i) {
-                for (int j = 0; j < Vaults[i].Packages.Count; ++j) {
-                    var sprite = GetSprite(Vaults[i].Packages[j], id);
-                    if (sprite != null) {
-                        return sprite;
-                    }
+                var sprite = Vaults[i].GetSprite(id);
+                if (sprite != null) {
+                    return sprite;
                 }
             }
             return null;

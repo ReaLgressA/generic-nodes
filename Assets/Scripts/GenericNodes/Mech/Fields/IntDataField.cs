@@ -3,7 +3,9 @@ using JsonParser;
 
 namespace GenericNodes.Mech.Fields {
     public class IntDataField : DataField {
-
+        
+        public override bool IsOptionAllowed { get; set; } = true;
+        public override DataType Type => DataType.Int;
         public int Value { get; private set; }
         
         public IntDataField() {}
@@ -11,8 +13,6 @@ namespace GenericNodes.Mech.Fields {
             Value = defaultValue;
         }
 
-        public override DataType Type => DataType.Int;
-        
         public void SetValue(int value) {
             Value = value;
         }

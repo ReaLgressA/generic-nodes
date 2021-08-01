@@ -3,10 +3,11 @@ using JsonParser;
 
 namespace GenericNodes.Mech.Fields {
     public class StringDataField : DataField {
+        
+        public override DataType Type => DataType.String;
+        public override bool IsOptionAllowed { get; set; } = true;
         public string Value { get; protected set; }
 
-        public override DataType Type => DataType.String;
-        
         public StringDataField() {}
         public StringDataField(string name, string defaultValue = "") : base(name) {
             Value = defaultValue;

@@ -39,7 +39,7 @@ namespace GenericNodes.Visual.GenericElements {
             FileManager = fileManager;
             textFileName.text = fileName;
             SubdirectoryLevel = subdirectoryLevel;
-            iconFileExtension.enabled = false; //TODO: add & show extensions icon
+            iconFileExtension.enabled = true; //TODO: add & show extensions icon
             transform.SetParent(rtrRoot);
             transform.SetAsLastSibling();
             transform.localScale = Vector3.one;

@@ -4,6 +4,7 @@ using JsonParser;
 namespace GenericNodes.Mech.Fields {
     public class FloatDataField : DataField {
         public float Value { get; private set; }
+        public override bool IsOptionAllowed { get; set; } = true;
 
         public FloatDataField() {}
         public FloatDataField(string name, float defaultValue = 0f) : base(name) {

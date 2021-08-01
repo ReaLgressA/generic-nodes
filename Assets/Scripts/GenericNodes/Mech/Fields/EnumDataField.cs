@@ -7,6 +7,7 @@ using JsonParser;
 namespace GenericNodes.Mech.Fields {
     public class EnumDataField : DataField {
         public override DataType Type => DataType.Enum;
+        public override bool IsOptionAllowed { get; set; } = false;
 
         public string EnumSet { get; private set; }
         public EnumDescription EnumDescription => 
@@ -41,11 +42,14 @@ namespace GenericNodes.Mech.Fields {
         }
         
         public override void FromJson(Hashtable ht, bool isAddition = false) {
-            Value = ht.GetString(Name);
+            IsOptionAllowed = ht.ContainsKey(Name);
+            Value = ht.GetStringSafe(Name, Value);
         }
         
         public override void ToJsonObject(Hashtable ht) {
-            ht[Name] = Value;
+            if (!IsOptional || IsOptionAllowed) {
+                ht[Name] = Value;
+            }
         }
         
         public override DataField Clone() {

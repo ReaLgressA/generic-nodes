@@ -68,7 +68,7 @@ namespace GenericNodes.Mech.Data {
                     return CustomDataTypes[i].Fields.CloneFields();
                 }               
             }
-            Debug.LogError($"GetCustomDataTypeFields failed! No such custom data type '{objectType}'.");
+            Debug.LogError($"GetCustomDataTypeFields failed! No such custom data type '{objectType}'");
             return new DataField[0];
         }
     }

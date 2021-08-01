@@ -4,6 +4,7 @@ using JsonParser;
 namespace GenericNodes.Mech.Fields {
     public class BoolDataField : DataField {
         public bool Value { get; private set; }
+        public override bool IsOptionAllowed { get; set; } = true;
         
         public BoolDataField() {}
         public BoolDataField(string name, bool defaultValue = false) : base(name) {

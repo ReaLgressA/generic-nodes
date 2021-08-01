@@ -12,7 +12,7 @@ namespace GenericNodes.Mech.Fields {
         public override DataType Type => DataType.CustomObject;
         
         public string ObjectType { get; private set; }
-        
+        public override bool IsOptionAllowed { get; set; } = false;
         private GraphScheme Scheme { get; }
 
         public CustomObjectDataField(GraphScheme scheme) {
@@ -37,16 +37,39 @@ namespace GenericNodes.Mech.Fields {
         }
 
         public override void FromJson(Hashtable ht, bool isAddition = false) {
-            ObjectType = ht.GetString(Keys.OBJECT_TYPE, ObjectType);
-            for (int i = 0; i < Fields.Length; ++i) {
-                Fields[i].FromJson(ht);
+            if (Name == null) {
+                ObjectType = ht.GetString(Keys.OBJECT_TYPE, ObjectType);
+                for (int i = 0; i < Fields.Length; ++i) {
+                    Fields[i].FromJson(ht);
+                }
+            } else {
+                if (ht.ContainsKey(Name)) {
+                    Hashtable htObject = ht[Name] as Hashtable;
+                    ObjectType = htObject.GetString(Keys.OBJECT_TYPE, ObjectType);
+                    for (int i = 0; i < Fields.Length; ++i) {
+                        Fields[i].FromJson(htObject);
+                    }
+                    IsOptionAllowed = true;
+                } else {
+                    IsOptionAllowed = !IsOptional;
+                }
             }
         }
 
         public override void ToJsonObject(Hashtable ht) {
-            ht[Keys.OBJECT_TYPE] = ObjectType;
-            for (int i = 0; i < Fields.Length; ++i) {
-                Fields[i].ToJsonObject(ht);
+            if (string.IsNullOrWhiteSpace(Name) || Name.Contains("#")) {
+                ht[Keys.OBJECT_TYPE] = ObjectType;
+                for (int i = 0; i < Fields.Length; ++i) {
+                    Fields[i].ToJsonObject(ht);
+                }
+            }
+            if (IsOptionAllowed) {
+                Hashtable htObject = new Hashtable();
+                htObject[Keys.OBJECT_TYPE] = ObjectType;
+                for (int i = 0; i < Fields.Length; ++i) {
+                    Fields[i].ToJsonObject(htObject);
+                }
+                ht[Name] = htObject;
             }
         }
 

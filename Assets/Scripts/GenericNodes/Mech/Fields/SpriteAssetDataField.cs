@@ -4,9 +4,11 @@ using JsonParser;
 
 namespace GenericNodes.Mech.Fields {
     public class SpriteAssetDataField : DataField {
-        public string Value { get; protected set; }
-        public string PackageLabel { get; protected set; } = null;
+        
+        public override bool IsOptionAllowed { get; set; } = true;
         public override DataType Type => DataType.SpriteAsset;
+        public string Value { get; private set; }
+        public string PackageLabel { get; private set; } = null;
 
         public event Action ValueChanged;
         

@@ -8,12 +8,13 @@ using JsonParser;
 
 namespace GenericNodes.Mech.Fields {
     public class GenericArrayDataField : DataField {
-        private class Keys {
+        private static class Keys {
             public const string ARRAY_TYPE = "ArrayType";
             public const string MAX_CAPACITY = "MaxCapacity";
         }
         
         public override DataType Type => DataType.GenericArray;
+        public override bool IsOptionAllowed { get; set; } = true;
         public string ArrayType { get; private set; }
         public int MaxCapacity { get; private set; } = 0;
         public List<CustomObjectDataField> Elements { get; private set; }
@@ -74,7 +75,13 @@ namespace GenericNodes.Mech.Fields {
                         CustomObjectDataField item = new CustomObjectDataField(Scheme);
                         if (array[i] != null) {
                             Hashtable htDataField = (Hashtable)array[i];
-                            item.FromJson(htDataField);
+                            if (htDataField == null) {
+                                item.IsOptionAllowed = !item.IsOptional;    
+                            } else {
+                                item.FromJson(htDataField);   
+                            }
+                        } else {
+                            item.IsOptionAllowed = !item.IsOptional;
                         }
                         Elements.Add(item);
                     }

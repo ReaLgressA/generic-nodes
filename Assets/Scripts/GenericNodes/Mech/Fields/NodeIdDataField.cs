@@ -5,6 +5,8 @@ using JsonParser;
 
 namespace GenericNodes.Mech.Fields {
     public class NodeIdDataField : DataField {
+        public override DataType Type => DataType.NodeId;
+        public override bool IsOptionAllowed { get; set; } = true;
         public NodeId Value { get; private set; } = NodeId.None;
 
         public event Action<NodeIdDataField> ValueChanged;
@@ -14,8 +16,6 @@ namespace GenericNodes.Mech.Fields {
             Value = defaultValue;
         }
 
-        public override DataType Type => DataType.NodeId;
-        
         public void SetId(NodeId id) {
             Value = id;
             ValueChanged?.Invoke(this);

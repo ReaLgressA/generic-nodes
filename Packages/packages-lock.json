@@ -15,11 +15,11 @@
       "hash": "b0a4b1301d24e297255bcad54ddae79d883d7971"
     },
     "com.realgressa.vaultkeeper": {
-      "version": "https://github.com/ReaLgressA/vault-keeper.git?path=/Assets/VaultKeeper/#1.0.3",
+      "version": "https://github.com/ReaLgressA/vault-keeper.git?path=/Assets/VaultKeeper/#1.0.4",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "b3a80fb7ab1e4ebeb2d87758fef3d725e4e83afe"
+      "hash": "7d1b82c7f5f690b24d67ceea7f4845e76374ed92"
     },
     "com.unity.2d.animation": {
       "version": "5.0.5",

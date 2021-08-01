@@ -5,7 +5,9 @@ namespace GenericNodes.Mech.Fields {
     public abstract class DataField : IJsonInterface {
         public string Name { get; set; }
 
-        public abstract DataType Type { get; } 
+        public abstract DataType Type { get; }
+        public bool IsOptional { get; private set; } = false;
+        public abstract bool IsOptionAllowed { get; set; }
         
         protected DataField() {}
         
@@ -15,6 +17,7 @@ namespace GenericNodes.Mech.Fields {
 
         public virtual DataField Construct(Hashtable ht) {
             Name = ht.GetStringSafe(Keys.NAME, Name);
+            IsOptional = ht.GetBool(Keys.IS_OPTIONAL, IsOptional);
             return this;
         }
 
@@ -28,11 +31,13 @@ namespace GenericNodes.Mech.Fields {
 
         protected DataField CloneBaseData(DataField field) {
             field.Name = Name;
+            field.IsOptional = IsOptional;
             return field;
         }
 
-        private class Keys {
+        private static class Keys {
             public const string NAME = "Name";
+            public const string IS_OPTIONAL = "IsOptional";
         }
     }
 }
