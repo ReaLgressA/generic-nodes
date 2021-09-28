@@ -107,12 +107,13 @@ namespace GenericNodes.Visual.Views.Project {
             if (htTargetFile != null) {
                 string graphType = htTargetFile.GetStringSafe("Type", null);
                 if (graphType == null) {
-                    Debug.LogError($"Failed to open file, type not specified: {entry.FilePath}");        
+                    Debug.LogError($"Failed to open file, type not specified: {entry.FilePath}");
+                    return;
                 }
                 GraphScheme scheme = Info.SchemeProvider.Schemes.Find(
                     graphScheme => graphScheme.Type.Equals(graphType, StringComparison.Ordinal));
                 if (scheme == null) {
-                    Debug.LogError($"Failed to open file, type {graphType} doe: {entry.FilePath}");
+                    Debug.LogError($"Failed to open file, type '{graphType}' path: {entry.FilePath}");
                     return;
                 }
                 Debug.Log($"Open file {graphType} {entry.FilePath}");
