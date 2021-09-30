@@ -64,8 +64,11 @@ namespace GenericNodes.Visual {
             }
             if (Mathf.Abs(Input.mouseScrollDelta.y) > 0 && !KeyboardInputManager.IsAnyGameObjectSelected) {
                 float zoomDelta = Input.mouseScrollDelta.y * zoomSpeed * Time.deltaTime;
+                Vector2 posBefore = GetFixedWorldPosition(Input.mousePosition);
                 canvasScaler.scaleFactor =
                     Mathf.Clamp(canvasScaler.scaleFactor + zoomDelta, zoomBounds.x, zoomBounds.y);
+                Vector2 posAfter = GetFixedWorldPosition(Input.mousePosition);
+                UpdateWorkspaceShift(rTrNodesRoot.anchoredPosition + (posAfter - posBefore));
             }
         }
 
@@ -121,7 +124,7 @@ namespace GenericNodes.Visual {
                 isLmbHeld = false;
                 fixedNodesRootPosition = rTrNodesRoot.anchoredPosition;
                 mmbStartHoldPosition = eventData.position;
-                ProcessMmbRelease(eventData.position);
+                ProcessLmbRelease(eventData.position);
             }
             if (eventData.button == PointerEventData.InputButton.Right) {
                 OnInterruptLmbClick?.Invoke();
@@ -214,7 +217,7 @@ namespace GenericNodes.Visual {
             OnInterruptRmbClick?.Invoke();
         }
         
-        private void ProcessMmbRelease(Vector2 pointerPosition) {
+        private void ProcessLmbRelease(Vector2 pointerPosition) {
             if (GraphData == null) {
                 return;
             }
