@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using JsonParser;
 
 namespace L10n {
-    public class LanguageConfig : IJsonInterface {
-        public List<LanguageDescription> Languages { get; set; } = new List<LanguageDescription>();
+    public class LocalizationSetup : IJsonInterface {
+        public List<LanguageData> Languages { get; set; } = new List<LanguageData>();
         
         public void ToJsonObject(Hashtable ht) {
             ht[Keys.TYPE] = "Language";

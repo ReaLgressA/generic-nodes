@@ -1,12 +1,8 @@
 {
-    "name": "GenericNodes",
+    "name": "L10n",
     "rootNamespace": "",
     "references": [
-        "GUID:6055be8ebefd69e48b49212b09b47b2f",
-        "GUID:cf414061cae3a954baf92763590f3127",
-        "GUID:f62193034e75a4f5493e2e54503118e3",
-        "GUID:a40249e55f171451e9b0663cbaf032e3",
-        "GUID:2d941766096e50a4d83279a2712e15aa"
+        "GUID:f62193034e75a4f5493e2e54503118e3"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

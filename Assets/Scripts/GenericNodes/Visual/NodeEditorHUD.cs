@@ -13,6 +13,7 @@ namespace GenericNodes.Visual
         public void OpenGraph(GraphData data) {
             UnsubscribeFromEvents();
             if (data != null) {
+                
                 SubscribeForEvents();
                 infoPanel.SetupData(data);
                 popupMenu.SetupScheme(data.Scheme);

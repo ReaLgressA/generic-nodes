@@ -34,7 +34,7 @@ namespace GenericNodes.Mech.Data {
             PopupManager.GetPopup<SelectSpriteAssetPopup>().VaultProvider = VaultProvider;
         }
 
-        private class Keys {
+        private static class Keys {
             public const string PROJECT_NAME = "ProjectName";
             public const string ROOT_DIRECTORY = "RootDirectory";
         }

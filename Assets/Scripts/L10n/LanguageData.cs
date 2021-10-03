@@ -2,7 +2,7 @@
 using JsonParser;
 
 namespace L10n {
-    public class LanguageDescription : IJsonInterface {
+    public class LanguageData : IJsonInterface {
         public string Id { get; protected set; }
         public string Name { get; protected set; }
         public string FontPath { get; protected set; }
