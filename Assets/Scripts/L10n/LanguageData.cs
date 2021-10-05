@@ -6,6 +6,12 @@ namespace L10n {
         public string Id { get; protected set; }
         public string Name { get; protected set; }
         public string FontPath { get; protected set; }
+
+        public LanguageData() {}
+        public LanguageData(string id, string name) {
+            Id = id;
+            Name = name;
+        }
         
         public void ToJsonObject(Hashtable ht) {
             ht[Keys.ID] = Id;

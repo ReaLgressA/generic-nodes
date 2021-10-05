@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using JsonParser;
 using L10n;
-
+using UnityEngine;
 
 namespace GenericNodes.Mech.Data {
     public class LocalizationProvider {
@@ -17,29 +19,68 @@ namespace GenericNodes.Mech.Data {
             if (File.Exists(languagesConfigPath)) {
                 string json = File.ReadAllText(languagesConfigPath);
                 Hashtable ht = MiniJSON.JsonDecode(json) as Hashtable;
-                
+                l10nSetup = new LocalizationSetup();
+                l10nSetup.FromJson(ht);
             }
             if (l10nSetup == null) {
+                l10nSetup = new LocalizationSetup { 
+                    Languages = new List<LanguageData> { new LanguageData("en", "English") }
+                };
+                L10N.Initialize(l10nSetup);
+                Save(projectInfo);
                 return;
             }
+            
+            L10N.Initialize(l10nSetup);
+            foreach (LanguageData language in l10nSetup.Languages) {
+                TryLoadLocalizationDirectory(language, l10nDirectoryPath);
+            }
+        }
 
-            DirectoryInfo l10nDirectory = new DirectoryInfo(l10nDirectoryPath);
-            FileInfo[] files = l10nDirectory.GetFiles();
-            //
-            // for (int i = 0; i < files.Length; ++i) {
-            //     string json = File.ReadAllText(files[i].FullName);
-            //     Hashtable ht = MiniJSON.JsonDecode(json) as Hashtable;
-            //     if (ht != null) {
-            //         GraphScheme scheme = new GraphScheme();
-            //         try {
-            //             scheme.FromJson(ht);
-            //             Schemes.Add(scheme);
-            //         } catch (Exception ex) {
-            //             Debug.LogError($"Failed to parse graph scheme by path: {files[i].FullName}. Exception: {ex.Message}\n{ex.StackTrace}");
-            //         }
-            //     }
-            //     
-            // }
+        public void Save(GenericNodesProjectInfo projectInfo) {
+            string l10nDirectoryPath = Path.Combine(projectInfo.AbsoluteRootPath, "Localization");
+            string languagesConfigPath = Path.Combine(l10nDirectoryPath, "localizationSetup.json");
+            string json = MiniJSON.JsonEncode(L10N.Config);
+            File.WriteAllText(languagesConfigPath, json);
+            foreach (LanguageData language in L10N.Config.Languages) {
+                SaveLocalizationDirectory(language, l10nDirectoryPath);
+            }
+        }
+
+        private void SaveLocalizationDirectory(LanguageData language, string l10nDirectoryPath) {
+            string directoryPath = Path.Combine(l10nDirectoryPath, language.Id);
+            if (!Directory.Exists(directoryPath)) {
+                Directory.CreateDirectory(directoryPath);
+            }
+            LocalizedLanguage languageData = L10N.GetLanguage(language.Id);
+            List<LocalizationDataPack> categories = languageData.ListCategories();
+            foreach (LocalizationDataPack categoryData in categories) {
+                string categoryFilePath = Path.Combine(directoryPath, $"{language.Id}_{categoryData.Category}.json");
+                string jsonContent = MiniJSON.JsonEncode(categoryData);
+                File.WriteAllText(categoryFilePath, jsonContent);
+            }
+        }
+
+        private void TryLoadLocalizationDirectory(LanguageData language, string l10nDirectoryPath) {
+            string directoryPath = Path.Combine(l10nDirectoryPath, language.Id);
+            if (Directory.Exists(directoryPath)) {
+                DirectoryInfo languageDirectory = new DirectoryInfo(directoryPath);
+                FileInfo[] files = languageDirectory.GetFiles();
+                foreach (var file in files) {
+                    string json = File.ReadAllText(file.FullName);
+                    if (MiniJSON.JsonDecode(json) is Hashtable ht) {
+                        LocalizationDataPack dataPack = new LocalizationDataPack();
+                        try {
+                            dataPack.FromJson(ht);
+                            L10N.Register(dataPack);
+                        } catch (Exception ex) {
+                            Debug.LogError($"Failed to parse LocalizationDataPack by path: {file.FullName}. Exception: {ex.Message}\n{ex.StackTrace}");
+                        }
+                    }
+                }
+            } else {
+                Directory.CreateDirectory(directoryPath);
+            }
         }
     }
 }

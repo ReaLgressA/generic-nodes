@@ -13,6 +13,7 @@ namespace L10n {
         public static event Action EventLanguageChanged;
         
         public static void Initialize(LocalizationSetup localizationSetup) {
+            Dispose();
             Config = localizationSetup;
             for (int i = 0; i < Config.Languages.Count; ++i) {
                 languages[Config.Languages[i].Id] = new LocalizedLanguage(Config.Languages[i].Id);
@@ -42,6 +43,18 @@ namespace L10n {
             }
             Debug.LogError($"Failed to set active language '{languageKey}' - key doesn't exits.");
             return false;
+        }
+
+        public static void Register(LocalizationDataPack dataPack) {
+            if (languages.TryGetValue(dataPack.Language, out var language)) {
+                language.Register(dataPack);
+            } else {
+                Debug.LogError($"Failed to register l10n data pack: language {dataPack.Language} doesn't exist!");
+            }
+        }
+
+        public static LocalizedLanguage GetLanguage(string id) {
+            return languages.TryGetValue(id, out LocalizedLanguage language) ? language : null;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace L10n {
@@ -22,6 +23,10 @@ namespace L10n {
             } else {
                 categories.Add(dataPack.Category, dataPack);
             }  
+        }
+        
+        public List<LocalizationDataPack> ListCategories() {
+            return categories.Values.ToList();
         }
 
         public void SetKeyTranslation(string category, string key, string translation) {

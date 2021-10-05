@@ -13,6 +13,7 @@ namespace GenericNodes.Mech.Data {
         public string AbsoluteRootPath => Path.Combine(RootPath, RootDirectory.Name);
         public GraphSchemeProvider SchemeProvider { get; private set; }
         public VaultProvider VaultProvider { get; private set; }
+        public LocalizationProvider LocalizationProvider { get; private set; }
         
         public GenericNodesProjectInfo() {}
 
@@ -31,6 +32,8 @@ namespace GenericNodes.Mech.Data {
             SchemeProvider.Setup(this);
             VaultProvider = new VaultProvider();
             VaultProvider.Setup(this);
+            LocalizationProvider = new LocalizationProvider();
+            LocalizationProvider.Setup(this);
             PopupManager.GetPopup<SelectSpriteAssetPopup>().VaultProvider = VaultProvider;
         }
 

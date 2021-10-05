@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using GenericNodes.Mech.Data;
-using GenericNodes.Mech.Fields;
 using GenericNodes.Utility;
 using GenericNodes.Visual.Interfaces;
 using TMPro;
