@@ -1879,7 +1879,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.00001201002}
+  m_AnchoredPosition: {x: 0, y: -0.000011441207}
   m_SizeDelta: {x: 0, y: 128}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &947607672
@@ -3317,6 +3317,7 @@ MonoBehaviour:
   floatFieldPrefab: {fileID: 8891296037153989329, guid: 3fac2dc837b534e1db037ed9e7f70d20, type: 3}
   boolFieldPrefab: {fileID: 3659610056616161760, guid: 45769a7cd3e41494f819b3bf8265e898, type: 3}
   textFieldPrefab: {fileID: 2025354928668935799, guid: 7fce5b1ccfdba41b88d0432cd8d6d7e5, type: 3}
+  localizedTextFieldPrefab: {fileID: 5282848349366293750, guid: 9aab94f229ed5c94093f253a175928eb, type: 3}
   enumFieldPrefab: {fileID: 8939667942760612541, guid: 8a555bca580cc44fb9131e760e69085e, type: 3}
   nodeIdGenericFieldPrefab: {fileID: 246270418227586197, guid: 2e29891bd175449ec98567e9c8d2ae53, type: 3}
   customObjectDataFieldPrefab: {fileID: 4519309711822325575, guid: 6ca6a8fd15ad67c47b5d8c5aba312d8f, type: 3}

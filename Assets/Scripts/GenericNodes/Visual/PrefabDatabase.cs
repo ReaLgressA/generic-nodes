@@ -14,6 +14,7 @@ namespace GenericNodes.Visual {
         [SerializeField] private FloatGenericField floatFieldPrefab;
         [SerializeField] private BoolGenericField boolFieldPrefab;
         [SerializeField] private TextGenericField textFieldPrefab;
+        [SerializeField] private LocalizedTextGenericField localizedTextFieldPrefab;
         [SerializeField] private EnumGenericField enumFieldPrefab;
         [SerializeField] private NodeIdGenericField nodeIdGenericFieldPrefab;
         [SerializeField] private CustomObjectGenericField customObjectDataFieldPrefab;
@@ -42,6 +43,7 @@ namespace GenericNodes.Visual {
             fieldPrefabs.Add(DataType.CustomObject, customObjectDataFieldPrefab.gameObject);
             fieldPrefabs.Add(DataType.GenericArray, customArrayFieldPrefab.gameObject);
             fieldPrefabs.Add(DataType.SpriteAsset, spriteAssetFieldPrefab.gameObject);
+            fieldPrefabs.Add(DataType.LocalizedText, localizedTextFieldPrefab.gameObject);
         }
 
         public static GameObject GetFieldPrefab(DataType type) {
