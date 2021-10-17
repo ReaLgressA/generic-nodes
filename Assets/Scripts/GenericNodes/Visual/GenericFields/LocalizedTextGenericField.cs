@@ -13,21 +13,21 @@ namespace GenericNodes.Visual.GenericFields {
         [SerializeField] private TextMeshProUGUI textLabel;
         [SerializeField] private TMP_InputField inputFieldContent;
 
-        public TextDataField Field { get; private set; }
+        public LocalizedTextDataField Field { get; private set; }
 
         private void Awake() {
             inputFieldContent.lineType = TMP_InputField.LineType.MultiLineNewline;
             inputFieldContent.onEndEdit.AddListener(ProcessEndEdit);
         }
 
-        public void SetData(TextDataField field) {
+        public void SetData(LocalizedTextDataField field) {
             Field = field;
             textLabel.text = Field.Name;
             inputFieldContent.text = Field.Value;
         }
 
         public void SetData(NodeVisual nodeVisual, DataField data, IGenericFieldParent fieldParent) {
-            SetData(data as TextDataField);
+            SetData(data as LocalizedTextDataField);
         }
 
         public void Destroy() {
