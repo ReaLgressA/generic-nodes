@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace L10n {
     public static class L10N {
-        private const string DEFAULT_LANGUAGE_KEY = "EN";
+        private const string DEFAULT_LANGUAGE_KEY = "en";
         public static LocalizationSetup Config { get; private set; }
         public static string ActiveLanguage { get; private set; } = DEFAULT_LANGUAGE_KEY;
 
@@ -18,6 +18,7 @@ namespace L10n {
             for (int i = 0; i < Config.Languages.Count; ++i) {
                 languages[Config.Languages[i].Id] = new LocalizedLanguage(Config.Languages[i].Id);
             }
+            SetActiveLanguage(Config.Languages[0].Id);
         }
 
         public static void Dispose() {

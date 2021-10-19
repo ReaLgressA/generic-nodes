@@ -1,6 +1,7 @@
 ﻿using GenericNodes.Mech.Fields;
 using GenericNodes.Visual.Interfaces;
 using GenericNodes.Visual.Nodes;
+using GenericNodes.Visual.Popups;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,6 +19,12 @@ namespace GenericNodes.Visual.GenericFields {
         private void Awake() {
             inputFieldContent.lineType = TMP_InputField.LineType.MultiLineNewline;
             inputFieldContent.onEndEdit.AddListener(ProcessEndEdit);
+            buttonSetKey.onClick.AddListener(ProcessSetKeyClick);
+        }
+
+        private void OnDestroy() {
+            inputFieldContent.onEndEdit.RemoveAllListeners();
+            buttonSetKey.onClick.RemoveAllListeners();
         }
 
         public void SetData(LocalizedTextDataField field) {
@@ -41,6 +48,10 @@ namespace GenericNodes.Visual.GenericFields {
         private void ProcessEndEdit(string value) {
             Debug.Log($"End edit '{Field?.Name}' with value '{value}'");
             Field?.SetValue(value);
+        }
+        
+        private void ProcessSetKeyClick() {
+            PopupManager.GetPopup<SelectLocalizationKeyPopup>().Show(this);
         }
     }
 }

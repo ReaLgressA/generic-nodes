@@ -8,6 +8,8 @@ using GenericNodes.Utility;
 using GenericNodes.Visual.GenericElements;
 using GenericNodes.Visual.Popups;
 using JsonParser;
+using L10n;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,6 +30,9 @@ namespace GenericNodes.Visual.Views.Project {
         [SerializeField] private Button buttonCloseProject;
         [SerializeField] private Button buttonCreateGraph;
         [SerializeField] private Button buttonRefresh;
+        [SerializeField] private Button buttonChangeLanguage;
+
+        [SerializeField] private TextMeshProUGUI textButtonChangeLanguage;
 
         private PrefabPool<DirectoryTreeViewEntry> poolDirectoryEntries;
         private PrefabPool<FileTreeViewEntry> poolFileEntries;
@@ -39,16 +44,22 @@ namespace GenericNodes.Visual.Views.Project {
         private void Awake() {
             poolDirectoryEntries = new PrefabPool<DirectoryTreeViewEntry>(prefabDirectoryEntry, rtrDirectoriesRoot, 0);
             poolFileEntries = new PrefabPool<FileTreeViewEntry>(prefabFileEntry, rtrDirectoriesRoot, 0);
+
+            L10N.EventLanguageChanged += UpdateActiveLanguage;
             
             buttonRefresh.onClick.AddListener(RefreshTreeView);
             buttonCreateGraph.onClick.AddListener(CreateGraph);
             buttonCloseProject.onClick.AddListener(CloseProject);
+            buttonChangeLanguage.onClick.AddListener(ChangeLanguage);
         }
 
         private void OnDestroy() {
+            L10N.EventLanguageChanged -= UpdateActiveLanguage;
+            
             buttonRefresh.onClick.RemoveAllListeners();
             buttonCreateGraph.onClick.RemoveAllListeners();
             buttonCloseProject.onClick.RemoveAllListeners();
+            buttonChangeLanguage.onClick.RemoveAllListeners();
         }
 
         public void Setup(ProjectUIView projectUIView) {
@@ -64,6 +75,7 @@ namespace GenericNodes.Visual.Views.Project {
                 directoryWatcher.RefreshDirectory += ProcessDirectoryWatcherEvent;
             }
             RefreshTreeView();
+            UpdateActiveLanguage();
         }
 
         private void RefreshAvailableSchemes() {
@@ -143,12 +155,25 @@ namespace GenericNodes.Visual.Views.Project {
         }
         
         private void CreateGraph() {
-            
             PopupManager.GetPopup<CreateGraphPopup>().Show(selectedEntry.Path, Info.SchemeProvider, ProjectView);
         }
         
         private void CloseProject() {
+            buttonChangeLanguage.gameObject.SetActive(false);
             ProjectView.CloseProject();
+        }
+        
+        private void ChangeLanguage() {
+            int currentIndex = Mathf.Max(0, L10N.Config.Languages.FindIndex(data => data.Id.Equals(L10N.ActiveLanguage)));
+            if (++currentIndex >= L10N.Config.Languages.Count) {
+                currentIndex = 0;
+            }
+            L10N.SetActiveLanguage(L10N.Config.Languages[currentIndex].Id);
+        }
+        
+        private void UpdateActiveLanguage() {
+            buttonChangeLanguage.gameObject.SetActive(true);
+            textButtonChangeLanguage.text = L10N.ActiveLanguage;
         }
     }
 

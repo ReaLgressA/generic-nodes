@@ -6,8 +6,10 @@ using UnityEngine.UI;
 namespace GenericNodes.Visual.Views {
     public class FileViewEntry : ClickableEntry,
                                  IFilePathEntry {
-        [SerializeField] private TextMeshProUGUI textFileName;
-        [SerializeField] private Image iconFileExtension;
+        [SerializeField] 
+        private TextMeshProUGUI textFileName;
+        [SerializeField] 
+        private Image iconFileExtension;
 
         private string filePath;
 

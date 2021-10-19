@@ -29,7 +29,8 @@ namespace GenericNodes.Visual.Popups {
         private static readonly Dictionary<Type, string> mapTypeToPath = new Dictionary<Type, string> {
             { typeof(SelectFilePathPopup), "Prefabs/UI/Popups/SelectFilePathPopup" },
             { typeof(CreateGraphPopup), "Prefabs/UI/Popups/CreateGraphPopup" },
-            { typeof(SelectSpriteAssetPopup), "Prefabs/UI/Popups/SelectSpriteAssetPopup" }
+            { typeof(SelectSpriteAssetPopup), "Prefabs/UI/Popups/SelectSpriteAssetPopup" },
+            { typeof(SelectLocalizationKeyPopup), "Prefabs/UI/Popups/SelectL10nKeyPopup"}
         };
     }
 }
