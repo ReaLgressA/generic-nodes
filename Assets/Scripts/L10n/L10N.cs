@@ -54,8 +54,33 @@ namespace L10n {
             }
         }
 
+        public static bool DoesKeyExist(string category, string key) {
+            foreach(var language in languages) {
+                if (language.Value.DoesKeyExist(category, key)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static void RegisterKey(string category, string key) {
+            foreach(var language in languages) {
+                language.Value.RegisterKey(category, key);
+            }
+        }
+
         public static LocalizedLanguage GetLanguage(string id) {
             return languages.TryGetValue(id, out LocalizedLanguage language) ? language : null;
+        }
+
+        public static void BuildKeyList(ref List<LocalizedKeyDescription> keysCache) {
+            keysCache.Clear();
+            List<LocalizationDataPack> categories = languages[Config.Languages[0].Id].ListCategories();
+            for (int i = 0; i < categories.Count; ++i) {
+                foreach (var pair in categories[i].Content) {
+                    keysCache.Add(new LocalizedKeyDescription(categories[i].Category, pair.Key));   
+                }
+            }
         }
     }
 }

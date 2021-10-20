@@ -45,5 +45,19 @@ namespace L10n {
             Debug.Log($"Attempt to translate: '{category}:{key} = {localizedKey}'");
             return localizedKey ?? $"%{category}:{key}%";
         }
+
+        public bool Translate(string category, string key, out string result) {
+            categories.TryGetValue(category, out LocalizationDataPack dataPack);
+            result = dataPack?.Translate(key);
+            return result != null;
+        }
+
+        public bool DoesKeyExist(string category, string key) {
+            return Translate(category, key, out _);
+        }
+
+        public void RegisterKey(string category, string key) {
+            SetKeyTranslation(category, key, string.Empty);
+        }
     }
 }
