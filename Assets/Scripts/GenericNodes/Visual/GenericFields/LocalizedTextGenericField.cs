@@ -1,7 +1,9 @@
-﻿using GenericNodes.Mech.Fields;
+﻿using System;
+using GenericNodes.Mech.Fields;
 using GenericNodes.Visual.Interfaces;
 using GenericNodes.Visual.Nodes;
 using GenericNodes.Visual.Popups;
+using L10n;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,10 +29,26 @@ namespace GenericNodes.Visual.GenericFields {
             buttonSetKey.onClick.RemoveAllListeners();
         }
 
+        private void OnEnable() {
+            L10N.EventLanguageChanged += RefreshInputFieldText;
+            L10N.EventKeyTranslationChanged += ProcessEventKeyTranslationChange;
+        }
+
+        private void OnDisable() {
+            L10N.EventLanguageChanged -= RefreshInputFieldText;
+            L10N.EventKeyTranslationChanged -= ProcessEventKeyTranslationChange;
+        }
+
         public void SetData(LocalizedTextDataField field) {
             Field = field;
             textLabel.text = Field.Name;
-            inputFieldContent.text = Field.Value;
+            SetLocalizationKey(Field.Value);
+        }
+
+        public void SetLocalizationKey(string localizationKey) {
+            Field.SetValue(localizationKey);
+            textKey.text = string.IsNullOrWhiteSpace(Field.Value) ? "<b>NULL!</b>" : Field.Value;
+            RefreshInputFieldText();
         }
 
         public void SetData(NodeVisual nodeVisual, DataField data, IGenericFieldParent fieldParent) {
@@ -44,14 +62,28 @@ namespace GenericNodes.Visual.GenericFields {
             
         public void RebuildLinks() { }
         public void ResetLinksIfTargetNodeNotExist() { }
-            
+
+        private void RefreshInputFieldText() {
+            bool hasValidKey = L10N.DoesKeyExist(Field.Value);
+            inputFieldContent.interactable = hasValidKey;
+            inputFieldContent.SetTextWithoutNotify(hasValidKey ? L10N.Translate(Field.Value) : string.Empty);
+        }
+        
         private void ProcessEndEdit(string value) {
             Debug.Log($"End edit '{Field?.Name}' with value '{value}'");
-            Field?.SetValue(value);
+            if (L10N.DoesKeyExist(Field.Value)) {
+                L10N.SetKeyTranslation(Field.Value, value);
+            }
         }
         
         private void ProcessSetKeyClick() {
             PopupManager.GetPopup<SelectLocalizationKeyPopup>().Show(this);
+        }
+        
+        private void ProcessEventKeyTranslationChange(string localizationKey, string translation) {
+            if (Field.Value.Equals(localizationKey, StringComparison.Ordinal)) {
+                inputFieldContent.SetTextWithoutNotify(translation);
+            }
         }
     }
 }

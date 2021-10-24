@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 using GenericNodes.Visual.Views;
 using L10n;
 using TMPro;
@@ -9,20 +10,26 @@ namespace GenericNodes.Visual.Popups {
         public class LocalizedKeyListEntry : ClickableEntry {
             [SerializeField] private TextMeshProUGUI textContent;
             
-            public event Action<LocalizedKeyListEntry> SelectKey;
+            public event Action<LocalizedKeyListEntry> EventSelectKey;
+            public event Action<LocalizedKeyListEntry> EventApplyKey;
 
             public string Key { get; private set; }
             
-            public LocalizedKeyListEntry Setup(string key, RectTransform rtrRoot) {
+            public void Setup(string key, RectTransform rtrRoot) {
                 Reset();
                 Key = key;
                 transform.SetParent(rtrRoot);
                 transform.localScale = Vector3.one;
                 gameObject.SetActive(true);
                 RefreshText();
-                return this;
             }
-    
+
+            public override void Reset() {
+                base.Reset();
+                EventSelectKey = null;
+                EventApplyKey = null;
+            }
+
             private void Awake() {
                 Click += ProcessClick;
                 L10N.EventLanguageChanged += RefreshText;
@@ -34,14 +41,17 @@ namespace GenericNodes.Visual.Popups {
             }
 
             private void RefreshText() {
-                textContent.text = $"<b>@{Key}</b> | {L10N.Translate(Key)}";
+                if (!gameObject.activeSelf) {
+                    return;
+                }
+                textContent.text = $"<b>{Key}</b> | {L10N.Translate(Key)}";
             }
     
             private void ProcessClick() {
                 if (IsSelected) {
-                    //OpenFile?.Invoke(filePath);
+                    EventApplyKey?.Invoke(this);
                 } else {
-                    SelectKey?.Invoke(this);
+                    EventSelectKey?.Invoke(this);
                 }
             }
         }

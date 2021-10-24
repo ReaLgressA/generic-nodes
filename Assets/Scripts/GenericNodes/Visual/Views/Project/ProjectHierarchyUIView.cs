@@ -164,7 +164,7 @@ namespace GenericNodes.Visual.Views.Project {
         }
         
         private void ChangeLanguage() {
-            int currentIndex = Mathf.Max(0, L10N.Config.Languages.FindIndex(data => data.Id.Equals(L10N.ActiveLanguage)));
+            int currentIndex = Mathf.Max(0, L10N.Config.Languages.FindIndex(data => data.Id.Equals(L10N.ActiveLanguageId)));
             if (++currentIndex >= L10N.Config.Languages.Count) {
                 currentIndex = 0;
             }
@@ -173,7 +173,7 @@ namespace GenericNodes.Visual.Views.Project {
         
         private void UpdateActiveLanguage() {
             buttonChangeLanguage.gameObject.SetActive(true);
-            textButtonChangeLanguage.text = L10N.ActiveLanguage;
+            textButtonChangeLanguage.text = L10N.ActiveLanguageId;
         }
     }
 

@@ -23,6 +23,9 @@ namespace GenericNodes.Visual.Popups {
         [SerializeField] private List<LocalizedKeyListEntry> keyEntries = new List<LocalizedKeyListEntry>();
 
         private List<LocalizedKeyDescription> localizedKeys = new List<LocalizedKeyDescription>();
+
+        private LocalizedKeyListEntry CurrentlySelectedKey { get; set; } = null;
+        private LocalizedTextGenericField Field { get; set; }
         
         private void Awake() {
             buttonApply.onClick.AddListener(ProcessApplyButtonClick);
@@ -43,9 +46,10 @@ namespace GenericNodes.Visual.Popups {
         }
 
         public void Show(LocalizedTextGenericField localizedTextGenericField) {
+            Field = localizedTextGenericField;
             gameObject.SetActive(true);
-            
             Refresh();
+            SelectL10nKeyEntry(null);
         }
         
         public void Hide() {
@@ -56,6 +60,19 @@ namespace GenericNodes.Visual.Popups {
         public void Refresh() {
             ResetList();
             L10N.BuildKeyList(ref localizedKeys);
+            for (int i = 0; i < localizedKeys.Count; ++i) {
+                if (i >= keyEntries.Count) {
+                    SpawnExtraKeyEntry();
+                }
+                keyEntries[i].Setup(localizedKeys[i].LocalizationKey, rtrListRoot);
+                keyEntries[i].EventSelectKey += SelectL10nKeyEntry;
+                keyEntries[i].EventApplyKey += ApplyL10nKeyEntry;
+            }
+        }
+
+        private void SpawnExtraKeyEntry() {
+            LocalizedKeyListEntry extraEntry = Instantiate(keyEntries[0], rtrListRoot);
+            keyEntries.Add(extraEntry);
         }
 
         private void ResetList() {
@@ -74,11 +91,12 @@ namespace GenericNodes.Visual.Popups {
         }
 
         private void ProcessApplyButtonClick() {
-            
+            Field.SetLocalizationKey(CurrentlySelectedKey?.Key);
+            Hide();
         }
         
         private void ChangeLanguage() {
-            int currentIndex = Mathf.Max(0, L10N.Config.Languages.FindIndex(data => data.Id.Equals(L10N.ActiveLanguage)));
+            int currentIndex = Mathf.Max(0, L10N.Config.Languages.FindIndex(data => data.Id.Equals(L10N.ActiveLanguageId)));
             if (++currentIndex >= L10N.Config.Languages.Count) {
                 currentIndex = 0;
             }
@@ -87,7 +105,26 @@ namespace GenericNodes.Visual.Popups {
         
         private void UpdateActiveLanguage() {
             buttonChangeLanguage.gameObject.SetActive(true);
-            textButtonChangeLanguage.text = L10N.ActiveLanguage;
+            textButtonChangeLanguage.text = L10N.ActiveLanguageId;
+        }
+
+        private void ApplyL10nKeyEntry(LocalizedKeyListEntry keyEntry) {
+            if (CurrentlySelectedKey == keyEntry) {
+                ProcessApplyButtonClick();
+            }
+        }
+        
+        private void SelectL10nKeyEntry(LocalizedKeyListEntry keyEntry) {
+            CurrentlySelectedKey?.SetSelected(false);
+            CurrentlySelectedKey = keyEntry;
+            keyEntry?.SetSelected(true);
+            RefreshUserSelectionStatus();
+        }
+
+        private void RefreshUserSelectionStatus() {
+            buttonEditKey.interactable = CurrentlySelectedKey != null;
+            buttonApply.interactable = CurrentlySelectedKey != null;
+            textSelectedKey.text = CurrentlySelectedKey == null ? "NONE!" : CurrentlySelectedKey.Key;
         }
     }
 }

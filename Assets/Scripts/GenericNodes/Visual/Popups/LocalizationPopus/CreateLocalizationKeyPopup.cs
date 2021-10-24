@@ -63,8 +63,10 @@ namespace GenericNodes.Visual.Popups {
                 SetStatus("Key can't be empty!");
                 return;
             }
+            
             if (!validKeyRegex.IsMatch(key)) {
                 SetStatus("Key has unsupported symbols!");
+                return;
             }
 
             if (L10N.DoesKeyExist(category, key)) {

@@ -6,11 +6,15 @@ namespace L10n {
     public static class L10N {
         private const string DEFAULT_LANGUAGE_KEY = "en";
         public static LocalizationSetup Config { get; private set; }
-        public static string ActiveLanguage { get; private set; } = DEFAULT_LANGUAGE_KEY;
-
+        public static string ActiveLanguageId { get; private set; } = DEFAULT_LANGUAGE_KEY;
+        public static LocalizedLanguage ActiveLanguage => 
+            languages.TryGetValue(ActiveLanguageId, out LocalizedLanguage language) ? language : null;
         private static readonly Dictionary<string, LocalizedLanguage> languages = new Dictionary<string, LocalizedLanguage>();
+
+        public delegate void KeyTranslationChanged(string localizationKey, string activeLanguageTranslation);
         
         public static event Action EventLanguageChanged;
+        public static event KeyTranslationChanged EventKeyTranslationChanged;
         
         public static void Initialize(LocalizationSetup localizationSetup) {
             Dispose();
@@ -26,19 +30,17 @@ namespace L10n {
             languages.Clear();
         }
 
-        public static string Translate(string key) {
-            if (!string.IsNullOrWhiteSpace(key) && key[0] == Constants.PREFIX) {
-                int categorySeparatorIndex = key.IndexOf(':');
-                return languages[ActiveLanguage].Translate(key.Substring(1, categorySeparatorIndex - 1),
-                                                           key.Substring(categorySeparatorIndex + 1));
+        public static string Translate(string localizationKey) {
+            if (ParseLocalizationKey(localizationKey, out string category, out string key)) {
+                return languages[ActiveLanguageId].Translate(category, key);
             }
-            Debug.LogError($"L10N:Translate failed: key is null or missing prefix: '{key}'");
-            return $"!{key}!";
+            Debug.LogError($"L10N:Translate failed: key is null or missing prefix: '{localizationKey}'");
+            return $"!{localizationKey}!";
         }
 
         public static bool SetActiveLanguage(string languageKey) {
             if (languages.ContainsKey(languageKey)) {
-                ActiveLanguage = languageKey;
+                ActiveLanguageId = languageKey;
                 EventLanguageChanged?.Invoke();
                 return true;
             }
@@ -54,6 +56,12 @@ namespace L10n {
             }
         }
 
+        public static bool DoesKeyExist(string localizationKey) {
+            if (ParseLocalizationKey(localizationKey, out string category, out string key)) {
+                return DoesKeyExist(category, key);
+            }
+            return false;
+        }
         public static bool DoesKeyExist(string category, string key) {
             foreach(var language in languages) {
                 if (language.Value.DoesKeyExist(category, key)) {
@@ -81,6 +89,30 @@ namespace L10n {
                     keysCache.Add(new LocalizedKeyDescription(categories[i].Category, pair.Key));   
                 }
             }
+        }
+        
+        public static void SetKeyTranslation(string localizationKey, string translation) {
+            if (ParseLocalizationKey(localizationKey, out string category, out string key)) {
+                ActiveLanguage.SetKeyTranslation(category, key, translation);
+                EventKeyTranslationChanged?.Invoke(localizationKey, Translate(localizationKey));
+                return;
+            }
+            Debug.LogError($"Failed to set key value: '{localizationKey}' doesn't exist for language '{ActiveLanguageId}'");
+        }
+
+        private static bool ParseLocalizationKey(string localizationKey, out string category, out string key) {
+            category = null;
+            key = null;
+            if (!string.IsNullOrWhiteSpace(localizationKey) && localizationKey[0] == Constants.PREFIX) {
+                int categorySeparatorIndex = localizationKey.IndexOf(':');
+                if (categorySeparatorIndex == -1) {
+                    return false;
+                }
+                category = localizationKey.Substring(1, categorySeparatorIndex - 1);
+                key = localizationKey.Substring(categorySeparatorIndex + 1);
+                return !string.IsNullOrWhiteSpace(category) && !string.IsNullOrWhiteSpace(key);
+            }
+            return false;
         }
     }
 }
