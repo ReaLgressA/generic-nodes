@@ -131,7 +131,7 @@ namespace GenericNodes.Visual.Views.Project {
                 Debug.Log($"Open file {graphType} {entry.FilePath}");
                 GraphData graph = scheme.CreateGraph(entry.FilePath);
                 graph.FromJson(htTargetFile);
-                nodeEditorController.OpenGraph(graph);
+                nodeEditorController.OpenGraph(graph, Info);
                 return;
             }
             Debug.LogError($"Failed to open file: {entry.FilePath}");

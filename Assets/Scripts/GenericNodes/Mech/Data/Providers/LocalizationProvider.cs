@@ -9,8 +9,8 @@ using UnityEngine;
 namespace GenericNodes.Mech.Data {
     public class LocalizationProvider {
         
-        public void Setup(GenericNodesProjectInfo projectInfo) {
-            string l10nDirectoryPath = Path.Combine(projectInfo.AbsoluteRootPath, "Localization");
+        public void Setup(string absoluteRootPath) {
+            string l10nDirectoryPath = Path.Combine(absoluteRootPath, "Localization");
             if (!Directory.Exists(l10nDirectoryPath)) {
                 Directory.CreateDirectory(l10nDirectoryPath);
             }
@@ -27,7 +27,7 @@ namespace GenericNodes.Mech.Data {
                     Languages = new List<LanguageData> { new LanguageData("en", "English") }
                 };
                 L10N.Initialize(l10nSetup);
-                Save(projectInfo);
+                Save(absoluteRootPath);
                 return;
             }
             
@@ -35,10 +35,11 @@ namespace GenericNodes.Mech.Data {
             foreach (LanguageData language in l10nSetup.Languages) {
                 TryLoadLocalizationDirectory(language, l10nDirectoryPath);
             }
+            L10N.SetActiveLanguage(L10N.ActiveLanguageId);
         }
 
-        public void Save(GenericNodesProjectInfo projectInfo) {
-            string l10nDirectoryPath = Path.Combine(projectInfo.AbsoluteRootPath, "Localization");
+        public void Save(string absoluteRootPath) {
+            string l10nDirectoryPath = Path.Combine(absoluteRootPath, "Localization");
             string languagesConfigPath = Path.Combine(l10nDirectoryPath, "localizationSetup.json");
             string json = MiniJSON.JsonEncode(L10N.Config);
             File.WriteAllText(languagesConfigPath, json);

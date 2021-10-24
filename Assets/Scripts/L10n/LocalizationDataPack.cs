@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using JsonParser;
 using UnityEngine;
 
@@ -43,10 +42,11 @@ namespace L10n {
             ht[Keys.CATEGORY] = Category;
             LocalizedKey[] keyPairs = new LocalizedKey[Content.Count];
             int i = 0;
+            
             foreach (KeyValuePair<string, string> pair in Content) {
                 keyPairs[i++] = new LocalizedKey { Key = pair.Key, Value = pair.Value };
             }
-            ht[Keys.CONTENT] = Content.ToArray();
+            ht[Keys.CONTENT] = keyPairs;
         }
 
         public void FromJson(Hashtable ht, bool isAddition = false) {
@@ -54,7 +54,7 @@ namespace L10n {
             Category = ht.GetStringSafe(Keys.CATEGORY, string.Empty);
             LocalizedKey[] keyPairs = ht.GetArray(Keys.CONTENT, Array.Empty<LocalizedKey>());
             for (int i = 0; i < keyPairs.Length; ++i) {
-                Content.Add($"{Category}:{keyPairs[i].Key}", keyPairs[i].Value);
+                Content.Add(keyPairs[i].Key, keyPairs[i].Value);
             }
         }
 

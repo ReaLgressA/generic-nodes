@@ -33,7 +33,7 @@ namespace GenericNodes.Mech.Data {
             VaultProvider = new VaultProvider();
             VaultProvider.Setup(this);
             LocalizationProvider = new LocalizationProvider();
-            LocalizationProvider.Setup(this);
+            LocalizationProvider.Setup(AbsoluteRootPath);
             PopupManager.GetPopup<SelectSpriteAssetPopup>().VaultProvider = VaultProvider;
         }
 
