@@ -54,6 +54,10 @@ namespace GenericNodes.Visual.Popups {
                     EventSelectKey?.Invoke(this);
                 }
             }
+
+            public void ApplySearchPattern(string searchPattern) {
+                gameObject.SetActive(textContent.text.Contains(searchPattern));
+            }
         }
     }
 }

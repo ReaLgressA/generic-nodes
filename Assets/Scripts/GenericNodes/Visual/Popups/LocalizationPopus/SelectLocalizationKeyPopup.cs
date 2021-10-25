@@ -17,9 +17,7 @@ namespace GenericNodes.Visual.Popups {
         [SerializeField] private TextMeshProUGUI textButtonChangeLanguage;
         [SerializeField] private TMP_InputField textInputSearch;
         [SerializeField] private TextMeshProUGUI textSelectedKey;
-
         [SerializeField] private CreateLocalizationKeyPopup popupCreateKey;
-
         [SerializeField] private List<LocalizedKeyListEntry> keyEntries = new List<LocalizedKeyListEntry>();
 
         private List<LocalizedKeyDescription> localizedKeys = new List<LocalizedKeyDescription>();
@@ -34,6 +32,7 @@ namespace GenericNodes.Visual.Popups {
             
             L10N.EventLanguageChanged += UpdateActiveLanguage;
             buttonChangeLanguage.onClick.AddListener(ChangeLanguage);
+            textInputSearch.onValueChanged.AddListener(RefreshSearchPattern);
         }
 
         private void OnDestroy() {
@@ -43,6 +42,7 @@ namespace GenericNodes.Visual.Popups {
             
             L10N.EventLanguageChanged -= UpdateActiveLanguage;
             buttonChangeLanguage.onClick.RemoveAllListeners();
+            textInputSearch.onValueChanged.RemoveAllListeners();
         }
 
         public void Show(LocalizedTextGenericField localizedTextGenericField) {
@@ -67,6 +67,13 @@ namespace GenericNodes.Visual.Popups {
                 keyEntries[i].Setup(localizedKeys[i].LocalizationKey, rtrListRoot);
                 keyEntries[i].EventSelectKey += SelectL10nKeyEntry;
                 keyEntries[i].EventApplyKey += ApplyL10nKeyEntry;
+            }
+            RefreshSearchPattern(textInputSearch.text);
+        }
+        
+        private void RefreshSearchPattern(string searchPattern) {
+            for (int i = 0; i < keyEntries.Count; ++i) {
+                keyEntries[i].ApplySearchPattern(searchPattern);
             }
         }
 
