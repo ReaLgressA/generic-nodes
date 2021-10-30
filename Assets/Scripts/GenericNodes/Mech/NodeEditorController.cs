@@ -12,19 +12,19 @@ namespace GenericNodes.Mech
         public GraphScheme Scheme { get; private set; }
         
         void Start() {
-            hud.OpenGraph(null);
+            hud.OpenGraph(null, null);
         }
 
-        public void OpenGraph(GraphData graphData) {
+        public void OpenGraph(GraphData graphData, GenericNodesProjectInfo projectInfo) {
             if (graphData == null) {
                 Data = null;
                 Scheme = null;
-                hud.OpenGraph(null);
+                hud.OpenGraph(null, projectInfo);
                 return;
             }
             Data = graphData;
             Scheme = graphData.Scheme;
-            hud.OpenGraph(graphData);
+            hud.OpenGraph(graphData, projectInfo);
         }
     }
 }

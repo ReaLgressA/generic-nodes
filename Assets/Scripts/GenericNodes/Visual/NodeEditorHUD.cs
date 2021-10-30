@@ -10,14 +10,14 @@ namespace GenericNodes.Visual
         [SerializeField] private NodeEditorInfoPanel infoPanel;
         [SerializeField] private PopupMenu popupMenu;
 
-        public void OpenGraph(GraphData data) {
+        public void OpenGraph(GraphData data, GenericNodesProjectInfo projectInfo) {
             UnsubscribeFromEvents();
             if (data != null) {
                 SubscribeForEvents();
-                infoPanel.SetupData(data);
+                infoPanel.SetupData(data, projectInfo);
                 popupMenu.SetupScheme(data.Scheme);
             } else {
-                infoPanel.SetupData(null);
+                infoPanel.SetupData(null, projectInfo);
             }
         }
 

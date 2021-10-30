@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using GenericNodes.Mech.Data;
-using GenericNodes.Mech.Fields;
 using GenericNodes.Utility;
 using GenericNodes.Visual.Interfaces;
 using TMPro;
@@ -17,10 +16,13 @@ namespace GenericNodes.Visual
         [SerializeField] private TextMeshProUGUI textHeader;
         [SerializeField] private RectTransform rtrContentRoot;
         [SerializeField] private Button buttonSave;
+        
 
         private readonly List<IGenericField> fields = new List<IGenericField>();
     
         private bool isHidden = false;
+        
+        private GenericNodesProjectInfo ProjectInfo { get; set; }
 
         public GraphData Data { get; private set; } = null;
         
@@ -31,6 +33,7 @@ namespace GenericNodes.Visual
 
         private void SaveGraph() {
             workspaceArea.ExportNodesToGraph();
+            ProjectInfo.LocalizationProvider.Save(ProjectInfo.AbsoluteRootPath);
             Data.SaveToFile();
         }
 
@@ -59,8 +62,9 @@ namespace GenericNodes.Visual
                                                 0.5f, Easings.EaseInOutQuad);
         }
 
-        public void SetupData(GraphData data) {
+        public void SetupData(GraphData data, GenericNodesProjectInfo projectInfo) {
             ClearFields();
+            ProjectInfo = projectInfo;
             Data = data;
             workspaceArea.SetGraphData(data);
             if (data == null) {

@@ -18,7 +18,8 @@ namespace GenericNodes.Mech.Fields {
                 {DataType.NodeId, ht => new NodeIdDataField().Construct(ht) },
                 {DataType.CustomObject, ht => new CustomObjectDataField(CurrentGraphScheme).Construct(ht) },
                 {DataType.GenericArray, ht => new GenericArrayDataField(CurrentGraphScheme).Construct(ht) },
-                {DataType.SpriteAsset, ht => new SpriteAssetDataField().Construct(ht)}
+                {DataType.SpriteAsset, ht => new SpriteAssetDataField().Construct(ht)},
+                {DataType.LocalizedText, ht => new LocalizedTextDataField().Construct(ht)}
             };
 
         public static GraphScheme CurrentGraphScheme { get; set; } = null;

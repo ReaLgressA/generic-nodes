@@ -1,0 +1,16 @@
+{
+    "name": "L10n",
+    "rootNamespace": "",
+    "references": [
+        "GUID:f62193034e75a4f5493e2e54503118e3"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
