@@ -5,7 +5,7 @@ namespace GenericNodes.Mech.Fields {
     public class StringDataField : DataField {
         
         public override DataType Type => DataType.String;
-        public override bool IsOptionAllowed { get; set; } = true;
+        public override bool IsOptionAllowed { get; set; } = false;
         public string Value { get; protected set; }
 
         public StringDataField() {}
@@ -23,11 +23,14 @@ namespace GenericNodes.Mech.Fields {
         }
 
         public override void FromJson(Hashtable ht, bool isAddition = false) {
+            IsOptionAllowed = ht.ContainsKey(Name);
             Value = ht.GetString(Name);
         }
         
         public override void ToJsonObject(Hashtable ht) {
-            ht[Name] = Value;
+            if (!IsOptional || IsOptionAllowed) {
+                ht[Name] = Value;
+            }
         }
         
         public override DataField Clone() {

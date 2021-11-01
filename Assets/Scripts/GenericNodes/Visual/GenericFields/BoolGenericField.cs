@@ -7,8 +7,10 @@ using UnityEngine.UI;
 
 namespace GenericNodes.Visual.GenericFields {
     public class BoolGenericField : MonoBehaviour, IGenericField {
-        [SerializeField] private TextMeshProUGUI textLabel;
-        [SerializeField] private Toggle toggleCheckmark;
+        [SerializeField]
+        private TextMeshProUGUI textLabel;
+        [SerializeField]
+        private Toggle toggleCheckmark;
 
         public BoolDataField Field { get; private set; }
 
@@ -18,7 +20,7 @@ namespace GenericNodes.Visual.GenericFields {
 
         public void SetData(BoolDataField field) {
             Field = field;
-            textLabel.text = Field.Name;
+            textLabel.text = Field.DisplayName;
             toggleCheckmark.isOn = Field.Value;
         }
 

@@ -23,6 +23,7 @@ namespace GenericNodes.Mech.Fields {
         }
 
         public override void FromJson(Hashtable ht, bool isAddition = false) {
+            IsOptionAllowed = ht.ContainsKey(Name);
             Value = ht.GetBool(Name);
         }
 

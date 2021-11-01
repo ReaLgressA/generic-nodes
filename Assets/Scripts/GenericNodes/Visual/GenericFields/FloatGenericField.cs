@@ -19,7 +19,7 @@ namespace GenericNodes.Visual.GenericFields {
 
         public void SetData(FloatDataField field) {
             Field = field;
-            textLabel.text = Field.Name;
+            textLabel.text = Field.DisplayName;
             inputFieldContent.text = Field.Value.ToString();
         }
 

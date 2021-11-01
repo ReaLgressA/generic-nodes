@@ -31,8 +31,9 @@ namespace GenericNodes.Mech.Fields {
         }
         
         public override DataField Clone() {
-            FloatDataField field = new FloatDataField();
-            field.Value = Value;
+            FloatDataField field = new FloatDataField {
+                Value = Value
+            };
             return CloneBaseData(field);
         }
     }

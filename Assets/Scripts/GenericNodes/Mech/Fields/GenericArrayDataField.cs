@@ -5,20 +5,24 @@ using System.Linq;
 using GenericNodes.Mech.Data;
 using GenericNodes.Mech.Extensions;
 using JsonParser;
+using UnityEngine;
 
 namespace GenericNodes.Mech.Fields {
     public class GenericArrayDataField : DataField {
         private static class Keys {
             public const string ARRAY_TYPE = "ArrayType";
             public const string MAX_CAPACITY = "MaxCapacity";
+            public const string MIN_CAPACITY = "MinCapacity";
         }
         
         public override DataType Type => DataType.GenericArray;
         public override bool IsOptionAllowed { get; set; } = true;
         public string ArrayType { get; private set; }
         public int MaxCapacity { get; private set; } = 0;
+        public int MinCapacity { get; private set; } = 0;
         public List<CustomObjectDataField> Elements { get; private set; }
         public bool CanAddElement => Elements.Count < MaxCapacity || MaxCapacity == 0;
+        public bool CanRemoveElement => Elements.Count > MinCapacity;
         private GraphScheme Scheme { get; }
         
         public event Action ElementsUpdated;
@@ -31,11 +35,15 @@ namespace GenericNodes.Mech.Fields {
             Scheme = scheme;
         }
         
-        public GenericArrayDataField(GraphScheme scheme, string name, string arrayType, int maxCapacity = 0) : base(name) {
+        public GenericArrayDataField(GraphScheme scheme, string name, string arrayType, int maxCapacity = 0, int minCapacity = 0) : base(name) {
             Scheme = scheme;
             ArrayType = arrayType;
             MaxCapacity = maxCapacity;
+            MinCapacity = minCapacity;
             Elements = new List<CustomObjectDataField>();
+            while (Elements.Count < MinCapacity) {
+                AddElement();    
+            }
         }
 
         public void AddElement() {
@@ -43,10 +51,13 @@ namespace GenericNodes.Mech.Fields {
                 Elements.Add(new CustomObjectDataField(Scheme, ArrayType));
                 ElementsUpdated?.Invoke();
             }
+            while (Elements.Count < MinCapacity) {
+                AddElement();    
+            }
         }
 
         public void RemoveElementAt(int index) {
-            if (index >= 0 && index < Elements.Count) {
+            if (CanRemoveElement && index >= 0 && index < Elements.Count) {
                 Elements[index].ProcessDestruction();
                 Elements.RemoveAt(index);
                 ElementsUpdated?.Invoke();
@@ -56,7 +67,16 @@ namespace GenericNodes.Mech.Fields {
         public override DataField Construct(Hashtable ht) {
             ArrayType = ht.GetString(Keys.ARRAY_TYPE);
             MaxCapacity = ht.GetInt32(Keys.MAX_CAPACITY, MaxCapacity);
+            if (MaxCapacity < 0) {
+                MaxCapacity = 0;
+            }
+            MinCapacity = ht.GetInt32(Keys.MIN_CAPACITY, MinCapacity);
+            MinCapacity = Mathf.Clamp(MinCapacity, 0, MaxCapacity);
+            
             Elements = new List<CustomObjectDataField>();
+            while (Elements.Count < MinCapacity) {
+                AddElement();    
+            }
             return base.Construct(ht);
         }
 
@@ -95,7 +115,7 @@ namespace GenericNodes.Mech.Fields {
         }
         
         public override DataField Clone() {
-            GenericArrayDataField field = new GenericArrayDataField(Scheme, Name, ArrayType) {
+            GenericArrayDataField field = new GenericArrayDataField(Scheme, Name, ArrayType, MinCapacity, MaxCapacity) {
                 Elements = Elements.CloneElements()
             };
             return CloneBaseData(field);
