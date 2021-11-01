@@ -33,7 +33,7 @@ namespace GenericNodes.Visual.GenericFields {
         }
 
         public void SetData(CustomObjectDataField field) {
-            textLabel.text = field.Name;
+            textLabel.text = field.DisplayName;
             Field = field;
             ClearFields();
             toggleIsOptional.gameObject.SetActive(field.IsOptional);

@@ -27,7 +27,7 @@ namespace GenericNodes.Visual.GenericFields {
             if (field.IsOptional) {
                 toggleIsOptional.SetIsOnWithoutNotify(field.IsOptionAllowed);    
             }
-            textLabel.text = Field.Name;
+            textLabel.text = Field.DisplayName;
             dropdown.ClearOptions();
             dropdown.AddOptions(new List<string>(field.EnumDescription.Enumeration));
             dropdown.SetValueWithoutNotify(field.SelectedIndex);

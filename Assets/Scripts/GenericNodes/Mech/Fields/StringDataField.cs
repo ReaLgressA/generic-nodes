@@ -5,7 +5,7 @@ namespace GenericNodes.Mech.Fields {
     public class StringDataField : DataField {
         
         public override DataType Type => DataType.String;
-        public override bool IsOptionAllowed { get; set; } = true;
+        public override bool IsOptionAllowed { get; set; } = false;
         public string Value { get; protected set; }
 
         public StringDataField() {}

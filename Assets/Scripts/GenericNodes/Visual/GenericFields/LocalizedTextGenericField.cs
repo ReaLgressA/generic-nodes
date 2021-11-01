@@ -41,7 +41,7 @@ namespace GenericNodes.Visual.GenericFields {
 
         public void SetData(LocalizedTextDataField field) {
             Field = field;
-            textLabel.text = Field.Name;
+            textLabel.text = Field.DisplayName;
             SetLocalizationKey(Field.Value);
         }
 

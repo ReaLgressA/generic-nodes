@@ -11,13 +11,17 @@ namespace GenericNodes.Visual.GenericFields {
     public class CustomArrayGenericField : MonoBehaviour,
                                            IGenericFieldParent,
                                            IGenericField {
-        [SerializeField] private TextMeshProUGUI textLabel;
-        [SerializeField] private RectTransform rtrArrayElementsRoot;
-        [SerializeField] private Button buttonAddElement;
-        [SerializeField] private Button buttonRemoveElement;
+        [SerializeField] 
+        private TextMeshProUGUI textLabel;
+        [SerializeField]
+        private RectTransform rtrArrayElementsRoot;
+        [SerializeField]
+        private Button buttonAddElement;
+        [SerializeField]
+        private Button buttonRemoveElement;
 
         private RectTransform rtrRoot;
-        private List<CustomObjectGenericField> arrayElements = new List<CustomObjectGenericField>();
+        private readonly List<CustomObjectGenericField> arrayElements = new List<CustomObjectGenericField>();
         
         private NodeVisual MasterNode { get; set; }
         public GenericArrayDataField Field { get; private set; }
@@ -39,7 +43,7 @@ namespace GenericNodes.Visual.GenericFields {
 
         public void SetData(GenericArrayDataField data) {
             Field = data;
-            textLabel.text = Field.Name;
+            textLabel.text = Field.DisplayName;
             Field.ElementsUpdated += RefreshElementsList;
             RefreshElementsList();
         }

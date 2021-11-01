@@ -45,7 +45,7 @@ namespace GenericNodes.Visual.GenericFields {
             }
             Field = field;
             Field.ValueChanged += ProcessLinkedNodeIdChanged;
-            textLabel.text = Field.Name;
+            textLabel.text = Field.DisplayName;
             linkSocket.Initialize(this);
             
             UnlinkSocket();

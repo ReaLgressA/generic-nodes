@@ -32,7 +32,7 @@ namespace GenericNodes.Visual.GenericFields {
             Field = field;
             if (Field != null) {
                 Field.ValueChanged += RefreshPreview;
-                textLabel.text = Field.Name;
+                textLabel.text = Field.DisplayName;
                 textAssetId.text = Field.Value;
                 RefreshPreview();
             }

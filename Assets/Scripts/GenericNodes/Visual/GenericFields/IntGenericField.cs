@@ -18,7 +18,7 @@ namespace GenericNodes.Visual.GenericFields {
 
         public void SetData(IntDataField field) {
             Field = field;
-            textLabel.text = Field.Name;
+            textLabel.text = Field.DisplayName;
             inputFieldContent.text = Field.Value.ToString();
         }
 
