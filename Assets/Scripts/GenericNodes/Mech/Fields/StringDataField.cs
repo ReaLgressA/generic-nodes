@@ -23,11 +23,14 @@ namespace GenericNodes.Mech.Fields {
         }
 
         public override void FromJson(Hashtable ht, bool isAddition = false) {
+            IsOptionAllowed = ht.ContainsKey(Name);
             Value = ht.GetString(Name);
         }
         
         public override void ToJsonObject(Hashtable ht) {
-            ht[Name] = Value;
+            if (!IsOptional || IsOptionAllowed) {
+                ht[Name] = Value;
+            }
         }
         
         public override DataField Clone() {
