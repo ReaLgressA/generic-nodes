@@ -6,7 +6,6 @@ using GenericNodes.Utility;
 using GenericNodes.Visual.Interfaces;
 using GenericNodes.Visual.Links;
 using GenericNodes.Visual.Nodes;
-using UnityEditor.Graphs;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;

@@ -9,7 +9,7 @@
     }
   ],
   "dependencies": {
-    "com.realgressa.vaultkeeper": "https://github.com/ReaLgressA/vault-keeper.git?path=/Assets/VaultKeeper/#1.0.4",
+    "com.realgressa.vaultkeeper": "https://github.com/ReaLgressA/vault-keeper.git?path=/Assets/VaultKeeper/#1.0.7",
     "com.realgressa.sharpziplib": "https://github.com/ReaLgressA/SharpZipLib.git?path=/SharpZipLib/Assets/",
     "com.realgressa.jsonparser": "https://github.com/ReaLgressA/json-parser.git?path=/Assets/",
     "com.unity.2d.pixel-perfect": "4.0.1",
