@@ -35,7 +35,7 @@ namespace GenericNodes.Mech.Fields {
             Scheme = scheme;
         }
         
-        public GenericArrayDataField(GraphScheme scheme, string name, string arrayType, int maxCapacity = 0, int minCapacity = 0) : base(name) {
+        public GenericArrayDataField(GraphScheme scheme, string name, string arrayType, int minCapacity = 0, int maxCapacity = 0) : base(name) {
             Scheme = scheme;
             ArrayType = arrayType;
             MaxCapacity = maxCapacity;
@@ -71,7 +71,7 @@ namespace GenericNodes.Mech.Fields {
                 MaxCapacity = 0;
             }
             MinCapacity = ht.GetInt32(Keys.MIN_CAPACITY, MinCapacity);
-            MinCapacity = Mathf.Clamp(MinCapacity, 0, MaxCapacity);
+            MinCapacity = Mathf.Clamp(MinCapacity, 0, MaxCapacity > 0 ? 0 : MaxCapacity);
             
             Elements = new List<CustomObjectDataField>();
             while (Elements.Count < MinCapacity) {
