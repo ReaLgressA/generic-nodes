@@ -19,6 +19,9 @@ namespace GenericNodes.Mech.Data {
             FileInfo[] files = vaultsDirectory.GetFiles();
             
             for (int i = 0; i < files.Length; ++i) {
+                if (files[i].Attributes.HasFlag(FileAttributes.Hidden) || files[i].Attributes.HasFlag(FileAttributes.System)) {
+                    continue;
+                }
                 try {
                     Vault vault = await Vault.ImportVault(files[i].FullName);
                     if (vault != null) {

@@ -11,6 +11,7 @@ namespace GenericNodes.Mech.Fields {
         Enum,
         NodeId,
         GenericArray,
+        MultiTypeArray,
         CustomObject,
         SpriteAsset,
         LocalizedText

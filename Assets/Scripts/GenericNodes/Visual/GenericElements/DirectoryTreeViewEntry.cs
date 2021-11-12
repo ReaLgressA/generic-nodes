@@ -24,7 +24,7 @@ namespace GenericNodes.Visual.GenericElements {
         private List<DirectoryTreeViewEntry> directoryEntries = new List<DirectoryTreeViewEntry>();
         private List<FileTreeViewEntry> fileEntries = new List<FileTreeViewEntry>();
 
-        private bool isUnfolded = true;
+        private bool isUnfolded = false;
         private RectTransform rtrContentRoot;
 
         public event Action<IFilePathEntry> SelectEntry;
@@ -48,14 +48,16 @@ namespace GenericNodes.Visual.GenericElements {
         public bool IsUnfolded {
             get => isUnfolded && (Parent == null || Parent.isUnfolded);
             private set {
-                isUnfolded = value;
+                isUnfolded = value || Parent == null;
                 imageFoldout.sprite = isUnfolded ? iconFoldoutOpen : iconFoldoutClosed;
             }
         }
         
         private IFilePathEntryManager FileManager { get; set; }
         
-        public DirectoryTreeViewEntry Setup(string directoryPath, string directoryName, RectTransform rtrContentRoot,
+        public DirectoryTreeViewEntry Setup(string directoryPath,
+                                            string directoryName,
+                                            RectTransform rtrContentRoot,
                                             PrefabPool<DirectoryTreeViewEntry> poolDirectories,
                                             PrefabPool<FileTreeViewEntry> poolFiles,
                                             IFilePathEntryManager fileManager,
@@ -80,7 +82,13 @@ namespace GenericNodes.Visual.GenericElements {
             return this;
         }
 
-        private void ToggleFoldoutState() {
+        public void SetFoldoutStateForChildren(bool isUnfolded) {
+            foreach (var dir in directoryEntries) {
+                dir.IsUnfolded = isUnfolded;
+            }
+        }
+
+        public void ToggleFoldoutState() {
             IsUnfolded = !IsUnfolded;
         }
 
