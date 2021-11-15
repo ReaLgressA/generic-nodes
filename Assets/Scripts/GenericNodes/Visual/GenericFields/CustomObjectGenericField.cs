@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using GenericNodes.Mech.Data;
 using GenericNodes.Mech.Fields;
 using GenericNodes.Visual.Interfaces;

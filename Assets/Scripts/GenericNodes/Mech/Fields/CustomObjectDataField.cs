@@ -15,17 +15,15 @@ namespace GenericNodes.Mech.Fields {
         public override bool IsOptionAllowed { get; set; } = false;
         private GraphScheme Scheme { get; }
 
-        public CustomObjectDataField(GraphScheme scheme) {
-            Scheme = scheme;
-        }
-        
-        public CustomObjectDataField(GraphScheme scheme, string objectType) {
+        public CustomObjectDataField(GraphScheme scheme, string objectType = null) {
             Scheme = scheme;
             ObjectType = objectType;
         }
 
         public override DataField Construct(Hashtable ht) {
-            ObjectType = ht.GetString(Keys.OBJECT_TYPE, ObjectType);
+            if (ObjectType == null) {
+                ObjectType = ht.GetString(Keys.OBJECT_TYPE, ObjectType);   
+            }
             return base.Construct(ht);
         }
 
@@ -38,14 +36,21 @@ namespace GenericNodes.Mech.Fields {
 
         public override void FromJson(Hashtable ht, bool isAddition = false) {
             if (Name == null) {
-                ObjectType = ht.GetString(Keys.OBJECT_TYPE, ObjectType);
+                if (ObjectType == null) {
+                    ObjectType = ht.GetString(Keys.OBJECT_TYPE, ObjectType);
+                }
+
                 for (int i = 0; i < Fields.Length; ++i) {
                     Fields[i].FromJson(ht);
                 }
             } else {
                 if (ht.ContainsKey(Name)) {
                     Hashtable htObject = ht[Name] as Hashtable;
-                    ObjectType = htObject.GetString(Keys.OBJECT_TYPE, ObjectType);
+
+                    if (ObjectType == null) {
+                        ObjectType = htObject.GetString(Keys.OBJECT_TYPE, ObjectType);
+                    }
+
                     for (int i = 0; i < Fields.Length; ++i) {
                         Fields[i].FromJson(htObject);
                     }
@@ -58,14 +63,14 @@ namespace GenericNodes.Mech.Fields {
 
         public override void ToJsonObject(Hashtable ht) {
             if (string.IsNullOrWhiteSpace(Name) || Name.Contains("#")) {
-                ht[Keys.OBJECT_TYPE] = ObjectType;
+                // ht[Keys.OBJECT_TYPE] = ObjectType;
                 for (int i = 0; i < Fields.Length; ++i) {
                     Fields[i].ToJsonObject(ht);
                 }
             }
             if (IsOptionAllowed) {
                 Hashtable htObject = new Hashtable();
-                htObject[Keys.OBJECT_TYPE] = ObjectType;
+                // htObject[Keys.OBJECT_TYPE] = ObjectType;
                 for (int i = 0; i < Fields.Length; ++i) {
                     Fields[i].ToJsonObject(htObject);
                 }
@@ -74,7 +79,7 @@ namespace GenericNodes.Mech.Fields {
         }
 
         public override DataField Clone() {
-            CustomObjectDataField field = new CustomObjectDataField(Scheme) {
+            CustomObjectDataField field = new CustomObjectDataField(Scheme, ObjectType) {
                 ObjectType = ObjectType,
                 fields = Fields.CloneFields()
             };

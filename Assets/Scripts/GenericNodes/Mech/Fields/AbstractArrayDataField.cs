@@ -83,7 +83,7 @@ namespace GenericNodes.Mech.Fields {
                 if (ht[Name] is ArrayList array) {
                     Elements = new List<CustomObjectDataField>(array.Count);
                     for (int i = 0; i < array.Count; i++) {
-                        CustomObjectDataField item = new CustomObjectDataField(Scheme);
+                        CustomObjectDataField item = new CustomObjectDataField(Scheme, DefaultElementType);
                         if (array[i] != null) {
                             Hashtable htDataField = (Hashtable)array[i];
                             if (htDataField == null) {

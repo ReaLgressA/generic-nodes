@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using GenericNodes.Mech.Data;
 using GenericNodes.Mech.Fields;
@@ -24,7 +25,7 @@ namespace GenericNodes.Visual.GenericFields {
         private readonly List<CustomObjectGenericField> arrayElements = new List<CustomObjectGenericField>();
         
         private NodeVisual MasterNode { get; set; }
-        public GenericArrayDataField Field { get; private set; }
+        public AbstractArrayDataField Field { get; private set; }
         public NodeId NodeId => MasterNode.NodeId;
         public Vector2 ParentPositionShift => RtrRoot.anchoredPosition + rtrArrayElementsRoot.anchoredPosition 
                                                                        + Parent.ParentPositionShift;
@@ -41,7 +42,7 @@ namespace GenericNodes.Visual.GenericFields {
             buttonRemoveElement.onClick.RemoveAllListeners();
         }
 
-        public void SetData(GenericArrayDataField data) {
+        public void SetData(AbstractArrayDataField data) {
             Field = data;
             textLabel.text = Field.DisplayName;
             Field.ElementsUpdated += RefreshElementsList;
@@ -51,7 +52,7 @@ namespace GenericNodes.Visual.GenericFields {
         public void SetData(NodeVisual nodeVisual, DataField data, IGenericFieldParent fieldParent) {
             MasterNode = nodeVisual;
             Parent = fieldParent;
-            SetData(data as GenericArrayDataField);
+            SetData(data as AbstractArrayDataField);
             RefreshElementsList();
         }
 

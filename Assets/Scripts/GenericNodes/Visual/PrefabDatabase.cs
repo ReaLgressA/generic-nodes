@@ -44,6 +44,7 @@ namespace GenericNodes.Visual {
             fieldPrefabs.Add(DataType.GenericArray, customArrayFieldPrefab.gameObject);
             fieldPrefabs.Add(DataType.SpriteAsset, spriteAssetFieldPrefab.gameObject);
             fieldPrefabs.Add(DataType.LocalizedText, localizedTextFieldPrefab.gameObject);
+            fieldPrefabs.Add(DataType.MultiTypeArray, customArrayFieldPrefab.gameObject);
         }
 
         public static GameObject GetFieldPrefab(DataType type) {
