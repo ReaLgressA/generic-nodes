@@ -15,6 +15,7 @@ namespace GenericNodes.Mech.Fields {
         public bool CanAddElement => Elements.Count < MaxCapacity || MaxCapacity == 0;
         public bool CanRemoveElement => Elements.Count > MinCapacity;
         public abstract string DefaultElementType { get; }
+        public abstract string[] AllowedElementTypes { get; }
         protected GraphScheme Scheme { get; }
         
         public event Action ElementsUpdated;
@@ -40,7 +41,7 @@ namespace GenericNodes.Mech.Fields {
         
         public void AddElement(string arrayElementType) {
             if (CanAddElement) {
-                Elements.Add(new CustomObjectDataField(Scheme, arrayElementType));
+                Elements.Add(new CustomObjectDataField(Scheme, arrayElementType, AllowedElementTypes));
                 ElementsUpdated?.Invoke();
             }
             while (Elements.Count < MinCapacity) {
@@ -64,10 +65,6 @@ namespace GenericNodes.Mech.Fields {
             MinCapacity = ht.GetInt32(Keys.MIN_CAPACITY, MinCapacity);
             MinCapacity = Mathf.Clamp(MinCapacity, 0, MaxCapacity > 0 ? 0 : MaxCapacity);
             
-            Elements = new List<CustomObjectDataField>();
-            while (Elements.Count < MinCapacity) {
-                AddElement(DefaultElementType);
-            }
             return base.Construct(ht);
         }
 
@@ -83,7 +80,7 @@ namespace GenericNodes.Mech.Fields {
                 if (ht[Name] is ArrayList array) {
                     Elements = new List<CustomObjectDataField>(array.Count);
                     for (int i = 0; i < array.Count; i++) {
-                        CustomObjectDataField item = new CustomObjectDataField(Scheme, DefaultElementType);
+                        CustomObjectDataField item = new CustomObjectDataField(Scheme, DefaultElementType, AllowedElementTypes);
                         if (array[i] != null) {
                             Hashtable htDataField = (Hashtable)array[i];
                             if (htDataField == null) {
@@ -100,7 +97,7 @@ namespace GenericNodes.Mech.Fields {
             }
             ElementsUpdated?.Invoke();
         }
-        
+
         private static class Keys {
             public const string MAX_CAPACITY = "MaxCapacity";
             public const string MIN_CAPACITY = "MinCapacity";

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using GenericNodes.Mech.Data;
 using GenericNodes.Mech.Extensions;
@@ -11,7 +12,8 @@ namespace GenericNodes.Mech.Fields {
         public string ArrayType { get; private set; }
 
         public override string DefaultElementType => ArrayType;
-        
+        public override string[] AllowedElementTypes => new[] { ArrayType };
+
         public NodeDescription CustomDataType => 
             Scheme.CustomDataTypes.First(dataType => string.Equals(dataType.Type, ArrayType, StringComparison.Ordinal));
         
@@ -24,8 +26,15 @@ namespace GenericNodes.Mech.Fields {
         }
 
         public override DataField Construct(Hashtable ht) {
+            base.Construct(ht);
             ArrayType = ht.GetString(Keys.ARRAY_TYPE);
-            return base.Construct(ht);
+
+            Elements = new List<CustomObjectDataField>();
+            while (Elements.Count < MinCapacity) {
+                AddElement(DefaultElementType);
+            }
+
+            return this;
         }
 
         public override void ToJsonObject(Hashtable ht) {

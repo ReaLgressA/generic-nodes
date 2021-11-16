@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using GenericNodes.Mech.Data;
 using GenericNodes.Mech.Extensions;
 using JsonParser;
@@ -10,10 +11,8 @@ namespace GenericNodes.Mech.Fields {
         public string[] AllowedTypes { get; private set; } = Array.Empty<string>();
 
         public override string DefaultElementType => AllowedTypes[0];
-        
-        // public NodeDescription CustomDataType => 
-        //     Scheme.CustomDataTypes.First(dataType => string.Equals(dataType.Type, ArrayTypes, StringComparison.Ordinal));
-        
+        public override string[] AllowedElementTypes => AllowedTypes;
+
         public GenericMultiTypeArrayDataField(GraphScheme scheme) : base(scheme) { }
 
         public GenericMultiTypeArrayDataField(GraphScheme scheme, string name, string[] allowedTypes,
@@ -23,8 +22,15 @@ namespace GenericNodes.Mech.Fields {
         }
 
         public override DataField Construct(Hashtable ht) {
+            base.Construct(ht);
             AllowedTypes = ht.GetArray(Keys.ALLOWED_TYPES, AllowedTypes);
-            return base.Construct(ht);
+            
+            Elements = new List<CustomObjectDataField>();
+            while (Elements.Count < MinCapacity) {
+                AddElement(DefaultElementType);
+            }
+
+            return this;
         }
 
         public override void ToJsonObject(Hashtable ht) {
@@ -32,8 +38,8 @@ namespace GenericNodes.Mech.Fields {
         }
 
         public override DataField Clone() {
-            GenericMultiTypeArrayDataField field = new GenericMultiTypeArrayDataField(Scheme, Name, AllowedTypes,
-                MinCapacity, MaxCapacity) {
+            GenericMultiTypeArrayDataField field = new GenericMultiTypeArrayDataField(Scheme, Name, AllowedTypes, 
+                                                                                      MinCapacity, MaxCapacity) {
                 Elements = Elements.CloneElements()
             };
             return CloneBaseData(field);

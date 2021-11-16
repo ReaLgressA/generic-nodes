@@ -14,7 +14,8 @@ namespace GenericNodes.Mech.Fields {
         MultiTypeArray,
         CustomObject,
         SpriteAsset,
-        LocalizedText
+        LocalizedText,
+        ObjectType
     }
     
     public class DataTypeComparer : IEqualityComparer<DataType> {
