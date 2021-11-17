@@ -20,6 +20,7 @@ namespace GenericNodes.Visual {
         [SerializeField] private CustomObjectGenericField customObjectDataFieldPrefab;
         [SerializeField] private CustomArrayGenericField customArrayFieldPrefab;
         [SerializeField] private SpriteAssetGenericField spriteAssetFieldPrefab;
+        [SerializeField] private ObjectTypeGenericField objectTypeGenericFieldPrefab;
         [Header("Popups")]
         [SerializeField] private PopupMenuItem prefabPopupMenuItem;
         [SerializeField] private PopupMenuCategory prefabPopupMenuCategory;
@@ -44,6 +45,8 @@ namespace GenericNodes.Visual {
             fieldPrefabs.Add(DataType.GenericArray, customArrayFieldPrefab.gameObject);
             fieldPrefabs.Add(DataType.SpriteAsset, spriteAssetFieldPrefab.gameObject);
             fieldPrefabs.Add(DataType.LocalizedText, localizedTextFieldPrefab.gameObject);
+            fieldPrefabs.Add(DataType.MultiTypeArray, customArrayFieldPrefab.gameObject);
+            fieldPrefabs.Add(DataType.ObjectType, objectTypeGenericFieldPrefab.gameObject);
         }
 
         public static GameObject GetFieldPrefab(DataType type) {

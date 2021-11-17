@@ -10,7 +10,7 @@ namespace GenericNodes.Mech.Fields {
         public bool IsOptional { get; private set; } = false;
         public abstract bool IsOptionAllowed { get; set; }
         public string DisplayName => Label ?? Name;
-        
+
         protected DataField() {}
         
         protected DataField(string name) {

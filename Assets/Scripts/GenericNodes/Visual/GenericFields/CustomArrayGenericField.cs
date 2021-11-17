@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using GenericNodes.Mech.Data;
 using GenericNodes.Mech.Fields;
@@ -6,6 +7,7 @@ using GenericNodes.Visual.Nodes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace GenericNodes.Visual.GenericFields {
     public class CustomArrayGenericField : MonoBehaviour,
@@ -19,12 +21,16 @@ namespace GenericNodes.Visual.GenericFields {
         private Button buttonAddElement;
         [SerializeField]
         private Button buttonRemoveElement;
-
+        [SerializeField]
+        private Image imageArrayMarker;
+        [SerializeField]
+        private RectTransform rtrArrayMarker;
+                
         private RectTransform rtrRoot;
         private readonly List<CustomObjectGenericField> arrayElements = new List<CustomObjectGenericField>();
         
         private NodeVisual MasterNode { get; set; }
-        public GenericArrayDataField Field { get; private set; }
+        public AbstractArrayDataField Field { get; private set; }
         public NodeId NodeId => MasterNode.NodeId;
         public Vector2 ParentPositionShift => RtrRoot.anchoredPosition + rtrArrayElementsRoot.anchoredPosition 
                                                                        + Parent.ParentPositionShift;
@@ -41,17 +47,19 @@ namespace GenericNodes.Visual.GenericFields {
             buttonRemoveElement.onClick.RemoveAllListeners();
         }
 
-        public void SetData(GenericArrayDataField data) {
+        public void SetData(AbstractArrayDataField data) {
             Field = data;
             textLabel.text = Field.DisplayName;
             Field.ElementsUpdated += RefreshElementsList;
+            imageArrayMarker.color = Random.ColorHSV();
+            rtrArrayMarker.sizeDelta = new Vector2((Parent?.CountParentLevel() ?? 0) * 3f, rtrArrayMarker.sizeDelta.y);
             RefreshElementsList();
         }
 
         public void SetData(NodeVisual nodeVisual, DataField data, IGenericFieldParent fieldParent) {
             MasterNode = nodeVisual;
             Parent = fieldParent;
-            SetData(data as GenericArrayDataField);
+            SetData(data as AbstractArrayDataField);
             RefreshElementsList();
         }
 
@@ -88,6 +96,7 @@ namespace GenericNodes.Visual.GenericFields {
             }
             for (int i = 0; i < Field.Elements.Count; ++i) {
                 Field.Elements[i].Name = $"#{i}";
+                
                 arrayElements[i].SetData(MasterNode, Field.Elements[i], this);
                 arrayElements[i].gameObject.SetActive(true);
             }

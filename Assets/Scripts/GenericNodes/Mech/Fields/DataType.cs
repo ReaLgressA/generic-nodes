@@ -11,9 +11,11 @@ namespace GenericNodes.Mech.Fields {
         Enum,
         NodeId,
         GenericArray,
+        MultiTypeArray,
         CustomObject,
         SpriteAsset,
-        LocalizedText
+        LocalizedText,
+        ObjectType
     }
     
     public class DataTypeComparer : IEqualityComparer<DataType> {

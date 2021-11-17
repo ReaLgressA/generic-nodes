@@ -47,7 +47,7 @@ namespace GenericNodes.Visual.Views.Project {
 
             L10N.EventLanguageChanged += UpdateActiveLanguage;
             
-            buttonRefresh.onClick.AddListener(RefreshTreeView);
+            buttonRefresh.onClick.AddListener(ProcessRefreshButtonClick);
             buttonCreateGraph.onClick.AddListener(CreateGraph);
             buttonCloseProject.onClick.AddListener(CloseProject);
             buttonChangeLanguage.onClick.AddListener(ChangeLanguage);
@@ -75,6 +75,7 @@ namespace GenericNodes.Visual.Views.Project {
                 directoryWatcher.RefreshDirectory += ProcessDirectoryWatcherEvent;
             }
             RefreshTreeView();
+            RefreshAvailableSchemes();
             UpdateActiveLanguage();
         }
 
@@ -103,7 +104,6 @@ namespace GenericNodes.Visual.Views.Project {
         public void RefreshTreeView() {
             if (Info != null) {
                 SetupRootDirectory(Info.AbsoluteRootPath);
-                RefreshAvailableSchemes();
             }
         }
         
@@ -174,6 +174,11 @@ namespace GenericNodes.Visual.Views.Project {
         private void UpdateActiveLanguage() {
             buttonChangeLanguage.gameObject.SetActive(true);
             textButtonChangeLanguage.text = L10N.ActiveLanguageId;
+        }
+        
+        private void ProcessRefreshButtonClick() {
+            RefreshAvailableSchemes();
+            RefreshTreeView();
         }
     }
 
