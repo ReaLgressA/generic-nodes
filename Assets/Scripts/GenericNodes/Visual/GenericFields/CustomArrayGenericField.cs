@@ -7,6 +7,7 @@ using GenericNodes.Visual.Nodes;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace GenericNodes.Visual.GenericFields {
     public class CustomArrayGenericField : MonoBehaviour,
@@ -20,7 +21,11 @@ namespace GenericNodes.Visual.GenericFields {
         private Button buttonAddElement;
         [SerializeField]
         private Button buttonRemoveElement;
-
+        [SerializeField]
+        private Image imageArrayMarker;
+        [SerializeField]
+        private RectTransform rtrArrayMarker;
+                
         private RectTransform rtrRoot;
         private readonly List<CustomObjectGenericField> arrayElements = new List<CustomObjectGenericField>();
         
@@ -46,6 +51,8 @@ namespace GenericNodes.Visual.GenericFields {
             Field = data;
             textLabel.text = Field.DisplayName;
             Field.ElementsUpdated += RefreshElementsList;
+            imageArrayMarker.color = Random.ColorHSV();
+            rtrArrayMarker.sizeDelta = new Vector2((Parent?.CountParentLevel() ?? 0) * 3f, rtrArrayMarker.sizeDelta.y);
             RefreshElementsList();
         }
 
