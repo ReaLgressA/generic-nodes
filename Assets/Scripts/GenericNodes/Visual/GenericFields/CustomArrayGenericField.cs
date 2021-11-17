@@ -89,6 +89,7 @@ namespace GenericNodes.Visual.GenericFields {
             }
             for (int i = 0; i < Field.Elements.Count; ++i) {
                 Field.Elements[i].Name = $"#{i}";
+                
                 arrayElements[i].SetData(MasterNode, Field.Elements[i], this);
                 arrayElements[i].gameObject.SetActive(true);
             }

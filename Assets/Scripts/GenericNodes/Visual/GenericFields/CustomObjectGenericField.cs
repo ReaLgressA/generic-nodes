@@ -33,6 +33,10 @@ namespace GenericNodes.Visual.GenericFields {
 
         public void SetData(CustomObjectDataField field) {
             textLabel.text = field.DisplayName;
+            if (Field != null) {
+                Field.EventFieldsUpdated -= UpdateEventFields;
+                Field = null;
+            }
             Field = field;
             ClearFields();
             toggleIsOptional.gameObject.SetActive(field.IsOptional);
@@ -50,9 +54,15 @@ namespace GenericNodes.Visual.GenericFields {
                 objectField.SetData(MasterNode, dataField, this);
                 genericFields.Add(objectField);
             }
+
+            Field.EventFieldsUpdated += UpdateEventFields;
             RefreshContentVisibility();
         }
-        
+
+        private void UpdateEventFields() {
+            SetData(Field);
+        }
+
         public void SetData(NodeVisual nodeVisual, DataField data, IGenericFieldParent fieldParent) {
             MasterNode = nodeVisual;
             Parent = fieldParent;
@@ -60,7 +70,10 @@ namespace GenericNodes.Visual.GenericFields {
         }
 
         public void Destroy() {
-            Field = null;
+            if (Field != null) {
+                Field.EventFieldsUpdated -= UpdateEventFields;
+                Field = null;
+            }
             Destroy(gameObject);
         }
         

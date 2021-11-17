@@ -20,7 +20,7 @@ namespace GenericNodes.Mech.Fields {
         private ObjectTypeDataField ObjectTypeField { get; set; } = null;
 
         public event Action EventFieldsUpdated;
-
+        
         public CustomObjectDataField(GraphScheme scheme, string objectType = null, string[] allowedObjectTypes = null) {
             Scheme = scheme;
             ObjectType = objectType;
@@ -50,8 +50,10 @@ namespace GenericNodes.Mech.Fields {
                     ObjectType = ht.GetString(Keys.OBJECT_TYPE, ObjectType);
                 }
                 if (AllowedObjectTypes == null) {
-                    
                     AllowedObjectTypes = new[] { ObjectType };
+                }
+                if (AllowedObjectTypes.Length > 1) {
+                    ObjectType = ht.GetStringSafe(Keys.TYPE, ObjectType);
                 }
                 for (int i = 0; i < Fields.Length; ++i) {
                     Fields[i].FromJson(ht);
@@ -66,7 +68,9 @@ namespace GenericNodes.Mech.Fields {
                     if (AllowedObjectTypes == null) {
                         AllowedObjectTypes = new[] { ObjectType };
                     }
-                    
+                    if (AllowedObjectTypes.Length > 1) {
+                        ObjectType = ht.GetStringSafe(Keys.TYPE, ObjectType);
+                    }
                     for (int i = 0; i < Fields.Length; ++i) {
                         Fields[i].FromJson(htObject);
                     }
@@ -80,6 +84,9 @@ namespace GenericNodes.Mech.Fields {
         public override void ToJsonObject(Hashtable ht) {
             if (string.IsNullOrWhiteSpace(Name) || Name.Contains("#")) {
                 // ht[Keys.OBJECT_TYPE] = ObjectType;
+                if (AllowedObjectTypes.Length > 1) {
+                    ht[Keys.TYPE] = ObjectType;
+                }
                 for (int i = 0; i < Fields.Length; ++i) {
                     Fields[i].ToJsonObject(ht);
                 }
@@ -87,6 +94,9 @@ namespace GenericNodes.Mech.Fields {
             if (IsOptionAllowed) {
                 Hashtable htObject = new Hashtable();
                 // htObject[Keys.OBJECT_TYPE] = ObjectType;
+                if (AllowedObjectTypes.Length > 1) {
+                    htObject[Keys.TYPE] = ObjectType;
+                }
                 for (int i = 0; i < Fields.Length; ++i) {
                     Fields[i].ToJsonObject(htObject);
                 }
@@ -114,7 +124,7 @@ namespace GenericNodes.Mech.Fields {
                     }
                 }
                 fields = new DataField[objectFields.Length + 1];
-                ObjectTypeField = new ObjectTypeDataField(Scheme, "Type", ObjectType);
+                ObjectTypeField = new ObjectTypeDataField(Scheme, "Type", ObjectType, AllowedObjectTypes);
                 ObjectTypeField.EventObjectTypeChanged += UpdateObjectType;
                 fields[0] = ObjectTypeField;
                 for (int i = 0; i < objectFields.Length; ++i) {
@@ -135,6 +145,7 @@ namespace GenericNodes.Mech.Fields {
 
         private static class Keys {
             public const string OBJECT_TYPE = "ObjectType";
+            public const string TYPE = "Type";
         }
     }
 }

@@ -23,8 +23,9 @@ namespace GenericNodes.Mech.Fields {
             Scheme = scheme;
         }
 
-        public ObjectTypeDataField(GraphScheme scheme, string name, string defaultValue = null) : base(name) {
+        public ObjectTypeDataField(GraphScheme scheme, string name, string defaultValue, string[] allowedTypes) : base(name) {
             Scheme = scheme;
+            AllowedTypes = allowedTypes;
             if (defaultValue != null) {
                 Value = defaultValue;
             }
